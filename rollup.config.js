@@ -6,13 +6,19 @@ import { terser } from 'rollup-plugin-terser'
 
 import pkg from './package.json'
 
-const plugins = [nodeResolve()]
+const plugins = [
+  nodeResolve(),
+  commonjs({
+    exclude: '/node_modules/'
+  })
+]
 
 export default [
   {
-    plugins: [...plugins, commonjs(), typescript()],
+    plugins: [...plugins, typescript()],
     input: 'src/index.ts',
     output: {
+      exports: 'named',
       file: 'lib/pikaso.js',
       format: 'cjs'
     }
@@ -26,7 +32,7 @@ export default [
       })
     ],
     input: 'src/index.ts',
-    preserveModules: true,
+    preserveModules: false,
     output: {
       dir: 'es/pikaso',
       format: 'esm'

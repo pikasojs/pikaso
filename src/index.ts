@@ -22,7 +22,7 @@ import { Triangle } from './Shape/Triangle'
 
 import type { Settings, Shapes } from './types'
 
-export class Pikaso {
+export default class Pikaso {
   /**
    *
    */
