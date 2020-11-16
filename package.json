@@ -34,6 +34,7 @@
   },
   "scripts": {
     "typecheck": "tsc",
+    "commitlint": "commitlint",
     "typedoc": "typedoc",
     "test": "jest",
     "_postinstall": "husky install",
@@ -44,6 +45,7 @@
     "konva": "^7.1.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
     "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
@@ -66,10 +68,5 @@
     "typedoc": "^0.19.2",
     "typedoc-plugin-external-module-name": "^4.0.3",
     "typescript": "^4.0.5"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
   }
 }
