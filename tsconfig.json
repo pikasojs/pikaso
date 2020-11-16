@@ -9,7 +9,7 @@
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Node",
-    "rootDir": "lib",
+    "rootDir": "src",
     "baseUrl": "/",
     "lib": [
       "ES2017",
@@ -20,6 +20,6 @@
   },
   "compileOnSave": true,
   "include": [
-    "lib/**/*"
+    "src/**/*"
   ]
 }
