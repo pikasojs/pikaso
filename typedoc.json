@@ -1,0 +1,14 @@
+{
+  "name": "Pikaso",
+  "inputFiles": [
+    "./lib"
+  ],
+  "mode": "file",
+  "out": "api",
+  "excludeProtected": true,
+  "excludePrivate": true,
+  "stripInternal": true,
+  "disableSources": true,
+  "theme": "minimal",
+  "hideGenerator": true
+}
