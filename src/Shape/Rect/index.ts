@@ -21,7 +21,7 @@ export class Rect extends ShapeDrawer {
    *
    * @param config
    */
-  public append(config: Konva.RectConfig) {
+  public insert(config: Konva.RectConfig) {
     super.insert(config)
   }
 
