@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "ES2015",
+    "module": "ES6",
     "target": "ES5",
     "noImplicitAny": true,
     "noEmit": true,
@@ -8,6 +8,7 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "moduleResolution": "Node",
     "rootDir": "src",
     "baseUrl": "/",

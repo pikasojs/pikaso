@@ -3,6 +3,7 @@ import Konva from 'konva'
 import { Board } from './Board'
 import { Events } from './Events'
 import { History } from './History'
+import { Export } from './Export'
 
 import { Flip } from './Flip'
 import { Cropper } from './Cropper'
@@ -27,6 +28,11 @@ export default class Pikaso {
    *
    */
   public readonly board: Board
+
+  /**
+   *
+   */
+  public readonly export: Export
 
   /**
    *
@@ -82,6 +88,7 @@ export default class Pikaso {
     const events = new Events()
     const board = new Board(settings, events, history)
 
+    this.export = new Export(board)
     this.rotation = new Rotation(board, events, history)
     this.cropper = new Cropper(board, events, history)
     this.flip = new Flip(board, events, history)
