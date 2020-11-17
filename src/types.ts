@@ -90,14 +90,14 @@ export interface CircularCropperOptions extends BaseCropperOptions {
 export type CropperOptions = RectangleCropperOptions | CircularCropperOptions
 
 export enum DrawType {
-  Pencil = 'Pencil',
-  Line = 'Line',
-  Arrow = 'Arrow',
-  Circle = 'Circle',
-  Rect = 'Rect',
-  Ellipse = 'Ellipse',
-  Polygon = 'Polygon',
-  Triangle = 'Triangle'
+  Pencil,
+  Line,
+  Arrow,
+  Circle,
+  Rect,
+  Ellipse,
+  Polygon,
+  Triangle
 }
 
 export interface Shapes {
