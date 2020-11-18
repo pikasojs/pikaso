@@ -28,13 +28,13 @@ export default [
       ...plugins,
       typescript({
         declaration: true,
-        outDir: 'es/pikaso'
+        outDir: 'es'
       })
     ],
     input: 'src/index.ts',
     preserveModules: false,
     output: {
-      dir: 'es/pikaso',
+      dir: 'es',
       format: 'esm'
     }
   },

@@ -1,5 +1,6 @@
 
 .cache/
+.nyc_output
 coverage/
 dist/*
 !dist/index.html
@@ -7,6 +8,10 @@ node_modules/
 *.log
 lib
 es
+umd
+cypress/videos
+instrumented
+coverage
 
 
 # OS generated files
