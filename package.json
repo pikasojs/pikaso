@@ -11,6 +11,7 @@
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "jest",
     "test:e2e": "cypress run",
+    "coverage": "jest --coverage",
     "postinstall": "husky install",
     "prepublish": "pinst --disable",
     "postpublish": "pinst --enable",
