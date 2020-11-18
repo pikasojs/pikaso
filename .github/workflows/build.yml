@@ -1,4 +1,4 @@
-name: Pikaso CI
+name: Test and Build
 on: [push]
 jobs:
   build:
@@ -14,5 +14,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm test
+    - run: npm run build
       env:
         CI: true
