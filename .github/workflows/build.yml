@@ -3,20 +3,14 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
     steps:
     - uses: actions/checkout@v2
-    - name: Test Library
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
-        registry-url: 'https://registry.npmjs.org'
+        node-version: 14
     - run: npm install
     - run: npm test
     - run: npm run build
-    - run: npm publish
-      env:
-        CI: true
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - uses: JS-DevTools/npm-publish@v1
+      with:
+        token: ${{ secrets.NPM_TOKEN }}
