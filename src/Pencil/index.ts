@@ -21,12 +21,6 @@ export class Pencil extends ShapeDrawer {
    *
    * @param config
    */
-  public insert(config: Konva.LineConfig) {}
-
-  /**
-   *
-   * @param config
-   */
   public draw(config: Partial<Konva.LineConfig> = {}) {
     super.draw(config)
   }

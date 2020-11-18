@@ -72,7 +72,7 @@ export abstract class ShapeDrawer implements IShape, IDrawableShape {
   /**
    *
    */
-  public insert(config: Konva.ShapeConfig): Shape | void {
+  public insert(config: Konva.ShapeConfig): Shape {
     this.stopDrawing()
 
     return this.createShape(config)
