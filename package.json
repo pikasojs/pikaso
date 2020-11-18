@@ -84,8 +84,6 @@
   "unpkg": "dist/umd/pikaso.js",
   "sideEffects": false,
   "files": [
-    "dist",
-    "lib",
-    "es"
+    "dist"
   ]
 }

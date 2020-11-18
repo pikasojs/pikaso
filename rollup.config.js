@@ -28,7 +28,7 @@ export default [
       ...plugins,
       typescript({
         declaration: true,
-        outDir: 'es'
+        outDir: 'dist/es'
       })
     ],
     input: 'src/index.ts',
