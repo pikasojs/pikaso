@@ -1,25 +1,23 @@
 import { createInstance } from '../../../jest/create-instance'
 
-describe('Shapes::Triangle', () => {
-  test('It should insert a triangle', () => {
+describe('Shapes::Circle', () => {
+  test('It should insert a circle', () => {
     const editor = createInstance()
 
     const config = {
-      name: 'triangle',
+      name: 'circle',
       x: 200,
       y: 200,
-      radius: 150,
-      fill: 'red'
+      radius: 150
     }
-    editor.shapes.triangle.insert(config)
+    editor.shapes.circle.insert(config)
 
     const shapes = editor.board.stage.find(`.${config.name}`)
 
     expect(shapes.length).toBe(1)
     expect(shapes[0].attrs).toEqual({
       ...config,
-      draggable: true,
-      sides: 3 // because it's triangle
+      draggable: true
     })
   })
 })
