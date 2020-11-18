@@ -208,7 +208,7 @@ export class Cropper {
 
     this.board.backgroundOverlay.hide()
     this.board.shapes.forEach(shape => {
-      shape.instance.hide()
+      shape.node.hide()
     })
 
     // create a snapshot from background image
@@ -237,7 +237,7 @@ export class Cropper {
     })
 
     this.board.shapes.forEach(shape => {
-      const node = shape.instance
+      const node = shape.node
 
       const center = getRotatedPoint(
         {
