@@ -1,4 +1,4 @@
-name: Test and Build
+name: Test, Build and Publish
 on: [push]
 jobs:
   build:
@@ -12,8 +12,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        registry-url: 'https://registry.npmjs.org'
     - run: npm install
     - run: npm test
     - run: npm run build
+    - run: npm publish
       env:
         CI: true
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
