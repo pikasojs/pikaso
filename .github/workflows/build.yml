@@ -8,9 +8,6 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: 14
-    - name: Get package version
-      uses: tyankatsu0105/read-package-version-actions@v1
-      id: package-version
     - run: npm install
     - run: npm test
     - run: npm run build
@@ -19,5 +16,5 @@ jobs:
         token: ${{ secrets.NPM_TOKEN }}
     - uses: actions/upload-artifact@v2
       with:
-        name: Pikaso Bundles ${{ steps.package-version.outputs.current-version}}
+        name: Pikaso Bundles
         path: dist
