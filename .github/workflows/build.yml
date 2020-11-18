@@ -16,4 +16,4 @@ jobs:
         token: ${{ secrets.NPM_TOKEN }}
     - uses: actions/upload-artifact@v2
       name: Pikaso
-      path: dist/
+      path: dist
