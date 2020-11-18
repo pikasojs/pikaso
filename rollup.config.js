@@ -19,7 +19,7 @@ export default [
     input: 'src/index.ts',
     output: {
       exports: 'named',
-      file: 'lib/pikaso.js',
+      file: 'dist/lib/pikaso.js',
       format: 'cjs'
     }
   },
@@ -34,7 +34,7 @@ export default [
     input: 'src/index.ts',
     preserveModules: false,
     output: {
-      dir: 'es',
+      dir: 'dist/es',
       format: 'esm'
     }
   },

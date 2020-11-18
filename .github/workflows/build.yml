@@ -14,3 +14,6 @@ jobs:
     - uses: JS-DevTools/npm-publish@v1
       with:
         token: ${{ secrets.NPM_TOKEN }}
+    - uses: actions/upload-artifact@v2
+      name: Pikaso
+      path: dist/
