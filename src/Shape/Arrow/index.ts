@@ -22,7 +22,7 @@ export class Arrow extends ShapeDrawer {
    * @param config
    */
   public insert(config: Konva.ArrowConfig) {
-    super.insert(config)
+    return super.insert(config)
   }
 
   /**
@@ -39,6 +39,7 @@ export class Arrow extends ShapeDrawer {
    */
   protected createShape(config: Konva.ArrowConfig) {
     this.shape = new Konva.Arrow(config)
-    this.board.addShape(this.shape)
+
+    return this.board.addShape(this.shape)
   }
 }

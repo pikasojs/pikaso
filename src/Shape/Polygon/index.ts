@@ -22,7 +22,7 @@ export class Polygon extends ShapeDrawer {
    * @param config
    */
   public insert(config: Konva.RegularPolygonConfig) {
-    super.insert(config)
+    return super.insert(config)
   }
 
   /**
@@ -39,6 +39,7 @@ export class Polygon extends ShapeDrawer {
    */
   protected createShape(config: Konva.RegularPolygonConfig) {
     this.shape = new Konva.RegularPolygon(config)
-    this.board.addShape(this.shape)
+
+    return this.board.addShape(this.shape)
   }
 }

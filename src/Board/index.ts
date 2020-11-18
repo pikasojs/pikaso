@@ -163,7 +163,7 @@ export class Board {
    */
   public getNodes() {
     return this.shapes
-      .map(node => node.instance)
+      .map(shape => shape.node)
       .concat(...this.getBackgroundNodes())
   }
 
@@ -296,21 +296,26 @@ export class Board {
    * @param shape
    */
   public addShape(
-    shape: Konva.Group | Konva.Shape,
+    node: Konva.Group | Konva.Shape,
     transformerConfig: Konva.TransformerConfig = {}
   ) {
-    shape.draggable(true)
-    const instance = new Shape(
+    node.setAttrs({
+      draggable: true
+    })
+
+    const shape = new Shape(
       this,
       this.events,
       this.history,
-      shape,
+      node,
       transformerConfig
     )
-    this.shapes = [...this.shapes, instance]
+    this.shapes = [...this.shapes, shape]
 
-    this.layer.add(shape)
+    this.layer.add(node)
     this.layer.draw()
+
+    return shape
   }
 
   /**

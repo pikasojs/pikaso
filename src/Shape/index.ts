@@ -9,7 +9,7 @@ export class Shape {
   /**
    *
    */
-  public instance: Konva.Group | Konva.Shape
+  public node: Konva.Group | Konva.Shape
 
   /**
    *
@@ -30,13 +30,13 @@ export class Shape {
     board: Board,
     events: Events,
     history: History,
-    instance: Konva.Group | Konva.Shape,
+    node: Konva.Group | Konva.Shape,
     transformerConfig = {}
   ) {
     this.board = board
     this.flip = new Flip(board, events, history)
 
-    this.instance = instance
+    this.node = node
     this.transformerConfig = transformerConfig
 
     this.registerEvents()
@@ -46,22 +46,22 @@ export class Shape {
    *
    */
   public flipX() {
-    this.flip.horizontal([this.instance])
+    this.flip.horizontal([this.node])
   }
 
   /**
    *
    */
   public flipY() {
-    this.flip.vertical([this.instance])
+    this.flip.vertical([this.node])
   }
 
   private registerEvents() {
-    this.instance.addEventListener('mouseover', () => {
+    this.node.addEventListener('mouseover', () => {
       this.board.stage.getContent().style.cursor = 'move'
     })
 
-    this.instance.addEventListener('mouseout', () => {
+    this.node.addEventListener('mouseout', () => {
       this.board.stage.getContent().style.cursor = 'inherit'
     })
   }

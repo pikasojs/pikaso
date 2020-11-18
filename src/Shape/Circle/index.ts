@@ -22,7 +22,7 @@ export class Circle extends ShapeDrawer {
    * @param config
    */
   public insert(config: Konva.CircleConfig) {
-    super.insert(config)
+    return super.insert(config)
   }
 
   /**
@@ -39,6 +39,6 @@ export class Circle extends ShapeDrawer {
    */
   protected createShape(config: Konva.CircleConfig) {
     this.shape = new Konva.Circle(config)
-    this.board.addShape(this.shape)
+    return this.board.addShape(this.shape)
   }
 }

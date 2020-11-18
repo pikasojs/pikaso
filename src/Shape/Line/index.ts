@@ -22,7 +22,7 @@ export class Line extends ShapeDrawer {
    * @param config
    */
   public insert(config: Konva.LineConfig) {
-    super.insert(config)
+    return super.insert(config)
   }
 
   /**
@@ -39,6 +39,7 @@ export class Line extends ShapeDrawer {
    */
   protected createShape(config: Konva.LineConfig) {
     this.shape = new Konva.Line(config)
-    this.board.addShape(this.shape)
+
+    return this.board.addShape(this.shape)
   }
 }

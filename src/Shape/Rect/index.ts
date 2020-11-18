@@ -22,7 +22,7 @@ export class Rect extends ShapeDrawer {
    * @param config
    */
   public insert(config: Konva.RectConfig) {
-    super.insert(config)
+    return super.insert(config)
   }
 
   /**
@@ -39,6 +39,7 @@ export class Rect extends ShapeDrawer {
    */
   protected createShape(config: Konva.RectConfig) {
     this.shape = new Konva.Rect(config)
-    this.board.addShape(this.shape)
+
+    return this.board.addShape(this.shape)
   }
 }

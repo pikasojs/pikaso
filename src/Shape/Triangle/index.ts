@@ -26,7 +26,7 @@ export class Triangle extends ShapeDrawer {
    * @param config
    */
   public insert(config: TriangleConfig) {
-    super.insert(config)
+    return super.insert(config)
   }
 
   /**
@@ -51,6 +51,6 @@ export class Triangle extends ShapeDrawer {
       ...config
     })
 
-    this.board.addShape(this.shape)
+    return this.board.addShape(this.shape)
   }
 }

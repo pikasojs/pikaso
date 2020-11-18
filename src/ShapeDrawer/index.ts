@@ -5,10 +5,11 @@ import { getPointsDistance } from '../utils/get-points-distance'
 import { Board } from '../Board'
 import { Events } from '../Events'
 import { History } from '../History'
+import { Shape } from '../Shape'
 
-import { Shape, DrawableShape, DrawType, Point } from '../types'
+import { IShape, IDrawableShape, DrawType, Point } from '../types'
 
-export abstract class ShapeDrawer implements Shape, DrawableShape {
+export abstract class ShapeDrawer implements IShape, IDrawableShape {
   /**
    *
    */
@@ -73,7 +74,8 @@ export abstract class ShapeDrawer implements Shape, DrawableShape {
    */
   public insert(config: Konva.ShapeConfig) {
     this.stopDrawing()
-    this.createShape(config)
+
+    return this.createShape(config)
   }
 
   /**
@@ -304,5 +306,5 @@ export abstract class ShapeDrawer implements Shape, DrawableShape {
    *
    * @param config
    */
-  protected abstract createShape(config: Partial<Konva.ShapeConfig>): void
+  protected abstract createShape(config: Partial<Konva.ShapeConfig>): Shape
 }

@@ -22,7 +22,7 @@ export class Ellipse extends ShapeDrawer {
    * @param config
    */
   public insert(config: Konva.EllipseConfig) {
-    super.insert(config)
+    return super.insert(config)
   }
 
   /**
@@ -39,6 +39,7 @@ export class Ellipse extends ShapeDrawer {
    */
   protected createShape(config: Konva.EllipseConfig) {
     this.shape = new Konva.Ellipse(config)
-    this.board.addShape(this.shape)
+
+    return this.board.addShape(this.shape)
   }
 }

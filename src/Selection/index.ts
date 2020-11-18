@@ -66,7 +66,7 @@ export class Selection {
    */
   public deselect(shape: Shape) {
     const nodes = this.board.selectionsTransformer.nodes().filter(node => {
-      return node !== shape.instance
+      return node !== shape.node
     })
 
     if (nodes.length === 0) {
@@ -119,7 +119,7 @@ export class Selection {
     this.board.selectionsTransformer.moveToTop()
     this.board.selectionsTransformer
       .setAttrs(attrs)
-      .nodes(shapes.map(shape => shape.instance))
+      .nodes(shapes.map(shape => shape.node))
 
     this.board.layer.draw()
   }
@@ -130,7 +130,7 @@ export class Selection {
    */
   public selectShape(shape: Shape) {
     const isSelected = this.board.selections.some(
-      item => item.instance === shape.instance
+      item => item.node === shape.node
     )
 
     if (isSelected) {
@@ -153,7 +153,7 @@ export class Selection {
     this.board.stage.getContent().style.cursor = 'inherit'
 
     this.board.shapes = this.board.shapes.filter(shape => {
-      return nodes.some(node => node === shape.instance) === false
+      return nodes.some(node => node === shape.node) === false
     })
 
     nodes.forEach(shape => {
@@ -208,7 +208,7 @@ export class Selection {
    */
   private onDragZoneStart(e: Konva.KonvaEventObject<MouseEvent>) {
     const shape = this.board.shapes.find(
-      shape => shape.instance === this.getParentNode(e.target)
+      shape => shape.node === this.getParentNode(e.target)
     )
 
     if (shape) {
@@ -271,7 +271,7 @@ export class Selection {
     const box = this.zone.getClientRect()
 
     const shapes = this.board.shapes.filter(shape =>
-      Konva.Util.haveIntersection(box, shape.instance.getClientRect())
+      Konva.Util.haveIntersection(box, shape.node.getClientRect())
     )
 
     this.board.updateSelections(shapes)

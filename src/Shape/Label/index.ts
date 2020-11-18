@@ -68,7 +68,7 @@ export class Label {
       })
     })
 
-    this.board.addShape(label, {
+    return this.board.addShape(label, {
       enabledAnchors: ['middle-left', 'middle-right']
     })
   }

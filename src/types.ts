@@ -112,11 +112,11 @@ export interface Shapes {
   polygon: Polygon
 }
 
-export interface DrawableShape {
+export interface IDrawableShape {
   draw: (config: Partial<Konva.ShapeConfig>) => void
   stopDrawing: () => void
 }
 
-export interface Shape {
+export interface IShape {
   insert: (config: Konva.ShapeConfig) => void
 }

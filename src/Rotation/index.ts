@@ -102,19 +102,19 @@ export class Rotation {
     this.board.shapes.forEach(shape => {
       const center = getRotatedPoint(
         {
-          x: shape.instance.x(),
-          y: shape.instance.y()
+          x: shape.node.x(),
+          y: shape.node.y()
         },
         convertDegreeToRadian(theta)
       )
 
-      shape.instance.setAttrs({
-        rotation: shape.instance.rotation() + theta,
+      shape.node.setAttrs({
+        rotation: shape.node.rotation() + theta,
         x: center.x * stageScale + this.board.getPosition().x,
         y: center.y * stageScale + this.board.getPosition().y,
         scale: {
-          x: shape.instance.scaleX() * stageScale,
-          y: shape.instance.scaleY() * stageScale
+          x: shape.node.scaleX() * stageScale,
+          y: shape.node.scaleY() * stageScale
         }
       })
     })

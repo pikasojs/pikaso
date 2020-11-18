@@ -54,7 +54,7 @@ export class Image {
       ...config
     })
 
-    this.board.addShape(image, {
+    return this.board.addShape(image, {
       keepRatio: true
     })
   }
