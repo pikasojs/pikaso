@@ -1,4 +1,4 @@
-import { createInstance } from '../../../tests/create-instance'
+import { createInstance } from '../../../jest/create-instance'
 
 describe('Shapes::Triangle', () => {
   test('It should insert a triangle', () => {

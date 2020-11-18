@@ -37,6 +37,7 @@ export class Pencil extends ShapeDrawer {
    */
   protected createShape(config: Konva.LineConfig) {
     this.shape = new Konva.Line(config)
-    this.board.addShape(this.shape)
+
+    return this.board.addShape(this.shape)
   }
 }
