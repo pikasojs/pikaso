@@ -101,6 +101,8 @@ export class Selection {
       },
       {
         visible: true,
+        centeredScaling: true,
+        rotationSnaps: [0, 90, 180, 270],
         keepRatio: shapes.length > 1,
         rotateEnabled: true,
         enabledAnchors: [
