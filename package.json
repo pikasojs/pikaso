@@ -1,7 +1,7 @@
 {
   "name": "pikaso",
   "version": "1.0.0-beta.7",
-  "description": "seamless and headless library for canvas",
+  "description": "seamless, headless and fully-tested library for canvas",
   "author": "Ramin Mousavi <ramin.mousavy@gmail.com> (http://github.com/raminious)",
   "license": "MIT",
   "scripts": {
