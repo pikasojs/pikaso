@@ -38,7 +38,10 @@ export class Line extends ShapeDrawer {
    * @param config
    */
   protected createShape(config: Konva.LineConfig) {
-    this.shape = new Konva.Line(config)
+    this.shape = new Konva.Line({
+      hitStrokeWidth: 15,
+      ...config
+    })
 
     return this.board.addShape(this.shape)
   }
