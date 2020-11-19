@@ -78,9 +78,6 @@
     "type": "git",
     "url": "git://github.com/pikasojs/pikaso.git"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "main": "dist/lib/pikaso.js",
   "types": "dist/es/index.d.ts",
   "module": "dist/es/src/index.js",
