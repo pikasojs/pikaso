@@ -52,6 +52,20 @@ export class Selection {
   /**
    *
    */
+  public getShapes() {
+    return this.board.selections
+  }
+
+  /**
+   *
+   */
+  public getTransformer() {
+    return this.board.selectionsTransformer
+  }
+
+  /**
+   *
+   */
   public selectBySelector() {}
 
   /**
@@ -65,16 +79,18 @@ export class Selection {
    *
    */
   public deselect(shape: Shape) {
-    const nodes = this.board.selectionsTransformer.nodes().filter(node => {
-      return node !== shape.node
-    })
+    const nodes = this.getTransformer()
+      .nodes()
+      .filter(node => {
+        return node !== shape.node
+      })
 
     if (nodes.length === 0) {
       this.deselectAll()
       return
     }
 
-    this.board.selectionsTransformer.nodes(nodes)
+    this.getTransformer().nodes(nodes)
     this.board.layer.draw()
   }
 
@@ -84,7 +100,7 @@ export class Selection {
   public deselectAll() {
     this.board.updateSelections([])
 
-    this.board.selectionsTransformer.hide()
+    this.getTransformer().hide()
     this.board.layer.draw()
   }
 
@@ -92,6 +108,8 @@ export class Selection {
    *
    */
   public selectShapes(shapes: Shape[]) {
+    this.board.selections = shapes
+
     const attrs: Partial<Konva.TransformerConfig> = shapes.reduce(
       (acc, item) => {
         return {
@@ -118,8 +136,8 @@ export class Selection {
       } as Konva.TransformerConfig
     )
 
-    this.board.selectionsTransformer.moveToTop()
-    this.board.selectionsTransformer
+    this.getTransformer().moveToTop()
+    this.getTransformer()
       .setAttrs(attrs)
       .nodes(shapes.map(shape => shape.node))
 
@@ -131,22 +149,20 @@ export class Selection {
    * @param shape
    */
   public selectShape(shape: Shape) {
-    const isSelected = this.board.selections.some(
-      item => item.node === shape.node
-    )
+    const isSelected = this.getShapes().some(item => item.node === shape.node)
 
     if (isSelected) {
       return
     }
 
-    this.selectShapes([...this.board.selections, shape])
+    this.selectShapes([...this.getShapes(), shape])
   }
 
   /***
    *
    */
   public delete() {
-    const nodes = this.board.selectionsTransformer.nodes()
+    const nodes = this.getTransformer().nodes()
 
     if (nodes.length === 0) {
       return
@@ -163,7 +179,7 @@ export class Selection {
     })
 
     this.board.updateSelections([])
-    this.board.selectionsTransformer.nodes([])
+    this.getTransformer().nodes([])
 
     this.board.layer.batchDraw()
   }
@@ -172,9 +188,11 @@ export class Selection {
    *
    */
   public moveX(value: number) {
-    this.board.selectionsTransformer.nodes().forEach(node => {
-      node.x(node.x() + value)
-    })
+    this.getTransformer()
+      .nodes()
+      .forEach(node => {
+        node.x(node.x() + value)
+      })
 
     this.board.layer.batchDraw()
   }
@@ -183,9 +201,11 @@ export class Selection {
    *
    */
   public moveY(value: number) {
-    this.board.selectionsTransformer.nodes().forEach(node => {
-      node.y(node.y() + value)
-    })
+    this.getTransformer()
+      .nodes()
+      .forEach(node => {
+        node.y(node.y() + value)
+      })
 
     this.board.layer.batchDraw()
   }
@@ -289,10 +309,10 @@ export class Selection {
       key: string
     }
   ) {
-    const nodes = this.board.selectionsTransformer.nodes()
+    const nodes = this.getTransformer().nodes()
 
     if (
-      this.board.selectionsTransformer.getAttr('visible') === false ||
+      this.getTransformer().getAttr('visible') === false ||
       nodes.length === 0
     ) {
       return
