@@ -1,6 +1,5 @@
 import Konva from 'konva'
 
-import { getContainerTransform } from '../utils/get-container-transform'
 import { imageToDataUrl } from '../utils/image-to-url'
 import { createImageFromUrl } from '../utils/create-image-from-url'
 
@@ -171,11 +170,7 @@ export class Board {
    *
    */
   public rescale() {
-    const transform = getContainerTransform(
-      this.container,
-      this.stage,
-      this.getDimensions()
-    )
+    const transform = this.getContainerTransform()
 
     if (this.stage.content.style.transform === transform) {
       return
@@ -344,5 +339,30 @@ export class Board {
     }
 
     this.activeDrawing = mode
+  }
+
+  /**
+   *
+   * @param container
+   * @param stage
+   * @param size
+   */
+  public getContainerTransform() {
+    const size = this.getDimensions()
+
+    let scale =
+      this.container.clientWidth < this.container.clientHeight
+        ? this.stage.width() / size.width
+        : this.stage.height() / size.height
+
+    if (scale * this.stage.width() > this.container.clientWidth) {
+      scale = this.container.clientWidth / this.stage.width()
+    }
+
+    if (scale * this.stage.height() > this.container.clientHeight) {
+      scale = this.container.clientHeight / this.stage.height()
+    }
+
+    return `translate(-50%, -50%) scale(${scale.toFixed(6)})`
   }
 }

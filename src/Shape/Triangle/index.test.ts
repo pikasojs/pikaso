@@ -1,8 +1,8 @@
-import { createInstance } from '../../../jest/create-instance'
+import { createEditor } from '../../../jest/utils/create-editor'
 
 describe('Shapes::Triangle', () => {
-  test('It should insert a triangle', () => {
-    const editor = createInstance()
+  test('it should insert a triangle', () => {
+    const editor = createEditor()
 
     const config = {
       name: 'triangle',

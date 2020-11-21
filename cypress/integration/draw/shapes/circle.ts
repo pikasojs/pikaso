@@ -6,28 +6,6 @@ describe('Shapes -> Circle', () => {
     cy.reload()
   })
 
-  it('should create a circle', () => {
-    cy.getEditor().then(editor => {
-      const config = {
-        name: 'circle',
-        x: 200,
-        y: 200,
-        radius: 150,
-        fill: '#ccc'
-      }
-
-      editor.shapes.circle.insert(config)
-
-      const shapes = editor.board.stage.find(`.${config.name}`)
-
-      expect(shapes.length).equal(1)
-      expect(shapes[0].attrs).to.eql({
-        ...config,
-        draggable: true
-      })
-    })
-  })
-
   it('should draw a circle', () => {
     cy.getEditor().then(editor => {
       editor.shapes.circle.draw({

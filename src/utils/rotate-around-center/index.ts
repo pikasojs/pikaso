@@ -4,7 +4,7 @@ import { convertDegreeToRadian } from '../degree-to-radian'
 import { getRotateCenterPoint } from '../get-center-point'
 
 export function rotateAroundCenter(
-  node: Konva.Shape | Konva.Layer | Konva.Stage,
+  node: Konva.Group | Konva.Shape | Konva.Layer | Konva.Stage,
   theta: number
 ) {
   const base = {

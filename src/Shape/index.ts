@@ -4,6 +4,7 @@ import { Board } from '../Board'
 import { Events } from '../Events'
 import { Flip } from '../Flip'
 import { History } from '../History'
+import { rotateAroundCenter } from '../utils/rotate-around-center'
 
 export class Shape {
   /**
@@ -54,6 +55,15 @@ export class Shape {
    */
   public flipY() {
     this.flip.vertical([this.node])
+  }
+
+  /**
+   * rotates the node around its center without transforming
+   * @param theta - the rotation angle
+   */
+  public rotate(theta: number) {
+    rotateAroundCenter(this.node, theta)
+    this.board.layer.draw()
   }
 
   private registerEvents() {

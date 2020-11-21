@@ -5,6 +5,7 @@ export function convertHtmlToText(html = '') {
   value = value.replace(/&amp;/gi, '&')
 
   value = value.replace(/<br>/gi, '\n')
+  value = value.replace(/<br\/>/gi, '\n')
   value = value.replace(/<div>/gi, '\n')
   value = value.replace(/<p>/gi, '\n')
   value = value.replace(/<(.*?)>/g, '')

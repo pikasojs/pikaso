@@ -39,8 +39,6 @@ export class Rotation {
   /**
    * rotates the image around its center with scaling and transforming
    *
-   * _This comment supports_
-   *
    * Or you can use:
    * ```typescript
    * instance.rotation.transform(30)
@@ -129,7 +127,13 @@ export class Rotation {
    * @param theta - the rotation angle
    */
   public straighten(theta: number) {
-    rotateAroundCenter(this.board.stage, theta)
+    this.board.getBackgroundNodes().forEach((node: Konva.Shape) => {
+      rotateAroundCenter(node, theta)
+    })
+
+    this.board.shapes.forEach(shape => {
+      rotateAroundCenter(shape.node, theta)
+    })
 
     this.board.layer.batchDraw()
   }

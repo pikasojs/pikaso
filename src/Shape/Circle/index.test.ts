@@ -1,8 +1,8 @@
-import { createInstance } from '../../../jest/create-instance'
+import { createEditor } from '../../../jest/utils/create-editor'
 
 describe('Shapes::Circle', () => {
-  test('It should insert a circle', () => {
-    const editor = createInstance()
+  test('it should insert a circle', () => {
+    const editor = createEditor()
 
     const config = {
       name: 'circle',

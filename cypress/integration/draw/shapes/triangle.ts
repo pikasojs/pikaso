@@ -6,29 +6,6 @@ describe('Shapes -> Triangle', () => {
     cy.reload()
   })
 
-  it('should create a triangle', () => {
-    cy.getEditor().then(editor => {
-      const config = {
-        name: 'triangle',
-        x: 200,
-        y: 200,
-        radius: 150,
-        fill: '#ccc'
-      }
-
-      editor.shapes.triangle.insert(config)
-
-      const shapes = editor.board.stage.find(`.${config.name}`)
-
-      expect(shapes.length).equal(1)
-      expect(shapes[0].attrs).to.eql({
-        ...config,
-        sides: 3,
-        draggable: true
-      })
-    })
-  })
-
   it('should draw a triangle', () => {
     cy.getEditor().then(editor => {
       editor.shapes.triangle.draw({

@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 /// <reference path="../../support/index.d.ts" />
 
-describe('Shapes -> Circle', () => {
+describe('Selection', () => {
   beforeEach(() => {
     cy.reload()
   })
