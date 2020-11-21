@@ -102,6 +102,18 @@ describe('Rotation', () => {
       expect(shape.node.rotation()).toBe(10)
     })
   })
+
+  it('should return same result when value is not changed', async () => {
+    const editor = createEditor()
+
+    await editor.loadFromUrl('800x800')
+
+    editor.rotation.transform(10)
+    expect(editor.board.backgroundImage.rotation()).toBe(10)
+
+    editor.rotation.transform(10)
+    expect(editor.board.backgroundImage.rotation()).toBe(10)
+  })
 })
 
 const round = (value: number) => Number(value.toFixed(2))
