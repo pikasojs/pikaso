@@ -69,6 +69,7 @@ export class Label {
     })
 
     return this.board.addShape(label, {
+      centeredScaling: false,
       enabledAnchors: ['middle-left', 'middle-right']
     })
   }
