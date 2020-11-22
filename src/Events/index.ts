@@ -1,3 +1,5 @@
+import type { EventListenerNames } from '../types'
+
 type ListenerCallback = (...args: any) => void
 
 interface EventListeners {
@@ -15,12 +17,19 @@ export class Events {
    * @param eventName
    * @param callback
    */
-  public on(eventName: string, callback: ListenerCallback) {
-    if (!this.listeners[eventName]) {
-      this.listeners[eventName] = []
-    }
+  public on(
+    eventName: EventListenerNames | EventListenerNames[],
+    callback: ListenerCallback
+  ) {
+    const list = Array.isArray(eventName) ? eventName : [eventName]
 
-    this.listeners[eventName].push(callback)
+    list.forEach(name => {
+      if (!this.listeners[name]) {
+        this.listeners[name] = []
+      }
+
+      this.listeners[name].push(callback)
+    })
   }
 
   /**
@@ -28,16 +37,22 @@ export class Events {
    * @param eventName
    * @param callback
    */
-  public off(eventName: string, callback: ListenerCallback) {
-    if (!this.listeners[eventName]) {
-      return
-    }
+  public off(
+    eventName: EventListenerNames | EventListenerNames[],
+    callback: ListenerCallback
+  ) {
+    const list = Array.isArray(eventName) ? eventName : [eventName]
 
-    const index = this.listeners[eventName].indexOf(callback)
+    list.forEach(name => {
+      if (!this.listeners[name]) {
+        return
+      }
 
-    if (index > -1) {
-      this.listeners[name].splice(index, 1)
-    }
+      const index = this.listeners[name].indexOf(callback)
+      if (index > -1) {
+        this.listeners[name].splice(index, 1)
+      }
+    })
   }
 
   /**
@@ -45,7 +60,7 @@ export class Events {
    * @param eventName
    * @param data
    */
-  public emit(eventName: string, data: object) {
+  public emit(eventName: EventListenerNames, data?: object) {
     if (!this.listeners[eventName]) {
       return
     }
