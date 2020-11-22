@@ -41,7 +41,7 @@ export interface ExportOptions {
 
 export interface HistoryState {
   node: Konva.Stage | Konva.Layer | Konva.Shape | Konva.Group
-  current: UnknownObject
+  current: UnknownObject | null
 }
 
 export interface CropOptions extends ExportOptions {
@@ -120,3 +120,11 @@ export interface IDrawableShape {
 export interface IShape {
   insert: (config: Konva.ShapeConfig) => void
 }
+
+export type EventListenerNames =
+  | 'shape:create'
+  | 'shape:move'
+  | 'shape:delete'
+  | 'shape:transform'
+  | 'flip:x'
+  | 'flip:y'
