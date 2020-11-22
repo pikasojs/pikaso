@@ -2,7 +2,7 @@ import Konva from 'konva'
 
 import { omit } from '../utils/omit'
 
-import type { HistoryState } from '../types'
+import type { HistoryState, UnknownObject } from '../types'
 
 export class History {
   /**
@@ -21,6 +21,27 @@ export class History {
 
   /**
    *
+   */
+  public getStep() {
+    return this.step
+  }
+
+  /**
+   *
+   */
+  public getList() {
+    return this.list
+  }
+
+  /**
+   *
+   */
+  public getState() {
+    return this.list[this.step]
+  }
+
+  /**
+   *
    * @param stage
    */
   public create(
@@ -35,7 +56,7 @@ export class History {
     const normalizedStates = states.map(state => {
       return {
         ...state,
-        current: omit(state.current, ['id'])
+        current: state.current ? omit(state.current, ['id']) : null
       }
     })
 
@@ -89,21 +110,42 @@ export class History {
    */
   public reset() {}
 
+  /**
+   *
+   * @param getAttrs
+   */
   private applyAttributes(
     getAttrs: (state: HistoryState) => HistoryState['current']
   ) {
     const { container, states, callback } = this.list[this.step]
 
     states.forEach(({ node, current }, index) => {
-      // update current attributes
-      this.list[this.step].states[index].current = { ...node.attrs }
+      if (current) {
+        // update current attributes
+        this.list[this.step].states[index].current = { ...node.attrs }
 
-      // get attributes
-      const attributes = omit(getAttrs({ node, current }), ['id'])
+        // get attributes
+        const attributes = omit(getAttrs({ node, current }) as UnknownObject, [
+          'id'
+        ])
 
-      Object.entries(attributes).forEach(([key]) => {
-        node.setAttr(key, current[key])
-      })
+        Object.entries(attributes).forEach(([key]) => {
+          node.setAttr(key, current[key])
+        })
+      }
+
+      if (!current && this.isLayer(container) && this.isShape(node)) {
+        const layer = <Konva.Layer>container
+        const shape = <Konva.Group | Konva.Shape>node
+
+        const hasNode = layer.children.toArray().includes(shape)
+
+        if (hasNode) {
+          node.remove()
+        } else {
+          layer.add(shape)
+        }
+      }
     })
 
     // trigger callback function
@@ -111,5 +153,21 @@ export class History {
 
     // redraw
     container.batchDraw()
+  }
+
+  /**
+   *
+   * @param node
+   */
+  private isShape(node: HistoryState['node']) {
+    return ['Group', 'Shape'].includes(node.getType())
+  }
+
+  /**
+   *
+   * @param node
+   */
+  private isLayer(container: Konva.Stage | Konva.Layer) {
+    return container.getType() === 'Layer'
   }
 }
