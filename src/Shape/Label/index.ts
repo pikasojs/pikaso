@@ -58,7 +58,7 @@ export class Label {
     )
 
     label.on('transform', () => {
-      if (this.board.selectionsTransformer.getActiveAnchor() === 'rotater') {
+      if (this.board.selection.transformer.getActiveAnchor() === 'rotater') {
         return
       }
 
@@ -88,7 +88,7 @@ export class Label {
     textNode.hide()
     tagNode.hide()
     labelNode?.draggable(false)
-    this.board.selectionsTransformer.hide()
+    this.board.selection.transformer.hide()
 
     this.board.layer.draw()
 
@@ -138,7 +138,7 @@ export class Label {
       labelNode.width(textNode.width())
       labelNode.draggable(true)
 
-      this.board.selectionsTransformer.show()
+      this.board.selection.transformer.show()
       textNode.show()
       tagNode.show()
 

@@ -207,7 +207,7 @@ export class Cropper {
     })
 
     this.board.backgroundOverlay.hide()
-    this.board.shapes.forEach(shape => {
+    this.board.getShapes().forEach(shape => {
       shape.node.hide()
     })
 
@@ -236,7 +236,7 @@ export class Cropper {
       image: snapshot.image()
     })
 
-    this.board.shapes.forEach(shape => {
+    this.board.getShapes().forEach(shape => {
       const node = shape.node
 
       const center = getRotatedPoint(
@@ -273,6 +273,6 @@ export class Cropper {
     stage.batchDraw()
 
     // emit crop event
-    this.events.emit('crop', { rect })
+    // this.events.emit('crop', { rect })
   }
 }

@@ -1,8 +1,6 @@
 import Konva from 'konva'
 
 import { Board } from '../Board'
-import { Events } from '../Events'
-import { History } from '../History'
 import { Shape } from '../Shape'
 
 import type { Point } from '../types'
@@ -11,17 +9,17 @@ export class Selection {
   /**
    *
    */
+  public list: Array<Shape> = []
+
+  /**
+   *
+   */
+  public transformer: Konva.Transformer
+
+  /**
+   *
+   */
   private board: Board
-
-  /**
-   *
-   */
-  private events: Events
-
-  /**
-   *
-   */
-  private history: History
 
   /**
    *
@@ -33,12 +31,11 @@ export class Selection {
    */
   private startPointerPosition: Point
 
-  constructor(board: Board, events: Events, history: History) {
+  constructor(board: Board) {
     this.board = board
-    this.events = events
-    this.history = history
 
     this.createZone()
+    this.createTransformer()
 
     this.board.stage.on('mousedown touchstart', this.onDragZoneStart.bind(this))
     this.board.stage.on('mousemove touchmove', this.onDragZoneMove.bind(this))
@@ -53,26 +50,110 @@ export class Selection {
    *
    */
   public getShapes() {
-    return this.board.selections
+    return this.list
   }
 
   /**
    *
    */
   public getTransformer() {
-    return this.board.selectionsTransformer
+    return this.transformer
   }
 
   /**
    *
    */
-  public selectBySelector() {}
+  public find(selector: (shape: Shape) => boolean) {
+    const list = this.board.getShapes().filter(shape => {
+      return selector(shape)
+    })
+
+    this.multiSelect(list)
+  }
 
   /**
    *
    */
   public selectAll() {
-    this.selectShapes(this.board.shapes)
+    this.multiSelect(this.board.getShapes())
+  }
+
+  /**
+   *
+   */
+  public deselectAll() {
+    this.update([])
+
+    this.transformer.hide()
+    this.board.layer.draw()
+  }
+
+  /**
+   *
+   * @param shapes
+   */
+  public update(shapes: Shape[]) {
+    this.list = shapes
+  }
+
+  /**
+   *
+   * @param shape
+   */
+  public add(shape: Shape) {
+    this.list = [...this.list, shape]
+  }
+
+  /**
+   *
+   */
+  public multiSelect(shapes: Shape[]) {
+    this.list = shapes
+
+    const attrs: Partial<Konva.TransformerConfig> = shapes.reduce(
+      (acc, item) => {
+        return {
+          ...acc,
+          ...item.transformerConfig
+        }
+      },
+      {
+        visible: true,
+        centeredScaling: true,
+        rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
+        keepRatio: shapes.length > 1,
+        rotateEnabled: true,
+        enabledAnchors: [
+          'top-left',
+          'top-right',
+          'bottom-left',
+          'bottom-right',
+          'top-center',
+          'bottom-center',
+          'middle-left',
+          'middle-right'
+        ]
+      } as Konva.TransformerConfig
+    )
+
+    this.transformer.moveToTop()
+    this.transformer.setAttrs(attrs).nodes(shapes.map(shape => shape.node))
+
+    this.board.layer.draw()
+  }
+
+  /**
+   *
+   * @param shape
+   */
+  public select(shape: Shape) {
+    const isSelected = this.list.some(item => item.node === shape.node)
+
+    if (isSelected) {
+      return
+    }
+
+    this.multiSelect([...this.list, shape])
   }
 
   /**
@@ -90,79 +171,15 @@ export class Selection {
       return
     }
 
-    this.getTransformer().nodes(nodes)
+    this.transformer.nodes(nodes)
     this.board.layer.draw()
-  }
-
-  /**
-   *
-   */
-  public deselectAll() {
-    this.board.updateSelections([])
-
-    this.getTransformer().hide()
-    this.board.layer.draw()
-  }
-
-  /**
-   *
-   */
-  public selectShapes(shapes: Shape[]) {
-    this.board.selections = shapes
-
-    const attrs: Partial<Konva.TransformerConfig> = shapes.reduce(
-      (acc, item) => {
-        return {
-          ...acc,
-          ...item.transformerConfig
-        }
-      },
-      {
-        visible: true,
-        centeredScaling: true,
-        rotationSnaps: [0, 90, 180, 270],
-        keepRatio: shapes.length > 1,
-        rotateEnabled: true,
-        enabledAnchors: [
-          'top-left',
-          'top-right',
-          'bottom-left',
-          'bottom-right',
-          'top-center',
-          'bottom-center',
-          'middle-left',
-          'middle-right'
-        ]
-      } as Konva.TransformerConfig
-    )
-
-    this.getTransformer().moveToTop()
-    this.getTransformer()
-      .setAttrs(attrs)
-      .nodes(shapes.map(shape => shape.node))
-
-    this.board.layer.draw()
-  }
-
-  /**
-   *
-   * @param shape
-   */
-  public selectShape(shape: Shape) {
-    const isSelected = this.getShapes().some(item => item.node === shape.node)
-
-    if (isSelected) {
-      return
-    }
-
-    this.selectShapes([...this.getShapes(), shape])
   }
 
   /***
    *
    */
   public delete() {
-    const nodes = this.getTransformer().nodes()
+    const nodes = this.transformer.nodes()
 
     if (nodes.length === 0) {
       return
@@ -170,16 +187,18 @@ export class Selection {
 
     this.board.stage.getContent().style.cursor = 'inherit'
 
-    this.board.shapes = this.board.shapes.filter(shape => {
+    const shapes = this.board.getShapes().filter(shape => {
       return nodes.some(node => node === shape.node) === false
     })
+
+    this.board.setShapes(shapes)
 
     nodes.forEach(shape => {
       shape.destroy()
     })
 
-    this.board.updateSelections([])
-    this.getTransformer().nodes([])
+    this.update([])
+    this.transformer.nodes([])
 
     this.board.layer.batchDraw()
   }
@@ -188,11 +207,9 @@ export class Selection {
    *
    */
   public moveX(value: number) {
-    this.getTransformer()
-      .nodes()
-      .forEach(node => {
-        node.x(node.x() + value)
-      })
+    this.transformer.nodes().forEach(node => {
+      node.x(node.x() + value)
+    })
 
     this.board.layer.batchDraw()
   }
@@ -201,11 +218,9 @@ export class Selection {
    *
    */
   public moveY(value: number) {
-    this.getTransformer()
-      .nodes()
-      .forEach(node => {
-        node.y(node.y() + value)
-      })
+    this.transformer.nodes().forEach(node => {
+      node.y(node.y() + value)
+    })
 
     this.board.layer.batchDraw()
   }
@@ -226,21 +241,34 @@ export class Selection {
 
   /**
    *
+   */
+  private createTransformer() {
+    this.transformer = new Konva.Transformer()
+
+    this.board.layer.add(this.transformer)
+    this.board.layer.draw()
+  }
+
+  /**
+   *
    * @param e
    */
   private onDragZoneStart(e: Konva.KonvaEventObject<MouseEvent>) {
-    const shape = this.board.shapes.find(
-      shape => shape.node === this.getParentNode(e.target)
-    )
+    const shape = this.board
+      .getShapes()
+      .find(shape => shape.node === this.getParentNode(e.target))
 
     if (shape) {
-      this.selectShape(shape)
+      this.select(shape)
       this.board.setActiveDrawing(null)
 
       return
     }
 
-    if (this.board.activeDrawing || this.isBackgroundNode(e.target) === false) {
+    if (
+      this.board.activeDrawing !== null ||
+      this.isBackgroundNode(e.target) === false
+    ) {
       return
     }
 
@@ -292,12 +320,14 @@ export class Selection {
 
     const box = this.zone.getClientRect()
 
-    const shapes = this.board.shapes.filter(shape =>
-      Konva.Util.haveIntersection(box, shape.node.getClientRect())
-    )
+    const shapes = this.board
+      .getShapes()
+      .filter(shape =>
+        Konva.Util.haveIntersection(box, shape.node.getClientRect())
+      )
 
-    this.board.updateSelections(shapes)
-    this.selectShapes(shapes)
+    this.update(shapes)
+    this.multiSelect(shapes)
   }
 
   /**
@@ -309,12 +339,9 @@ export class Selection {
       key: string
     }
   ) {
-    const nodes = this.getTransformer().nodes()
+    const nodes = this.transformer.nodes()
 
-    if (
-      this.getTransformer().getAttr('visible') === false ||
-      nodes.length === 0
-    ) {
+    if (this.transformer.getAttr('visible') === false || nodes.length === 0) {
       return
     }
 

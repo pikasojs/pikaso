@@ -20,8 +20,8 @@ export class Flip {
    */
   private readonly events: Events
 
-  constructor(canvas: Board, events: Events, history: History) {
-    this.board = canvas
+  constructor(board: Board, events: Events, history: History) {
+    this.board = board
     this.events = events
     this.history = history
   }
@@ -42,7 +42,9 @@ export class Flip {
     })
 
     this.board.layer.batchDraw()
-    this.events.emit('flipX', {})
+    this.events.emit('flip:x', {
+      nodes: list
+    })
   }
 
   /**
@@ -61,7 +63,9 @@ export class Flip {
     })
 
     this.board.layer.batchDraw()
-    this.events.emit('flipY', {})
+    this.events.emit('flip:y', {
+      nodes: list
+    })
   }
 
   /**

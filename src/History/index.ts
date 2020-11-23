@@ -2,7 +2,7 @@ import Konva from 'konva'
 
 import { omit } from '../utils/omit'
 
-import type { HistoryState, UnknownObject } from '../types'
+import type { HistoryState, UnknownObject, HistoryHooks } from '../types'
 
 export class History {
   /**
@@ -11,7 +11,7 @@ export class History {
   private list: Array<{
     container: Konva.Stage | Konva.Layer
     states: HistoryState[]
-    callback: (states: HistoryState[]) => void
+    hooks?: HistoryHooks
   }> = []
 
   /**
@@ -47,7 +47,7 @@ export class History {
   public create(
     container: Konva.Stage | Konva.Layer,
     state: HistoryState | HistoryState[],
-    callback?: (states: HistoryState[] | undefined) => void
+    hooks?: HistoryHooks
   ) {
     this.step += 1
 
@@ -56,7 +56,7 @@ export class History {
     const normalizedStates = states.map(state => {
       return {
         ...state,
-        current: state.current ? omit(state.current, ['id']) : null
+        current: omit(state.current, ['id'])
       }
     })
 
@@ -65,7 +65,7 @@ export class History {
       {
         container,
         states: normalizedStates,
-        callback: callback || (() => {})
+        hooks
       }
     ]
   }
@@ -77,7 +77,7 @@ export class History {
   public getNodeState(node: HistoryState['node']): HistoryState {
     return {
       node,
-      current: { ...node.attrs }
+      current: Object.assign({}, node.attrs)
     }
   }
 
@@ -90,6 +90,8 @@ export class History {
     }
 
     this.applyAttributes(state => state.node.attrs)
+    this.list[this.step].hooks?.undo?.(this.list[this.step].states)
+
     this.step -= 1
   }
 
@@ -103,6 +105,8 @@ export class History {
 
     this.step += 1
     this.applyAttributes(state => state.current)
+
+    this.list[this.step].hooks?.redo?.(this.list[this.step].states)
   }
 
   /**
@@ -117,39 +121,24 @@ export class History {
   private applyAttributes(
     getAttrs: (state: HistoryState) => HistoryState['current']
   ) {
-    const { container, states, callback } = this.list[this.step]
+    const { container, states, hooks } = this.list[this.step]
 
     states.forEach(({ node, current }, index) => {
-      if (current) {
-        // update current attributes
-        this.list[this.step].states[index].current = { ...node.attrs }
+      // update current attributes
+      this.list[this.step].states[index].current = { ...node.attrs }
 
-        // get attributes
-        const attributes = omit(getAttrs({ node, current }) as UnknownObject, [
-          'id'
-        ])
+      // get attributes
+      const attributes = omit(getAttrs({ node, current }) as UnknownObject, [
+        'id'
+      ])
 
-        Object.entries(attributes).forEach(([key]) => {
-          node.setAttr(key, current[key])
-        })
-      }
-
-      if (!current && this.isLayer(container) && this.isShape(node)) {
-        const layer = <Konva.Layer>container
-        const shape = <Konva.Group | Konva.Shape>node
-
-        const hasNode = layer.children.toArray().includes(shape)
-
-        if (hasNode) {
-          node.remove()
-        } else {
-          layer.add(shape)
-        }
-      }
+      Object.entries(attributes).forEach(([key]) => {
+        node.setAttr(key, current[key])
+      })
     })
 
     // trigger callback function
-    callback(states)
+    hooks?.execute?.(states)
 
     // redraw
     container.batchDraw()

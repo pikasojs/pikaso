@@ -5,10 +5,12 @@ import { createImageFromUrl } from '../utils/create-image-from-url'
 
 import { History } from '../History'
 import { Events } from '../Events'
+import { Selection } from '../Selection'
 
 import { Shape } from '../Shape'
 
 import type { Settings, DrawType } from '../types'
+import { Flip } from '../Flip'
 
 export class Board {
   /**
@@ -44,22 +46,17 @@ export class Board {
   /**
    *
    */
-  public shapes: Array<Shape> = []
-
-  /**
-   *
-   */
-  public selections: Array<Shape> = []
-
-  /**
-   *
-   */
-  public selectionsTransformer: Konva.Transformer
+  public readonly selection: Selection
 
   /**
    *
    */
   public activeDrawing: DrawType | null = null
+
+  /**
+   *
+   */
+  private shapes: Array<Shape> = []
 
   /**
    *
@@ -70,6 +67,11 @@ export class Board {
    *
    */
   private readonly events: Events
+
+  /**
+   *
+   */
+  private readonly flip: Flip
 
   constructor(settings: Settings, events: Events, history: History) {
     this.settings = settings
@@ -111,13 +113,11 @@ export class Board {
 
     this.backgroundImage = new Konva.Image()
     this.backgroundOverlay = new Konva.Rect()
-    this.selectionsTransformer = new Konva.Transformer()
 
-    this.layer.add(
-      this.backgroundImage,
-      this.backgroundOverlay,
-      this.selectionsTransformer
-    )
+    this.layer.add(this.backgroundImage, this.backgroundOverlay)
+
+    this.selection = new Selection(this)
+    this.flip = new Flip(this, events, history)
 
     this.container = this.settings.container
   }
@@ -161,9 +161,24 @@ export class Board {
    *
    */
   public getNodes() {
-    return this.shapes
-      .map(shape => shape.node)
-      .concat(...this.getBackgroundNodes())
+    return [
+      ...this.getBackgroundNodes(),
+      ...this.getShapes().map(shape => shape.node)
+    ]
+  }
+
+  /**
+   *
+   */
+  public getShapes() {
+    return this.shapes.filter(shape => !shape.isDeleted)
+  }
+
+  /**
+   *
+   */
+  public setShapes(shapes: Shape[]) {
+    this.shapes = shapes
   }
 
   /**
@@ -252,17 +267,7 @@ export class Board {
       return
     }
 
-    this.history.create(
-      this.layer,
-      this.history.getNodeState(this.backgroundImage)
-    )
-
-    this.backgroundImage.scaleX(this.backgroundImage.scaleX() * -1)
-    this.backgroundImage.x(
-      this.backgroundImage.scaleX() < 0 ? this.backgroundImage.width() : 0
-    )
-
-    this.layer.draw()
+    this.flip.horizontal([this.backgroundImage])
   }
 
   /**
@@ -273,17 +278,7 @@ export class Board {
       return
     }
 
-    this.history.create(
-      this.layer,
-      this.history.getNodeState(this.backgroundImage)
-    )
-
-    this.backgroundImage.scaleY(this.backgroundImage.scaleY() * -1)
-    this.backgroundImage.y(
-      this.backgroundImage.scaleY() < 0 ? this.backgroundImage.height() : 0
-    )
-
-    this.layer.draw()
+    this.flip.vertical([this.backgroundImage])
   }
 
   /**
@@ -310,23 +305,12 @@ export class Board {
     this.layer.add(node)
     this.layer.draw()
 
+    this.history.create(this.layer, [], {
+      undo: () => shape.delete(),
+      redo: () => shape.undelete()
+    })
+
     return shape
-  }
-
-  /**
-   *
-   * @param shapes
-   */
-  public updateSelections(shapes: Shape[]) {
-    this.selections = shapes
-  }
-
-  /**
-   *
-   * @param shape
-   */
-  public addSelection(shape: Shape) {
-    this.selections = [...this.selections, shape]
   }
 
   /**
@@ -334,7 +318,7 @@ export class Board {
    */
   public setActiveDrawing(mode: DrawType | null) {
     if (mode) {
-      this.selectionsTransformer.hide()
+      this.selection.transformer.hide()
       this.layer.draw()
     }
 
@@ -364,5 +348,12 @@ export class Board {
     }
 
     return `translate(-50%, -50%) scale(${scale.toFixed(6)})`
+  }
+
+  /**
+   *
+   */
+  public gc() {
+    this.shapes.forEach(shape => shape.gc())
   }
 }

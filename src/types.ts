@@ -41,7 +41,15 @@ export interface ExportOptions {
 
 export interface HistoryState {
   node: Konva.Stage | Konva.Layer | Konva.Shape | Konva.Group
-  current: UnknownObject | null
+  current: UnknownObject
+}
+
+export type HistoryHookFunction = (states: HistoryState[] | undefined) => void
+
+export interface HistoryHooks {
+  undo?: HistoryHookFunction
+  redo?: HistoryHookFunction
+  execute?: HistoryHookFunction
 }
 
 export interface CropOptions extends ExportOptions {

@@ -13,7 +13,7 @@ describe('Shapes -> Triangle', () => {
       })
 
       cy.draw([300, 300], [400, 400]).then(() => {
-        expect(editor.board.shapes.length).equal(1)
+        expect(editor.board.getShapes().length).equal(1)
       })
     })
   })
@@ -33,10 +33,10 @@ describe('Shapes -> Triangle', () => {
           clientY: 200
         })
         .then(() => {
-          expect(editor.board.selectionsTransformer.attrs.visible).equal(true)
+          expect(editor.board.selection.transformer.attrs.visible).equal(true)
 
           expect(
-            editor.board.selectionsTransformer.nodes().indexOf(triangle.node)
+            editor.board.selection.transformer.nodes().indexOf(triangle.node)
           ).equal(0)
         })
     })

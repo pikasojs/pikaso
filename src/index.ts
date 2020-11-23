@@ -88,12 +88,13 @@ export default class Pikaso {
     const events = new Events()
     const board = new Board(settings, events, history)
 
+    this.selection = board.selection
+
     this.export = new Export(board)
     this.rotation = new Rotation(board, events, history)
     this.cropper = new Cropper(board, events, history)
     this.flip = new Flip(board, events, history)
     this.pencil = new Pencil(board, events, history)
-    this.selection = new Selection(board, events, history)
 
     this.shapes = {
       line: new Line(board, events, history),

@@ -11,6 +11,7 @@ jobs:
       with:
         node-version: 14
     - run: npm install
+    - run: npm run typecheck
     - run: npm test
     - run: npm run build
     - uses: JS-DevTools/npm-publish@v1

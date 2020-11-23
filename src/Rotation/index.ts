@@ -25,11 +25,6 @@ export class Rotation {
    */
   private events: Events
 
-  /**
-   *
-   */
-  private rotation: number = 0
-
   constructor(board: Board, events: Events, history: History) {
     this.board = board
     this.events = events
@@ -46,16 +41,13 @@ export class Rotation {
    * @param theta - the rotation angle
    */
   public transform(theta: number) {
-    this.history.create(
-      this.board.stage,
-      this.history.getNodeState(this.board.stage)
-    )
-
-    if (this.rotation === theta) {
-      return
-    }
-
-    this.rotation = theta
+    this.history.create(this.board.stage, [
+      this.history.getNodeState(this.board.stage),
+      ...this.board.getBackgroundNodes().map(this.history.getNodeState),
+      ...this.board
+        .getShapes()
+        .map(shape => this.history.getNodeState(shape.node))
+    ])
 
     const radian = convertDegreeToRadian(theta)
 
@@ -97,7 +89,11 @@ export class Rotation {
         .y(stageHeight / 2 - center.y)
     })
 
-    this.board.shapes.forEach(shape => {
+    this.board.getShapes().forEach(shape => {
+      if (shape.node.rotation() === theta) {
+        return
+      }
+
       const center = getRotatedPoint(
         {
           x: shape.node.x(),
@@ -119,7 +115,7 @@ export class Rotation {
 
     this.board.layer.batchDraw()
 
-    this.events.emit('rotation:transformed', {})
+    // this.events.emit('rotation:transformed', {})
   }
 
   /**
@@ -131,7 +127,7 @@ export class Rotation {
       rotateAroundCenter(node, theta)
     })
 
-    this.board.shapes.forEach(shape => {
+    this.board.getShapes().forEach(shape => {
       rotateAroundCenter(shape.node, theta)
     })
 
