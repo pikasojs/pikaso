@@ -116,7 +116,7 @@ export class Board {
 
     this.layer.add(this.backgroundImage, this.backgroundOverlay)
 
-    this.selection = new Selection(this)
+    this.selection = new Selection(this, events, history)
     this.flip = new Flip(this, events, history)
 
     this.container = this.settings.container

@@ -1,6 +1,8 @@
 import Konva from 'konva'
 
 import { Board } from '../Board'
+import { Events } from '../Events'
+import { History } from '../History'
 import { Shape } from '../Shape'
 
 import type { Point } from '../types'
@@ -24,6 +26,16 @@ export class Selection {
   /**
    *
    */
+  private readonly history: History
+
+  /**
+   *
+   */
+  private readonly events: Events
+
+  /**
+   *
+   */
   private zone: Konva.Rect
 
   /**
@@ -31,8 +43,10 @@ export class Selection {
    */
   private startPointerPosition: Point
 
-  constructor(board: Board) {
+  constructor(board: Board, events: Events, history: History) {
     this.board = board
+    this.events = events
+    this.history = history
 
     this.createZone()
     this.createTransformer()
@@ -49,8 +63,15 @@ export class Selection {
   /**
    *
    */
-  public getShapes() {
+  public get shapes() {
     return this.list
+  }
+
+  /**
+   *
+   */
+  public get isVisible() {
+    return this.transformer.nodes().length > 0
   }
 
   /**
@@ -179,26 +200,21 @@ export class Selection {
    *
    */
   public delete() {
-    const nodes = this.transformer.nodes()
+    const shapes = this.list
 
-    if (nodes.length === 0) {
+    if (shapes.length === 0) {
       return
     }
 
+    this.history.create(this.board.layer, [], {
+      undo: () => shapes.forEach(shape => shape.undelete()),
+      redo: () => shapes.forEach(shape => shape.delete())
+    })
+
     this.board.stage.getContent().style.cursor = 'inherit'
-
-    const shapes = this.board.getShapes().filter(shape => {
-      return nodes.some(node => node === shape.node) === false
-    })
-
-    this.board.setShapes(shapes)
-
-    nodes.forEach(shape => {
-      shape.destroy()
-    })
-
-    this.update([])
     this.transformer.nodes([])
+
+    shapes.forEach(shape => shape.delete())
 
     this.board.layer.batchDraw()
   }
@@ -208,7 +224,9 @@ export class Selection {
    */
   public moveX(value: number) {
     this.transformer.nodes().forEach(node => {
-      node.x(node.x() + value)
+      node.to({
+        x: node.x() + value
+      })
     })
 
     this.board.layer.batchDraw()
@@ -219,7 +237,9 @@ export class Selection {
    */
   public moveY(value: number) {
     this.transformer.nodes().forEach(node => {
-      node.y(node.y() + value)
+      node.to({
+        y: node.y() + value
+      })
     })
 
     this.board.layer.batchDraw()
