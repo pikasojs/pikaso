@@ -2,7 +2,7 @@ import Konva from 'konva'
 
 import { omit } from '../utils/omit'
 
-import type { HistoryState, UnknownObject, HistoryHooks } from '../types'
+import type { HistoryNode, HistoryHooks, HistoryState } from '../types'
 
 export class History {
   /**
@@ -42,29 +42,20 @@ export class History {
 
   /**
    *
-   * @param stage
    */
   public create(
     container: Konva.Stage | Konva.Layer,
-    state: HistoryState | HistoryState[],
+    node: HistoryNode | HistoryNode[],
     hooks?: HistoryHooks
   ) {
+    const nodes = Array.isArray(node) ? node : [node]
+
     this.step += 1
-
-    const states = Array.isArray(state) ? state : [state]
-
-    const normalizedStates = states.map(state => {
-      return {
-        ...state,
-        current: omit(state.current, ['id'])
-      }
-    })
-
     this.list = [
       ...this.list.slice(0, this.step),
       {
         container,
-        states: normalizedStates,
+        states: nodes.map(node => this.getNodeSnapshot(node)),
         hooks
       }
     ]
@@ -74,10 +65,19 @@ export class History {
    *
    * @param node
    */
-  public getNodeState(node: HistoryState['node']): HistoryState {
+  public getNodeSnapshot(node: HistoryNode): HistoryState {
+    const snapshot = <HistoryNode>node.clone({})
+
+    if (node.getType() === 'Group') {
+      return {
+        nodes: this.getNodesTree(node),
+        snapshots: this.getNodesTree(snapshot)
+      }
+    }
+
     return {
-      node,
-      current: Object.assign({}, node.attrs)
+      nodes: [node],
+      snapshots: [snapshot]
     }
   }
 
@@ -89,7 +89,7 @@ export class History {
       return
     }
 
-    this.applyAttributes(state => state.node.attrs)
+    this.applyAttributes(state => state)
     this.list[this.step].hooks?.undo?.(this.list[this.step].states)
 
     this.step -= 1
@@ -104,7 +104,11 @@ export class History {
     }
 
     this.step += 1
-    this.applyAttributes(state => state.current)
+
+    this.applyAttributes((state: HistoryState) => ({
+      nodes: state.snapshots,
+      snapshots: state.nodes
+    }))
 
     this.list[this.step].hooks?.redo?.(this.list[this.step].states)
   }
@@ -118,45 +122,64 @@ export class History {
    *
    * @param getAttrs
    */
-  private applyAttributes(
-    getAttrs: (state: HistoryState) => HistoryState['current']
-  ) {
+  private applyAttributes(getState: (state: HistoryState) => HistoryState) {
     const { container, states, hooks } = this.list[this.step]
 
-    states.forEach(({ node, current }, index) => {
-      // update current attributes
-      this.list[this.step].states[index].current = { ...node.attrs }
+    states.forEach(state => {
+      const { nodes, snapshots } = getState(state)
 
-      // get attributes
-      const attributes = omit(getAttrs({ node, current }) as UnknownObject, [
-        'id'
-      ])
+      nodes.forEach((node, index) => {
+        const attributes = this.getNodeAttributes(node)
 
-      Object.entries(attributes).forEach(([key]) => {
-        node.setAttr(key, current[key])
+        Object.entries(attributes).forEach(([key, value]) => {
+          node.setAttr(key, snapshots[index].getAttr(key))
+          snapshots[index].setAttr(key, value)
+        })
       })
     })
 
     // trigger callback function
     hooks?.execute?.(states)
 
-    // redraw
     container.batchDraw()
   }
 
   /**
    *
-   * @param node
+   *
    */
-  private isShape(node: HistoryState['node']) {
-    return ['Group', 'Shape'].includes(node.getType())
+  private getNodesTree(node: HistoryNode | HistoryNode[]): HistoryNode[] {
+    if (node) {
+      const list = Array.isArray(node) ? node : [node]
+      return list.reduce(
+        (acc, item) => [
+          ...acc,
+          item,
+          ...this.getNodesTree(item.children.toArray())
+        ],
+        []
+      )
+    }
+
+    return []
   }
 
   /**
    *
    * @param node
    */
-  private isLayer(container: Konva.Stage | Konva.Layer) {
-    return container.getType() === 'Layer'
+  private getNodeAttributes(node: HistoryNode) {
+    return omit(
+      {
+        x: node.x(),
+        y: node.y(),
+        scaleX: node.scaleX(),
+        scaleY: node.scaleY(),
+        width: node.width(),
+        height: node.height(),
+        ...node.attrs
+      },
+      ['id', 'listening']
+    )
   }
 }

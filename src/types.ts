@@ -9,6 +9,7 @@ import type { Circle } from './Shape/Circle'
 import type { Ellipse } from './Shape/Ellipse'
 import type { Polygon } from './Shape/Polygon'
 import type { Triangle } from './Shape/Triangle'
+import { History } from './History'
 
 export type Nullable<T> = T | null
 
@@ -39,12 +40,12 @@ export interface ExportOptions {
   pixelRatio?: number
 }
 
+export type HistoryNode = Konva.Stage | Konva.Layer | Konva.Shape | Konva.Group
+export type HistoryHookFunction = (states: HistoryState[]) => void
 export interface HistoryState {
-  node: Konva.Stage | Konva.Layer | Konva.Shape | Konva.Group
-  current: UnknownObject
+  nodes: HistoryNode[]
+  snapshots: HistoryNode[]
 }
-
-export type HistoryHookFunction = (states: HistoryState[] | undefined) => void
 
 export interface HistoryHooks {
   undo?: HistoryHookFunction

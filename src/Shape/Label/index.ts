@@ -22,6 +22,21 @@ export class Label {
    */
   private readonly history: History
 
+  /**
+   *
+   */
+  private label: Konva.Label
+
+  /**
+   *
+   */
+  private text: Konva.Text
+
+  /**
+   *
+   */
+  private tag: Konva.Tag
+
   constructor(board: Board, events: Events, history: History) {
     this.board = board
     this.events = events
@@ -32,17 +47,17 @@ export class Label {
    *
    */
   public async insert(config: Partial<Konva.LabelConfig> = {}) {
-    const label = new Konva.Label({
+    this.label = new Konva.Label({
       ...config,
       draggable: true
     })
 
-    const tag = new Konva.Tag({
+    this.tag = new Konva.Tag({
       fill: 'rgba(255, 99, 71, 0.95)',
       cornerRadius: 5
     })
 
-    const text = new Konva.Text({
+    this.text = new Konva.Text({
       text: 'Hello',
       fontFamily: 'Arial',
       fontSize: 60,
@@ -51,24 +66,24 @@ export class Label {
       align: 'left'
     })
 
-    label.add(tag).add(text)
+    this.label.add(this.tag).add(this.text)
 
-    label.on('dblclick', (e: Konva.KonvaEventObject<MouseEvent>) =>
-      this.inlineEdit(e, label, text, tag)
+    this.label.on('dblclick', (e: Konva.KonvaEventObject<MouseEvent>) =>
+      this.inlineEdit(e)
     )
 
-    label.on('transform', () => {
+    this.label.on('transform', () => {
       if (this.board.selection.transformer.getActiveAnchor() === 'rotater') {
         return
       }
 
-      text.setAttrs({
-        width: label.width() * label.scaleX(),
-        scaleX: label.scaleY()
+      this.text.setAttrs({
+        width: this.label.width() * this.label.scaleX(),
+        scaleX: this.label.scaleY()
       })
     })
 
-    return this.board.addShape(label, {
+    return this.board.addShape(this.label, {
       centeredScaling: false,
       enabledAnchors: ['middle-left', 'middle-right']
     })
@@ -76,18 +91,30 @@ export class Label {
 
   /**
    *
+   * @param value
    */
-  private inlineEdit(
-    e: Konva.KonvaEventObject<MouseEvent>,
-    labelNode: Konva.Label,
-    textNode: Konva.Text,
-    tagNode: Konva.Tag
-  ) {
-    const position = e.target.absolutePosition()
+  public updateText(value: string) {
+    this.text.setAttrs({
+      text: value
+    })
 
-    textNode.hide()
-    tagNode.hide()
-    labelNode?.draggable(false)
+    this.label.setAttrs({
+      width: this.text.width()
+    })
+
+    this.board.layer.draw()
+  }
+
+  /**
+   *
+   */
+  private inlineEdit(e: Konva.KonvaEventObject<MouseEvent>) {
+    const position = e.target.absolutePosition()
+    const textBeforeEdit = this.text.getAttr('text')
+
+    this.text.hide()
+    this.tag.hide()
+    this.label?.draggable(false)
     this.board.selection.transformer.hide()
 
     this.board.layer.draw()
@@ -99,32 +126,32 @@ export class Label {
 
     input.setAttribute('contenteditable', '')
     input.setAttribute('role', 'textbox')
-    input.innerText = textNode.text()
+    input.innerText = this.text.getAttr('text')
 
     Object.assign(input.style, {
       position: 'absolute',
       display: 'inline-block',
-      left: `${position.x - textNode.padding()}px`,
-      top: `${position.y - textNode.padding()}px`,
-      width: `${textNode.width() * labelNode.scaleX()}px`,
-      minWidth: `${textNode.padding() * 2}px`,
-      maxWidth: `${textNode.width() * labelNode.scaleX()}px`,
-      minHeight: `${textNode.height() * labelNode.scaleY()}px`,
-      fontSize: `${textNode.fontSize() * labelNode.scaleY()}px`,
+      left: `${position.x - this.text.padding()}px`,
+      top: `${position.y - this.text.padding()}px`,
+      width: `${this.text.width() * this.label.scaleX()}px`,
+      minWidth: `${this.text.padding() * 2}px`,
+      maxWidth: `${this.text.width() * this.label.scaleX()}px`,
+      minHeight: `${this.text.height() * this.label.scaleY()}px`,
+      fontSize: `${this.text.fontSize() * this.label.scaleY()}px`,
       border: 'none',
-      padding: `${textNode.padding()}px`,
-      margin: `${textNode.padding()}px`,
+      padding: `${this.text.padding()}px`,
+      margin: `${this.text.padding()}px`,
       overflow: 'hidden',
-      background: tagNode.fill(),
-      borderRadius: `${tagNode.cornerRadius()}px`,
+      background: this.tag.fill(),
+      borderRadius: `${this.tag.cornerRadius()}px`,
       outline: 'none',
       resize: 'none',
-      lineHeight: textNode.lineHeight(),
-      fontFamily: textNode.fontFamily(),
+      lineHeight: this.text.lineHeight(),
+      fontFamily: this.text.fontFamily(),
       transformOrigin: 'left top',
-      textAlign: textNode.align(),
-      color: textNode.fill(),
-      transform: `${input.style.transform} rotateZ(${labelNode.rotation()}deg)`
+      textAlign: this.text.align(),
+      color: this.text.fill(),
+      transform: `${input.style.transform} rotateZ(${this.label.rotation()}deg)`
     })
 
     /**
@@ -134,15 +161,21 @@ export class Label {
       input.parentNode?.removeChild(input)
 
       const text = convertHtmlToText((<HTMLSpanElement>e.target).innerHTML)
-      textNode.text(text)
-      labelNode.width(textNode.width())
-      labelNode.draggable(true)
 
+      if (text !== textBeforeEdit) {
+        this.history.create(this.board.layer, [], {
+          undo: () => this.updateText(textBeforeEdit),
+          redo: () => this.updateText(text)
+        })
+      }
+
+      this.updateText(text)
+      this.label.draggable(true)
+
+      this.text.show()
+      this.tag.show()
       this.board.selection.transformer.show()
-      textNode.show()
-      tagNode.show()
-
-      this.board.layer.draw()
+      this.board.layer.batchDraw()
     })
   }
 

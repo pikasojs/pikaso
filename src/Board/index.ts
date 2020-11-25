@@ -211,11 +211,7 @@ export class Board {
   public async setBackgroundImageFromUrl(url: string) {
     this.history.create(
       this.layer,
-      [
-        this.history.getNodeState(this.stage),
-        this.history.getNodeState(this.backgroundImage),
-        this.history.getNodeState(this.backgroundOverlay)
-      ],
+      [this.stage, this.backgroundImage, this.backgroundOverlay],
       this.rescale.bind(this)
     )
 
@@ -245,10 +241,7 @@ export class Board {
    * @param color
    */
   public fill(color: string) {
-    this.history.create(
-      this.layer,
-      this.history.getNodeState(this.backgroundOverlay)
-    )
+    this.history.create(this.layer, this.backgroundOverlay)
 
     this.backgroundOverlay.setAttrs({
       width: this.stage.width(),

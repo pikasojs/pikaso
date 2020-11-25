@@ -179,10 +179,8 @@ export class Cropper {
     }
 
     this.history.create(this.board.stage, [
-      this.history.getNodeState(this.board.stage),
-      ...this.board.layer.children
-        .toArray()
-        .map(shape => this.history.getNodeState(shape))
+      this.board.stage,
+      ...this.board.layer.children.toArray().map(node => node)
     ])
 
     this.stop()

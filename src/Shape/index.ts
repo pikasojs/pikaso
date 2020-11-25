@@ -46,11 +46,13 @@ export class Shape {
     this.transformerConfig = transformerConfig
 
     node.addEventListener('transformstart', () => {
-      history.create(board.layer, this.getCurrentState())
+      history.create(board.layer, node, {
+        execute: () => this.board.selection.transformer.forceUpdate()
+      })
     })
 
     node.addEventListener('dragstart', () => {
-      history.create(board.layer, this.getCurrentState())
+      history.create(board.layer, node)
     })
 
     this.registerEvents()
@@ -149,23 +151,6 @@ export class Shape {
   public rotate(theta: number) {
     rotateAroundCenter(this.node, theta)
     this.board.layer.draw()
-  }
-
-  /**
-   *
-   */
-  private getCurrentState() {
-    return [this.node, ...this.node.children].map(node => ({
-      node,
-      current: {
-        rotation: node.rotation(),
-        scaleX: node.scaleX(),
-        scaleY: node.scaleY(),
-        width: node.width(),
-        height: node.height(),
-        ...node.attrs
-      }
-    }))
   }
 
   private registerEvents() {

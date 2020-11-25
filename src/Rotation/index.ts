@@ -42,11 +42,9 @@ export class Rotation {
    */
   public transform(theta: number) {
     this.history.create(this.board.stage, [
-      this.history.getNodeState(this.board.stage),
-      ...this.board.getBackgroundNodes().map(this.history.getNodeState),
-      ...this.board
-        .getShapes()
-        .map(shape => this.history.getNodeState(shape.node))
+      this.board.stage,
+      ...this.board.getBackgroundNodes(),
+      ...this.board.getShapes().map(shape => shape.node)
     ])
 
     const radian = convertDegreeToRadian(theta)

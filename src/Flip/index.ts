@@ -72,9 +72,6 @@ export class Flip {
    *
    */
   private createHistory(nodes: Array<Konva.Shape | Konva.Group>) {
-    this.history.create(
-      this.board.layer,
-      nodes.map(node => this.history.getNodeState(node))
-    )
+    this.history.create(this.board.layer, nodes)
   }
 }

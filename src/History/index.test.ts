@@ -4,25 +4,25 @@ import { History } from './index'
 
 describe('History', () => {
   it('should create a new record when given state is not array', () => {
-    const { history, layer, state } = createState()
+    const { history, layer, node } = createState()
 
-    history.create(layer, state)
+    history.create(layer, node)
 
     expect(history.getList().length).toBe(1)
   })
 
   it('should create a new record when given state is array', () => {
-    const { history, layer, state } = createState()
+    const { history, layer, node } = createState()
 
-    history.create(layer, [state])
+    history.create(layer, [node])
 
     expect(history.getList().length).toBe(1)
   })
 
   it('should undo the state', () => {
-    const { history, layer, state } = createState()
+    const { history, layer, node } = createState()
 
-    history.create(layer, [state])
+    history.create(layer, node)
 
     expect(history.getList().length).toBe(1)
     expect(history.getStep()).toBe(0)
@@ -45,9 +45,9 @@ describe('History', () => {
   })
 
   it('should redo the state', () => {
-    const { history, layer, state } = createState()
+    const { history, layer, node } = createState()
 
-    history.create(layer, [state])
+    history.create(layer, node)
 
     expect(history.getList().length).toBe(1)
     expect(history.getStep()).toBe(0)
@@ -76,9 +76,9 @@ describe('History', () => {
   })
 
   it('should reset the state', () => {
-    const { history, layer, state } = createState()
+    const { history, layer, node } = createState()
 
-    history.create(layer, [state])
+    history.create(layer, node)
 
     history.reset()
     // TODO
@@ -97,7 +97,5 @@ function createState() {
   const layer = new Konva.Layer()
   const node = new Konva.Rect(shapeConfig)
 
-  const state = history.getNodeState(node)
-
-  return { history, layer, state }
+  return { history, layer, node }
 }
