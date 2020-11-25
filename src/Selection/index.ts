@@ -105,6 +105,7 @@ export class Selection {
   public deselectAll() {
     this.update([])
 
+    this.transformer.nodes([])
     this.transformer.hide()
     this.board.layer.draw()
   }
