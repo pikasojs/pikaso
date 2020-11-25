@@ -135,7 +135,7 @@ export class History {
 
         snapshots[index] = { ...this.getNodeAttributes(node) }
 
-        Object.entries(attributes).forEach(([key, value]) => {
+        Object.entries(attributes).forEach(([key]) => {
           node.setAttr(key, snapshot[key])
         })
       })
