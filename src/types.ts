@@ -44,7 +44,7 @@ export type HistoryNode = Konva.Stage | Konva.Layer | Konva.Shape | Konva.Group
 export type HistoryHookFunction = (states: HistoryState[]) => void
 export interface HistoryState {
   nodes: HistoryNode[]
-  snapshots: HistoryNode[]
+  snapshots: UnknownObject[]
 }
 
 export interface HistoryHooks {
@@ -99,6 +99,7 @@ export interface CircularCropperOptions extends BaseCropperOptions {
 export type CropperOptions = RectangleCropperOptions | CircularCropperOptions
 
 export enum DrawType {
+  Text,
   Pencil,
   Line,
   Arrow,
