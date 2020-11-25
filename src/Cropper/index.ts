@@ -180,8 +180,10 @@ export class Cropper {
 
     this.history.create(this.board.stage, [
       this.board.stage,
-      ...this.board.layer.children.toArray().map(node => node)
+      ...this.board.layer.children.toArray()
     ])
+
+    const isTransformerVisible = this.board.selection.isVisible
 
     this.stop()
 
@@ -205,6 +207,9 @@ export class Cropper {
     })
 
     this.board.backgroundOverlay.hide()
+
+    isTransformerVisible && this.board.selection.transformer.hide()
+
     this.board.getShapes().forEach(shape => {
       shape.node.hide()
     })
@@ -250,15 +255,14 @@ export class Cropper {
           rotation: node.rotation(),
           x: center.x * stage.scaleX() + stage.x(),
           y: center.y * stage.scaleY() + stage.y(),
-          scale: {
-            x: node.scaleX() * stage.scaleX(),
-            y: node.scaleY() * stage.scaleY()
-          }
+          scaleX: node.scaleX() * stage.scaleX(),
+          scaleY: node.scaleY() * stage.scaleY()
         })
         .show()
     })
 
     this.board.backgroundOverlay.show()
+    isTransformerVisible && this.board.selection.transformer.show()
 
     stage.setAttrs({
       rotation: 0,
