@@ -2,9 +2,12 @@ import Konva from 'konva'
 
 import { convertHtmlToText } from '../../utils/html-to-text'
 
+import { DrawType } from '../../types'
+
 import { Board } from '../../Board'
 import { Events } from '../../Events'
 import { History } from '../../History'
+import { Shape } from '..'
 
 export class Label {
   /**
@@ -25,22 +28,31 @@ export class Label {
   /**
    *
    */
+  private shape: Shape
+
+  /**
+   *
+   */
   private label: Konva.Label
-
-  /**
-   *
-   */
-  private text: Konva.Text
-
-  /**
-   *
-   */
-  private tag: Konva.Tag
 
   constructor(board: Board, events: Events, history: History) {
     this.board = board
     this.events = events
     this.history = history
+  }
+
+  /**
+   *
+   */
+  public get text() {
+    return this.label.findOne('Text') as Konva.Text
+  }
+
+  /**
+   *
+   */
+  public get tag() {
+    return this.label.findOne('Tag') as Konva.Tag
   }
 
   /**
@@ -52,41 +64,32 @@ export class Label {
       draggable: true
     })
 
-    this.tag = new Konva.Tag({
+    const tag = new Konva.Tag({
       fill: 'rgba(255, 99, 71, 0.95)',
       cornerRadius: 5
     })
 
-    this.text = new Konva.Text({
+    const text = new Konva.Text({
       text: 'Hello',
       fontFamily: 'Arial',
       fontSize: 60,
       padding: 15,
-      fill: 'black',
-      align: 'left'
+      fill: '#fff'
     })
 
-    this.label.add(this.tag).add(this.text)
+    text.setAttr('height', 'auto')
 
-    this.label.on('dblclick', (e: Konva.KonvaEventObject<MouseEvent>) =>
-      this.inlineEdit(e)
-    )
+    this.label.add(tag).add(text)
 
-    this.label.on('transform', () => {
-      if (this.board.selection.transformer.getActiveAnchor() === 'rotater') {
-        return
-      }
+    this.label.on('dblclick', this.inlineEdit.bind(this))
+    this.label.on('transform', this.transform.bind(this))
 
-      this.text.setAttrs({
-        width: this.label.width() * this.label.scaleX(),
-        scaleX: this.label.scaleY()
-      })
-    })
-
-    return this.board.addShape(this.label, {
+    this.shape = this.board.addShape(this.label, {
       centeredScaling: false,
       enabledAnchors: ['middle-left', 'middle-right']
     })
+
+    return this.shape
   }
 
   /**
@@ -102,6 +105,10 @@ export class Label {
       width: this.text.width()
     })
 
+    if (this.board.selection.isVisible) {
+      this.board.selection.transformer.forceUpdate()
+    }
+
     this.board.layer.draw()
   }
 
@@ -109,15 +116,19 @@ export class Label {
    *
    */
   private inlineEdit(e: Konva.KonvaEventObject<MouseEvent>) {
+    this.board.setActiveDrawing(DrawType.Text)
+
     const position = e.target.absolutePosition()
     const textBeforeEdit = this.text.getAttr('text')
 
-    this.text.hide()
-    this.tag.hide()
+    // hide node
+    this.label.hide()
     this.label?.draggable(false)
-    this.board.selection.transformer.hide()
 
-    this.board.layer.draw()
+    // deselect all selected nodes
+    this.board.selection.deselectAll()
+
+    this.board.layer.batchDraw()
 
     const input = document.createElement('span')
     this.board.container.getElementsByClassName('pikaso')[0].append(input)
@@ -160,22 +171,30 @@ export class Label {
     input.addEventListener('blur', (e: Event) => {
       input.parentNode?.removeChild(input)
 
-      const text = convertHtmlToText((<HTMLSpanElement>e.target).innerHTML)
+      this.board.setActiveDrawing(null)
 
-      if (text !== textBeforeEdit) {
+      const newText = convertHtmlToText((<HTMLSpanElement>e.target).innerHTML)
+
+      if (newText !== textBeforeEdit) {
         this.history.create(this.board.layer, [], {
           undo: () => this.updateText(textBeforeEdit),
-          redo: () => this.updateText(text)
+          redo: () => this.updateText(newText)
         })
       }
 
-      this.updateText(text)
-      this.label.draggable(true)
+      // update label's text
+      this.text.setText(newText)
 
-      this.text.show()
-      this.tag.show()
-      this.board.selection.transformer.show()
-      this.board.layer.batchDraw()
+      this.label.show()
+      this.label.setAttrs({
+        draggable: true,
+        width: this.text.width()
+      })
+
+      // select node
+      this.board.selection.select(this.shape)
+
+      this.label.draw()
     })
   }
 
@@ -193,5 +212,22 @@ export class Label {
     const selection = window.getSelection()!
     selection.removeAllRanges()
     selection.addRange(range)
+  }
+
+  /**
+   *
+   */
+  private transform() {
+    if (this.board.selection.transformer.getActiveAnchor() === 'rotater') {
+      return
+    }
+
+    this.text.setAttrs({
+      width: this.label.width() * this.label.scaleX(),
+      scaleX: this.label.scaleY()
+    })
+
+    this.label.scaleX(this.text.scaleY())
+    this.tag.scaleX(this.label.scaleY())
   }
 }
