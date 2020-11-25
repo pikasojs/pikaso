@@ -2,7 +2,12 @@ import Konva from 'konva'
 
 import { omit } from '../utils/omit'
 
-import type { HistoryNode, HistoryHooks, HistoryState } from '../types'
+import type {
+  HistoryNode,
+  HistoryHooks,
+  HistoryState,
+  UnknownObject
+} from '../types'
 
 export class History {
   /**
@@ -55,7 +60,7 @@ export class History {
       ...this.list.slice(0, this.step),
       {
         container,
-        states: nodes.map(node => this.getNodeSnapshot(node)),
+        states: nodes.map(node => this.getNodeState(node)),
         hooks
       }
     ]
@@ -65,19 +70,19 @@ export class History {
    *
    * @param node
    */
-  public getNodeSnapshot(node: HistoryNode): HistoryState {
-    const snapshot = <HistoryNode>node.clone({})
+  public getNodeState(node: HistoryNode): HistoryState {
+    const snapshpot = <HistoryNode>node.clone({})
 
     if (node.getType() === 'Group') {
       return {
         nodes: this.getNodesTree(node),
-        snapshots: this.getNodesTree(snapshot)
+        snapshots: this.getNodesTree(snapshpot).map(node => node.attrs)
       }
     }
 
     return {
       nodes: [node],
-      snapshots: [snapshot]
+      snapshots: [snapshpot.attrs]
     }
   }
 
@@ -89,7 +94,7 @@ export class History {
       return
     }
 
-    this.applyAttributes(state => state)
+    this.applyAttributes((node, _) => this.getNodeAttributes(node))
     this.list[this.step].hooks?.undo?.(this.list[this.step].states)
 
     this.step -= 1
@@ -105,10 +110,7 @@ export class History {
 
     this.step += 1
 
-    this.applyAttributes((state: HistoryState) => ({
-      nodes: state.snapshots,
-      snapshots: state.nodes
-    }))
+    this.applyAttributes((_, snapshot) => snapshot)
 
     this.list[this.step].hooks?.redo?.(this.list[this.step].states)
   }
@@ -120,20 +122,21 @@ export class History {
 
   /**
    *
-   * @param getAttrs
    */
-  private applyAttributes(getState: (state: HistoryState) => HistoryState) {
+  private applyAttributes(
+    getAttributes: (node: HistoryNode, snapshot: UnknownObject) => UnknownObject
+  ) {
     const { container, states, hooks } = this.list[this.step]
 
-    states.forEach(state => {
-      const { nodes, snapshots } = getState(state)
-
+    states.forEach(({ nodes, snapshots }) => {
       nodes.forEach((node, index) => {
-        const attributes = this.getNodeAttributes(node)
+        const snapshot = snapshots[index]
+        const attributes = getAttributes(node, snapshot)
+
+        snapshots[index] = { ...this.getNodeAttributes(node) }
 
         Object.entries(attributes).forEach(([key, value]) => {
-          node.setAttr(key, snapshots[index].getAttr(key))
-          snapshots[index].setAttr(key, value)
+          node.setAttr(key, snapshot[key])
         })
       })
     })
@@ -179,7 +182,7 @@ export class History {
         height: node.height(),
         ...node.attrs
       },
-      ['id', 'listening']
+      ['id', 'container']
     )
   }
 }
