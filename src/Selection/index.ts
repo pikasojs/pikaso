@@ -1,3 +1,5 @@
+import { throws } from 'assert'
+
 import Konva from 'konva'
 
 import { Board } from '../Board'
@@ -89,14 +91,14 @@ export class Selection {
       return selector(shape)
     })
 
-    this.multiSelect(list)
+    this.multi(list)
   }
 
   /**
    *
    */
   public selectAll() {
-    this.multiSelect(this.board.getShapes())
+    this.multi(this.board.getShapes())
   }
 
   /**
@@ -120,16 +122,8 @@ export class Selection {
 
   /**
    *
-   * @param shape
    */
-  public add(shape: Shape) {
-    this.list = [...this.list, shape]
-  }
-
-  /**
-   *
-   */
-  public multiSelect(shapes: Shape[]) {
+  public multi(shapes: Shape[]) {
     this.list = shapes
 
     const attrs: Partial<Konva.TransformerConfig> = shapes.reduce(
@@ -168,33 +162,38 @@ export class Selection {
    *
    * @param shape
    */
-  public select(shape: Shape) {
+  public add(shape: Shape) {
     const isSelected = this.list.some(item => item.node === shape.node)
 
     if (isSelected) {
       return
     }
 
-    this.multiSelect([...this.list, shape])
+    this.multi([...this.list, shape])
+  }
+
+  /**
+   *
+   * @param shape
+   */
+  public toggle(shape: Shape) {
+    const isSelected = this.list.some(item => item.node === shape.node)
+
+    if (isSelected) {
+      this.deselect(shape)
+      return
+    }
+
+    this.multi([...this.list, shape])
   }
 
   /**
    *
    */
   public deselect(shape: Shape) {
-    const nodes = this.getTransformer()
-      .nodes()
-      .filter(node => {
-        return node !== shape.node
-      })
+    this.list = this.list.filter(item => item !== shape)
 
-    if (nodes.length === 0) {
-      this.deselectAll()
-      return
-    }
-
-    this.transformer.nodes(nodes)
-    this.board.layer.draw()
+    this.multi(this.list)
   }
 
   /***
@@ -279,8 +278,19 @@ export class Selection {
       .getShapes()
       .find(shape => shape.node === this.getParentNode(e.target))
 
-    if (shape) {
-      this.select(shape)
+    if (shape && !this.list.includes(shape)) {
+      const isShiftKeyUp = e.evt.shiftKey === true
+      const isCtrlKeyUp = e.evt.ctrlKey === true
+
+      if (!isShiftKeyUp && !isCtrlKeyUp) {
+        this.deselectAll()
+        this.add(shape)
+      } else if (isShiftKeyUp && !isCtrlKeyUp) {
+        this.add(shape)
+      } else if (isCtrlKeyUp && !isShiftKeyUp) {
+        this.toggle(shape)
+      }
+
       this.board.setActiveDrawing(null)
 
       return
@@ -348,7 +358,7 @@ export class Selection {
       )
 
     this.update(shapes)
-    this.multiSelect(shapes)
+    this.multi(shapes)
   }
 
   /**
