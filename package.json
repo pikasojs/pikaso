@@ -18,7 +18,7 @@
     "build": "rollup -c"
   },
   "dependencies": {
-    "konva": "^7.1.9"
+    "konva": "^7.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -28,11 +28,11 @@
     "@rollup/plugin-typescript": "^6.1.0",
     "@types/jest": "^26.0.15",
     "@types/jsdom": "^16.2.5",
-    "@types/node": "^14.14.9",
-    "@typescript-eslint/eslint-plugin": "^4.8.1",
-    "@typescript-eslint/parser": "^4.8.1",
-    "cypress": "^5.6.0",
-    "eslint": "^7.13.0",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "cypress": "^6.0.0",
+    "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-import-resolver-webpack": "^0.13.0",
     "eslint-loader": "^4.0.2",
