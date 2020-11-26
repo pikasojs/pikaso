@@ -83,7 +83,7 @@ export class Shape {
    *
    */
   public select() {
-    this.board.selection.select(this)
+    this.board.selection.add(this)
   }
 
   /**
