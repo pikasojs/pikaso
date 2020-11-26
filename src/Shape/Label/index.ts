@@ -192,7 +192,7 @@ export class Label {
       })
 
       // select node
-      this.board.selection.select(this.shape)
+      this.board.selection.add(this.shape)
 
       this.board.layer.batchDraw()
     })
