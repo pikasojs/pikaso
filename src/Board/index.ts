@@ -108,6 +108,11 @@ export class Board {
     this.stage.on('widthChange', this.rescale.bind(this))
     this.stage.on('heightChange', this.rescale.bind(this))
 
+    // disable context menu
+    this.settings.container.addEventListener('contextmenu', (e: MouseEvent) =>
+      e.preventDefault()
+    )
+
     this.layer = new Konva.Layer()
     this.stage.add(this.layer)
 
