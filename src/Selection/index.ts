@@ -53,9 +53,8 @@ export class Selection {
 
     this.board.stage.on('mousedown touchstart', this.onDragZoneStart.bind(this))
     this.board.stage.on('mousemove touchmove', this.onDragZoneMove.bind(this))
+    this.board.stage.on('mouseup touchend', this.onDragZoneEnd.bind(this))
 
-    window.addEventListener('mouseup', this.onDragZoneEnd.bind(this))
-    window.addEventListener('touchend', this.onDragZoneEnd.bind(this))
     window.addEventListener('keydown', this.onKeyDown.bind(this))
   }
 
