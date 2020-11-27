@@ -1,5 +1,7 @@
 import Konva from 'konva'
 
+import { Events } from '../Events'
+
 import { History } from './index'
 
 describe('History', () => {
@@ -74,15 +76,6 @@ describe('History', () => {
     expect(history.getStep()).toBe(-1)
     expect(history.getState()).toBe(undefined)
   })
-
-  it('should reset the state', () => {
-    const { history, layer, node } = createState()
-
-    history.create(layer, node)
-
-    history.reset()
-    // TODO
-  })
 })
 
 function createState() {
@@ -93,7 +86,7 @@ function createState() {
     height: 100
   }
 
-  const history = new History()
+  const history = new History(new Events())
   const layer = new Konva.Layer()
   const node = new Konva.Rect(shapeConfig)
 
