@@ -27,93 +27,66 @@ export default class Pikaso {
   /**
    *
    */
-  public readonly board: Board
+  public board: Board
 
   /**
    *
    */
-  public readonly export: Export
+  public export: Export
 
   /**
    *
    */
-  public readonly shapes: Shapes
+  public shapes: Shapes
 
   /**
    *
    */
-  public readonly selection: Selection
+  public selection: Selection
 
   /**
    *
    */
-  public readonly rotation: Rotation
+  public rotation: Rotation
 
   /**
    *
    */
-  public readonly cropper: Cropper
+  public cropper: Cropper
 
   /**
    *
    */
-  public readonly flip: Flip
+  public flip: Flip
 
   /**
    *
    */
-  public readonly pencil: Pencil
+  public pencil: Pencil
 
   /**
    *
    */
-  private readonly settings: Settings
+  public events: Events
 
   /**
    *
    */
-  private readonly events: Events
+  public history: History
 
   /**
    *
    */
-  private readonly history: History
+  private settings: Settings
 
   constructor(settings: Settings) {
     if (!settings.container) {
       throw new Error('Pikaso needs a container')
     }
 
-    const history = new History()
-    const events = new Events()
-    const board = new Board(settings, events, history)
-
-    this.selection = board.selection
-
-    this.export = new Export(board)
-    this.rotation = new Rotation(board, events, history)
-    this.cropper = new Cropper(board, events, history)
-    this.flip = new Flip(board, events, history)
-    this.pencil = new Pencil(board, events, history)
-
-    this.shapes = {
-      line: new Line(board, events, history),
-      rect: new Rect(board, events, history),
-      arrow: new Arrow(board, events, history),
-      image: new Image(board, events, history),
-      label: new Label(board, events, history),
-      circle: new Circle(board, events, history),
-      ellipse: new Ellipse(board, events, history),
-      polygon: new Polygon(board, events, history),
-      triangle: new Triangle(board, events, history)
-    }
-
-    this.board = board
-    this.events = events
-    this.history = history
     this.settings = settings
 
-    this.board.layer.draw()
+    this.init()
   }
 
   /**
@@ -156,5 +129,62 @@ export default class Pikaso {
    */
   public redo() {
     this.history.redo()
+  }
+
+  /**
+   *
+   */
+  public on(...args: Parameters<this['events']['on']>) {
+    this.events.on.call(this.events, ...args)
+  }
+
+  /**
+   *
+   */
+  public off(...args: Parameters<this['events']['off']>) {
+    this.events.off.call(this.events, ...args)
+  }
+
+  /**
+   *
+   */
+  public reset() {
+    this.init()
+    this.events.emit('history:reset')
+  }
+
+  /**
+   *
+   */
+  private init() {
+    const events = new Events()
+    const history = new History(events)
+    const board = new Board(this.settings, events, history)
+
+    this.selection = board.selection
+
+    this.export = new Export(board)
+    this.rotation = new Rotation(board, events, history)
+    this.cropper = new Cropper(board, events, history)
+    this.flip = new Flip(board, events, history)
+    this.pencil = new Pencil(board, events, history)
+
+    this.shapes = {
+      line: new Line(board, events, history),
+      rect: new Rect(board, events, history),
+      arrow: new Arrow(board, events, history),
+      image: new Image(board, events, history),
+      label: new Label(board, events, history),
+      circle: new Circle(board, events, history),
+      ellipse: new Ellipse(board, events, history),
+      polygon: new Polygon(board, events, history),
+      triangle: new Triangle(board, events, history)
+    }
+
+    this.board = board
+    this.events = events
+    this.history = history
+
+    this.board.layer.draw()
   }
 }

@@ -1,6 +1,6 @@
-import type { EventListenerNames } from '../types'
+import type { EventListenerCallbackEvent, EventListenerNames } from '../types'
 
-type ListenerCallback = (...args: any) => void
+type ListenerCallback = (args: EventListenerCallbackEvent) => void
 
 interface EventListeners {
   [key: string]: ListenerCallback[]
@@ -60,11 +60,23 @@ export class Events {
    * @param eventName
    * @param data
    */
-  public emit(eventName: EventListenerNames, data?: object) {
-    if (!this.listeners[eventName]) {
+  public emit(
+    eventName: EventListenerNames,
+    data?: EventListenerCallbackEvent
+  ) {
+    if (!this.listeners[eventName] && !this.listeners['*']) {
       return
     }
 
-    this.listeners[eventName].forEach(fn => fn(data))
+    const events = ['*', eventName]
+
+    events.forEach(name => {
+      this.listeners[name]?.forEach(fn => {
+        fn({
+          name: eventName,
+          ...data
+        })
+      })
+    })
   }
 }

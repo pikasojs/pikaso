@@ -25,7 +25,17 @@ export class Shape {
   /**
    *
    */
-  private flip: Flip
+  private readonly events: Events
+
+  /**
+   *
+   */
+  private readonly history: History
+
+  /**
+   *
+   */
+  private readonly flip: Flip
 
   /**
    *
@@ -40,20 +50,12 @@ export class Shape {
     transformerConfig = {}
   ) {
     this.board = board
+    this.events = events
+    this.history = history
     this.flip = new Flip(board, events, history)
 
     this.node = node
     this.transformerConfig = transformerConfig
-
-    node.addEventListener('transformstart', () => {
-      history.create(board.layer, node, {
-        execute: () => this.board.selection.transformer.forceUpdate()
-      })
-    })
-
-    node.addEventListener('dragstart', () => {
-      history.create(board.layer, node)
-    })
 
     this.registerEvents()
   }
@@ -105,6 +107,10 @@ export class Shape {
     this.node.hide()
     this.node.cache()
     this.deleted = true
+
+    this.events.emit('shape:delete', {
+      shapes: [this]
+    })
   }
 
   /**
@@ -118,6 +124,10 @@ export class Shape {
     this.node.show()
     this.node.clearCache()
     this.deleted = false
+
+    this.events.emit('shape:undelete', {
+      shapes: [this]
+    })
   }
 
   /**
@@ -131,6 +141,10 @@ export class Shape {
       .filter(shape => shape.node !== this.node)
 
     this.board.setShapes(shapes)
+
+    this.events.emit('shape:destory', {
+      shapes: [this]
+    })
   }
 
   /**
@@ -142,6 +156,10 @@ export class Shape {
     }
 
     this.destroy()
+
+    this.events.emit('shape:gc', {
+      shapes: [this]
+    })
   }
 
   /**
@@ -151,13 +169,23 @@ export class Shape {
   public rotate(theta: number) {
     rotateAroundCenter(this.node, theta)
     this.board.layer.draw()
+
+    this.events.emit('shape:rotate', {
+      shapes: [this]
+    })
   }
 
   private registerEvents() {
+    /**
+     * mouseorver event
+     */
     this.node.addEventListener('mouseover', () => {
       this.board.stage.getContent().style.cursor = 'move'
     })
 
+    /**
+     * mouseout event
+     */
     this.node.addEventListener('mouseout', () => {
       this.board.stage.getContent().style.cursor = 'inherit'
     })

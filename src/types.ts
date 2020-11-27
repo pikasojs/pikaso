@@ -9,7 +9,7 @@ import type { Circle } from './Shape/Circle'
 import type { Ellipse } from './Shape/Ellipse'
 import type { Polygon } from './Shape/Polygon'
 import type { Triangle } from './Shape/Triangle'
-import { History } from './History'
+import type { Shape } from './Shape'
 
 export type Nullable<T> = T | null
 
@@ -18,7 +18,7 @@ export interface IEmitter {
 }
 
 export interface UnknownObject {
-  [key: string]: boolean | number | string
+  [key: string]: boolean | number | string | null | undefined
 }
 export interface Settings {
   container: HTMLDivElement
@@ -99,15 +99,15 @@ export interface CircularCropperOptions extends BaseCropperOptions {
 export type CropperOptions = RectangleCropperOptions | CircularCropperOptions
 
 export enum DrawType {
-  Text,
-  Pencil,
-  Line,
-  Arrow,
-  Circle,
-  Rect,
-  Ellipse,
-  Polygon,
-  Triangle
+  Text = 'Text',
+  Pencil = 'Pencil',
+  Line = 'Line',
+  Arrow = 'Arrow',
+  Circle = 'Circle',
+  Rect = 'Rect',
+  Ellipse = 'Ellipse',
+  Polygon = 'Polygon',
+  Triangle = 'Triangle'
 }
 
 export interface Shapes {
@@ -131,10 +131,37 @@ export interface IShape {
   insert: (config: Konva.ShapeConfig) => void
 }
 
+export interface EventListenerCallbackEvent {
+  name?: string
+  nodes?: (Konva.Shape | Konva.Group)[]
+  shapes?: Shape[]
+  data?: UnknownObject
+}
+
 export type EventListenerNames =
+  | '*'
+  | 'board:rescale'
+  | 'board:change-active-drawing'
+  | 'board:gc'
   | 'shape:create'
   | 'shape:move'
   | 'shape:delete'
-  | 'shape:transform'
+  | 'shape:rotate'
+  | 'shape:gc'
+  | 'shape:destroy'
+  | 'shape:delete'
+  | 'shape:undelete'
   | 'flip:x'
   | 'flip:y'
+  | 'history:undo'
+  | 'history:redo'
+  | 'history:reset'
+  | 'selection:change'
+  | 'selection:move'
+  | 'selection:dragstart'
+  | 'selection:dragmove'
+  | 'selection:dragend'
+  | 'selection:transformstart'
+  | 'selection:transform'
+  | 'selection:transformend'
+  | 'selection:delete'

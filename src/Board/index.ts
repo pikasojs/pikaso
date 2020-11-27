@@ -197,6 +197,12 @@ export class Board {
     }
 
     this.stage.content.style.transform = transform
+
+    this.events.emit('board:rescale', {
+      data: {
+        transform
+      }
+    })
   }
 
   /**
@@ -308,6 +314,10 @@ export class Board {
       redo: () => shape.undelete()
     })
 
+    this.events.emit('shape:create', {
+      shapes: [shape]
+    })
+
     return shape
   }
 
@@ -318,6 +328,14 @@ export class Board {
     if (mode) {
       this.selection.transformer.hide()
       this.layer.draw()
+    }
+
+    if (mode !== this.activeDrawing) {
+      this.events.emit('board:change-active-drawing', {
+        data: {
+          type: mode
+        }
+      })
     }
 
     this.activeDrawing = mode
@@ -353,5 +371,6 @@ export class Board {
    */
   public gc() {
     this.shapes.forEach(shape => shape.gc())
+    this.events.emit('board:gc')
   }
 }

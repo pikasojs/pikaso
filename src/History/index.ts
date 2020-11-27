@@ -2,6 +2,8 @@ import Konva from 'konva'
 
 import { omit } from '../utils/omit'
 
+import type { Events } from '../Events'
+
 import type {
   HistoryNode,
   HistoryHooks,
@@ -27,6 +29,15 @@ export class History {
   /**
    *
    */
+  private events: Events
+
+  constructor(events: Events) {
+    this.events = events
+  }
+
+  /**
+   *
+   */
   public getStep() {
     return this.step
   }
@@ -43,6 +54,18 @@ export class History {
    */
   public getState() {
     return this.list[this.step]
+  }
+
+  public getEventData() {
+    return {
+      data: {
+        step: this.step,
+        total: this.list.length,
+        canUndo: this.step > -1,
+        canReset: this.step > -1,
+        canRedo: this.step > -1 && this.step < this.list.length - 1
+      }
+    }
   }
 
   /**
@@ -98,6 +121,8 @@ export class History {
     this.list[this.step].hooks?.undo?.(this.list[this.step].states)
 
     this.step -= 1
+
+    this.events.emit('history:undo', this.getEventData())
   }
 
   /**
@@ -113,12 +138,23 @@ export class History {
     this.applyAttributes((_, snapshot) => snapshot)
 
     this.list[this.step].hooks?.redo?.(this.list[this.step].states)
+
+    this.events.emit('history:redo', this.getEventData())
   }
 
   /**
    *
+   * @param step
    */
-  public reset() {}
+  public jump(to: number) {
+    if (to < 0 || to > this.list.length - 1 || this.step === to) {
+      return
+    }
+
+    while (to !== this.step) {
+      to < this.step ? this.undo() : this.redo()
+    }
+  }
 
   /**
    *
