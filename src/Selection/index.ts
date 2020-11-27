@@ -55,6 +55,9 @@ export class Selection {
     this.board.stage.on('mousemove touchmove', this.onDragZoneMove.bind(this))
     this.board.stage.on('mouseup touchend', this.onDragZoneEnd.bind(this))
 
+    window.addEventListener('mouseup', this.onWindowMouseUp.bind(this))
+    window.addEventListener('touchend', this.onWindowMouseUp.bind(this))
+
     window.addEventListener('keydown', this.onKeyDown.bind(this))
   }
 
@@ -449,6 +452,18 @@ export class Selection {
       )
 
     this.multi(shapes)
+  }
+
+  /**
+   *
+   * @param e
+   */
+  private onWindowMouseUp(e: MouseEvent) {
+    if (e.target instanceof HTMLCanvasElement) {
+      return
+    }
+
+    this.onDragZoneEnd()
   }
 
   /**
