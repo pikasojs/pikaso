@@ -206,7 +206,7 @@ export class Cropper {
       rotation: stage.rotation()
     })
 
-    this.board.backgroundOverlay.hide()
+    this.board.background.overlay.hide()
 
     isTransformerVisible && this.board.selection.transformer.hide()
 
@@ -221,7 +221,7 @@ export class Cropper {
       })
     )
 
-    this.board.getBackgroundNodes().forEach(node => {
+    this.board.background.nodes.forEach(node => {
       node.setAttrs({
         width: snapshot.width(),
         height: snapshot.height(),
@@ -235,7 +235,7 @@ export class Cropper {
       })
     })
 
-    this.board.backgroundImage.setAttrs({
+    this.board.background.image.setAttrs({
       image: snapshot.image()
     })
 
@@ -261,7 +261,7 @@ export class Cropper {
         .show()
     })
 
-    this.board.backgroundOverlay.show()
+    this.board.background.overlay.show()
     isTransformerVisible && this.board.selection.transformer.show()
 
     stage.setAttrs({

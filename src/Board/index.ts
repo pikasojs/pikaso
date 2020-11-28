@@ -1,16 +1,13 @@
 import Konva from 'konva'
 
-import { imageToDataUrl } from '../utils/image-to-url'
-import { createImageFromUrl } from '../utils/create-image-from-url'
-
 import { History } from '../History'
 import { Events } from '../Events'
 import { Selection } from '../Selection'
 
 import { Shape } from '../Shape'
+import { Background } from '../Shape/Background'
 
 import type { Settings, DrawType } from '../types'
-import { Flip } from '../Flip'
 
 export class Board {
   /**
@@ -36,12 +33,7 @@ export class Board {
   /**
    *
    */
-  public readonly backgroundImage: Konva.Image
-
-  /**
-   *
-   */
-  public readonly backgroundOverlay: Konva.Rect
+  public readonly background: Background
 
   /**
    *
@@ -67,11 +59,6 @@ export class Board {
    *
    */
   private readonly events: Events
-
-  /**
-   *
-   */
-  private readonly flip: Flip
 
   constructor(settings: Settings, events: Events, history: History) {
     this.settings = settings
@@ -116,13 +103,8 @@ export class Board {
     this.layer = new Konva.Layer()
     this.stage.add(this.layer)
 
-    this.backgroundImage = new Konva.Image()
-    this.backgroundOverlay = new Konva.Rect()
-
-    this.layer.add(this.backgroundImage, this.backgroundOverlay)
-
     this.selection = new Selection(this, events, history)
-    this.flip = new Flip(this, events, history)
+    this.background = new Background(this, events, history)
 
     this.container = this.settings.container
   }
@@ -133,13 +115,13 @@ export class Board {
   public getDimensions() {
     return {
       width:
-        this.backgroundImage.width() ||
-        this.backgroundOverlay.width() ||
+        this.background.image.node.width() ||
+        this.background.overlay.node.width() ||
         this.stage.width() ||
         this.settings.width!,
       height:
-        this.backgroundImage.height() ||
-        this.backgroundOverlay.height() ||
+        this.background.image.node.height() ||
+        this.background.overlay.node.height() ||
         this.stage.height() ||
         this.settings.height!
     }
@@ -150,16 +132,9 @@ export class Board {
    */
   public getPosition() {
     return {
-      x: this.backgroundImage.x() || this.backgroundOverlay.x(),
-      y: this.backgroundImage.y() || this.backgroundOverlay.y()
+      x: this.background.image.node.x() || this.background.overlay.node.x(),
+      y: this.background.image.node.y() || this.background.overlay.node.y()
     }
-  }
-
-  /**
-   *
-   */
-  public getBackgroundNodes() {
-    return [this.backgroundImage, this.backgroundOverlay]
   }
 
   /**
@@ -167,7 +142,7 @@ export class Board {
    */
   public getNodes() {
     return [
-      ...this.getBackgroundNodes(),
+      ...this.background.nodes,
       ...this.getShapes().map(shape => shape.node)
     ]
   }
@@ -203,86 +178,6 @@ export class Board {
         transform
       }
     })
-  }
-
-  /**
-   *
-   * @param file
-   */
-  public async setBackgroundImageFromFile(file: File) {
-    const url = await imageToDataUrl(file)
-
-    this.setBackgroundImageFromUrl(url)
-  }
-
-  /**
-   *
-   * @param url
-   */
-  public async setBackgroundImageFromUrl(url: string) {
-    this.history.create(
-      this.layer,
-      [this.stage, this.backgroundImage, this.backgroundOverlay],
-      this.rescale.bind(this)
-    )
-
-    const background = await createImageFromUrl(url)
-
-    this.stage.setAttrs({
-      width: background.width(),
-      height: background.height()
-    })
-
-    this.backgroundImage.setAttrs({
-      width: background.width(),
-      height: background.height(),
-      image: background.image()
-    })
-
-    this.backgroundOverlay.setAttrs({
-      width: background.width(),
-      height: background.height()
-    })
-
-    this.layer.batchDraw()
-  }
-
-  /**
-   *
-   * @param color
-   */
-  public fill(color: string) {
-    this.history.create(this.layer, this.backgroundOverlay)
-
-    this.backgroundOverlay.setAttrs({
-      width: this.stage.width(),
-      height: this.stage.height(),
-      fill: color
-    })
-
-    this.layer.draw()
-  }
-
-  /**
-   * flips the image horizontally
-   */
-  public flipX() {
-    if (!this.backgroundImage.getAttr('image')) {
-      return
-    }
-
-    this.flip.horizontal([this.backgroundImage])
-  }
-
-  /**
-   * flips the main image vertically
-   */
-  public flipY() {
-    if (!this.backgroundImage.getAttr('image')) {
-      return
-    }
-
-    this.flip.vertical([this.backgroundImage])
   }
 
   /**

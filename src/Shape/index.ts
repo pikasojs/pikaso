@@ -1,10 +1,12 @@
 import Konva from 'konva'
 
+import { rotateAroundCenter } from '../utils/rotate-around-center'
+
 import { Board } from '../Board'
 import { Events } from '../Events'
+import { Filter } from '../Filter'
 import { Flip } from '../Flip'
 import { History } from '../History'
-import { rotateAroundCenter } from '../utils/rotate-around-center'
 
 export class Shape {
   /**
@@ -16,6 +18,11 @@ export class Shape {
    *
    */
   public transformerConfig: Konva.TransformerConfig
+
+  /**
+   *
+   */
+  public readonly filter: Filter
 
   /**
    *
@@ -52,10 +59,12 @@ export class Shape {
     this.board = board
     this.events = events
     this.history = history
-    this.flip = new Flip(board, events, history)
 
     this.node = node
     this.transformerConfig = transformerConfig
+
+    this.flip = new Flip(board, events, history)
+    this.filter = new Filter(node)
 
     this.registerEvents()
   }
@@ -142,7 +151,7 @@ export class Shape {
 
     this.board.setShapes(shapes)
 
-    this.events.emit('shape:destory', {
+    this.events.emit('shape:destroy', {
       shapes: [this]
     })
   }
@@ -173,6 +182,73 @@ export class Shape {
     this.events.emit('shape:rotate', {
       shapes: [this]
     })
+  }
+
+  /**
+   *
+   */
+  public x() {
+    return this.node.x()
+  }
+
+  /**
+   *
+   */
+  public y() {
+    return this.node.y()
+  }
+
+  /**
+   *
+   */
+  public scale() {
+    return this.node.scale()
+  }
+
+  /**
+   *
+   */
+  public scaleX() {
+    return this.node.scaleX()
+  }
+
+  /**
+   *
+   */
+  public scaleY() {
+    return this.node.scaleY()
+  }
+
+  /**
+   *
+   */
+  public show() {
+    return this.node.show()
+  }
+
+  /**
+   *
+   */
+  public hide() {
+    return this.node.hide()
+  }
+
+  /**
+   *
+   */
+  public setAttr(name: string, value: unknown) {
+    return this.setAttrs({
+      [name]: value
+    })
+  }
+
+  /**
+   *
+   */
+  public setAttrs(attributes: Partial<Konva.ShapeConfig>) {
+    this.history.create(this.board.layer, this.node)
+
+    return this.node.setAttrs(attributes)
   }
 
   private registerEvents() {

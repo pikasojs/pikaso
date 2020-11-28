@@ -533,6 +533,8 @@ export class Selection {
    * @param node
    */
   private isBackgroundNode(node: Konva.Stage | Konva.Group | Konva.Shape) {
-    return node === this.board.stage || node === this.board.backgroundOverlay
+    return (
+      node === this.board.stage || node === this.board.background.overlay.node
+    )
   }
 }

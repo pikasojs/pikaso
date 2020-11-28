@@ -100,14 +100,14 @@ export default class Pikaso {
    *
    */
   public async loadFromFile(file: File) {
-    await this.board.setBackgroundImageFromFile(file)
+    await this.board.background.setImageFromFile(file)
   }
 
   /**
    *
    */
   public async loadFromUrl(url: string) {
-    await this.board.setBackgroundImageFromUrl(url)
+    await this.board.background.setImageFromUrl(url)
   }
 
   /**

@@ -75,7 +75,7 @@ export class Rotation {
       height: stageHeight
     })
 
-    this.board.getBackgroundNodes().forEach((node: Konva.Shape) => {
+    this.board.background.nodes.forEach((node: Konva.Shape) => {
       node
         .scale({
           x: stageScale,
@@ -120,7 +120,7 @@ export class Rotation {
    * @param theta - the rotation angle
    */
   public straighten(theta: number) {
-    this.board.getBackgroundNodes().forEach((node: Konva.Shape) => {
+    this.board.background.nodes.forEach((node: Konva.Shape) => {
       rotateAroundCenter(node, theta)
     })
 
