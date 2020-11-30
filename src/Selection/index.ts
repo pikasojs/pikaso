@@ -125,7 +125,7 @@ export class Selection {
       (acc, item) => {
         return {
           ...acc,
-          ...item.transformerConfig
+          ...item.config.transformer
         }
       },
       {

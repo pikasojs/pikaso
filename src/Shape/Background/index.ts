@@ -43,8 +43,13 @@ export class Background {
     const image = new Konva.Image()
     const overlay = new Konva.Rect()
 
-    this.image = new Shape(board, events, history, image, [])
-    this.overlay = new Shape(board, events, history, overlay, [])
+    this.image = new Shape(board, events, history, image, {
+      selectable: false
+    })
+
+    this.overlay = new Shape(board, events, history, overlay, {
+      selectable: false
+    })
 
     this.board.layer.add(image, overlay)
   }

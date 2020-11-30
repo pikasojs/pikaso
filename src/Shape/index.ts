@@ -10,6 +10,10 @@ import { History } from '../History'
 
 import type { Filters } from '../types'
 
+interface ShapeConfig {
+  transformer?: Konva.TransformerConfig
+  selectable?: boolean
+}
 export class Shape {
   /**
    *
@@ -19,7 +23,7 @@ export class Shape {
   /**
    *
    */
-  public transformerConfig: Konva.TransformerConfig
+  public config: ShapeConfig
 
   /**
    *
@@ -56,19 +60,27 @@ export class Shape {
     events: Events,
     history: History,
     node: Konva.Group | Konva.Shape,
-    transformerConfig = {}
+    config: ShapeConfig
   ) {
     this.board = board
     this.events = events
     this.history = history
 
     this.node = node
-    this.transformerConfig = transformerConfig
+    this.config = Object.assign(
+      {
+        transformer: {},
+        selectable: true
+      },
+      config
+    )
 
     this.flip = new Flip(board, events, history)
     this.filter = new Filter(board, events, history)
 
-    this.registerEvents()
+    if (this.config.selectable) {
+      this.registerEvents()
+    }
   }
 
   /**

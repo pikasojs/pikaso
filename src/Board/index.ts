@@ -192,13 +192,9 @@ export class Board {
       draggable: true
     })
 
-    const shape = new Shape(
-      this,
-      this.events,
-      this.history,
-      node,
-      transformerConfig
-    )
+    const shape = new Shape(this, this.events, this.history, node, {
+      transformer: transformerConfig
+    })
     this.shapes = [...this.shapes, shape]
 
     this.layer.add(node)
