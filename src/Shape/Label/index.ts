@@ -45,37 +45,31 @@ export class Label {
    *
    */
   public get text() {
-    return this.label.findOne('Text') as Konva.Text
+    return this.label.getText() as Konva.Text
   }
 
   /**
    *
    */
   public get tag() {
-    return this.label.findOne('Tag') as Konva.Tag
+    return this.label.getTag() as Konva.Tag
   }
 
   /**
    *
    */
-  public async insert(config: Partial<Konva.LabelConfig> = {}) {
+  public insert(config: {
+    container: Konva.LabelConfig
+    text: Konva.TextConfig
+    tag?: Konva.TagConfig
+  }) {
     this.label = new Konva.Label({
-      ...config,
+      ...config.container,
       draggable: true
     })
 
-    const tag = new Konva.Tag({
-      fill: 'rgba(255, 99, 71, 0.95)',
-      cornerRadius: 5
-    })
-
-    const text = new Konva.Text({
-      text: 'Hello',
-      fontFamily: 'Arial',
-      fontSize: 60,
-      padding: 15,
-      fill: '#fff'
-    })
+    const text = new Konva.Text(config.text)
+    const tag = new Konva.Tag(config.tag)
 
     text.setAttr('height', 'auto')
 
@@ -110,6 +104,13 @@ export class Label {
     }
 
     this.board.layer.draw()
+
+    this.events.emit('label:update-text', {
+      shapes: [this.shape],
+      data: {
+        text: value
+      }
+    })
   }
 
   /**
