@@ -23,6 +23,7 @@ import { Triangle } from './Shape/Triangle'
 
 import type { Settings, Shapes } from './types'
 
+export { Konva }
 export default class Pikaso {
   /**
    *
