@@ -41,10 +41,12 @@ export class Filter {
     shapes.forEach(shape => {
       shape.node.cache()
       shape.node.setAttrs(filter.options)
-      shape.node.filters([
-        ...(shape.node.filters() || []),
-        Konva.Filters[filter.name]
-      ])
+
+      const filters = shape.node.filters() || []
+
+      if (filters.includes(Konva.Filters[filter.name]) === false) {
+        shape.node.filters([...filters, Konva.Filters[filter.name]])
+      }
     })
 
     this.board.layer.batchDraw()
