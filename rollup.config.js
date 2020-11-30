@@ -1,5 +1,4 @@
 import typescript from '@rollup/plugin-typescript'
-
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
@@ -15,7 +14,7 @@ const plugins = [
 
 export default [
   {
-    plugins: [...plugins, typescript()],
+    plugins: [...plugins, typescript({})],
     input: 'src/index.ts',
     output: {
       exports: 'named',
@@ -28,7 +27,8 @@ export default [
       ...plugins,
       typescript({
         declaration: true,
-        outDir: 'dist/es'
+        outDir: 'dist/es',
+        declarationDir: 'dist/es'
       })
     ],
     input: 'src/index.ts',
@@ -39,19 +39,14 @@ export default [
     }
   },
   {
-    plugins: [
-      ...plugins,
-      typescript({
-        sourceMap: true
-      }),
-      terser()
-    ],
+    plugins: [...plugins, typescript(), terser()],
     input: 'src/index.ts',
     output: {
       name: 'Pikaso',
       file: pkg.unpkg.replace('.js', '.min.js'),
       format: 'iife',
-      sourcemap: true
+      sourcemap: false,
+      freeze: false
     }
   }
 ]
