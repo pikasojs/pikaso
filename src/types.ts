@@ -18,7 +18,7 @@ export interface IEmitter {
 }
 
 export interface UnknownObject {
-  [key: string]: boolean | number | string | null | undefined
+  [key: string]: boolean | number | string | object | null | undefined
 }
 export declare interface Settings {
   container: HTMLDivElement
@@ -170,6 +170,7 @@ export declare type EventListenerNames =
   | 'selection:delete'
   | 'filter:add'
   | 'filter:remove'
+  | 'crop'
 
 export declare type Filters =
   | {

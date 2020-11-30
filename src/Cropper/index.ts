@@ -235,7 +235,7 @@ export class Cropper {
       })
     })
 
-    this.board.background.image.setAttrs({
+    this.board.background.image.node.setAttrs({
       image: snapshot.image()
     })
 
@@ -274,7 +274,13 @@ export class Cropper {
 
     stage.batchDraw()
 
-    // emit crop event
-    // this.events.emit('crop', { rect })
+    this.events.emit('crop', {
+      data: {
+        options,
+        rect
+      }
+    })
+
+    return rect
   }
 }
