@@ -20,23 +20,23 @@ export interface IEmitter {
 export interface UnknownObject {
   [key: string]: boolean | number | string | null | undefined
 }
-export interface Settings {
+export declare interface Settings {
   container: HTMLDivElement
   width?: number
   height?: number
 }
 
-export interface Dimensions {
+export declare interface Dimensions {
   width: number
   height: number
 }
 
-export interface Point {
+export declare interface Point {
   x: number
   y: number
 }
 
-export interface ExportOptions {
+export declare interface ExportOptions {
   pixelRatio?: number
 }
 
@@ -96,7 +96,9 @@ export interface CircularCropperOptions extends BaseCropperOptions {
   circleBorderWidth?: number
 }
 
-export type CropperOptions = RectangleCropperOptions | CircularCropperOptions
+export declare type CropperOptions =
+  | RectangleCropperOptions
+  | CircularCropperOptions
 
 export enum DrawType {
   Text = 'Text',
@@ -110,7 +112,7 @@ export enum DrawType {
   Triangle = 'Triangle'
 }
 
-export interface Shapes {
+export declare interface Shapes {
   line: Line
   rect: Rect
   arrow: Arrow
@@ -122,23 +124,23 @@ export interface Shapes {
   polygon: Polygon
 }
 
-export interface IDrawableShape {
+export declare interface IDrawableShape {
   draw: (config: Partial<Konva.ShapeConfig>) => void
   stopDrawing: () => void
 }
 
-export interface IShape {
+export declare interface IShape {
   insert: (config: Konva.ShapeConfig) => void
 }
 
-export interface EventListenerCallbackEvent {
+export declare interface EventListenerCallbackEvent {
   name?: string
   nodes?: (Konva.Shape | Konva.Group)[]
   shapes?: Shape[]
   data?: UnknownObject
 }
 
-export type EventListenerNames =
+export declare type EventListenerNames =
   | '*'
   | 'board:rescale'
   | 'board:change-active-drawing'
@@ -168,7 +170,7 @@ export type EventListenerNames =
   | 'filter:add'
   | 'filter:remove'
 
-export type Filters =
+export declare type Filters =
   | {
       name: 'Blur'
       options?: Partial<{

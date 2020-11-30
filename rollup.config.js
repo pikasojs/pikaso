@@ -14,27 +14,18 @@ const plugins = [
 
 export default [
   {
-    plugins: [...plugins, typescript({})],
-    input: 'src/index.ts',
-    output: {
-      exports: 'named',
-      file: 'dist/lib/pikaso.js',
-      format: 'cjs'
-    }
-  },
-  {
     plugins: [
       ...plugins,
       typescript({
         declaration: true,
-        outDir: 'dist/es',
-        declarationDir: 'dist/es'
+        outDir: 'lib',
+        declarationDir: 'lib'
       })
     ],
     input: 'src/index.ts',
     preserveModules: false,
     output: {
-      dir: 'dist/es',
+      dir: 'lib',
       format: 'esm'
     }
   },
@@ -43,7 +34,7 @@ export default [
     input: 'src/index.ts',
     output: {
       name: 'Pikaso',
-      file: pkg.unpkg.replace('.js', '.min.js'),
+      file: pkg.unpkg,
       format: 'iife',
       sourcemap: false,
       freeze: false
