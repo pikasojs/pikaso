@@ -20,4 +20,6 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: Pikaso Bundles
-        path: pikaso.min.js | lib
+        path: |
+          pikaso.min.js
+          lib
