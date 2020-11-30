@@ -2,7 +2,6 @@
 ![Test, Build and Publish](https://github.com/pikasojs/pikaso/workflows/Test,%20Build%20and%20Publish/badge.svg)
 ![license](https://badgen.net/github/license/pikasojs/pikaso)
 ![npm](https://badgen.net/npm/v/pikaso)
-![release](https://badgen.net/github/release/pikasojs/pikaso)
 ![bundle](https://badgen.net/bundlephobia/minzip/pikaso)
 ![hits](https://badgen.net/npm/dw/pikaso)
 ![types](https://badgen.net/npm/types/pikaso)
