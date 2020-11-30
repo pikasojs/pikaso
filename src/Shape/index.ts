@@ -8,6 +8,8 @@ import { Filter } from '../Filter'
 import { Flip } from '../Flip'
 import { History } from '../History'
 
+import type { Filters } from '../types'
+
 export class Shape {
   /**
    *
@@ -18,11 +20,6 @@ export class Shape {
    *
    */
   public transformerConfig: Konva.TransformerConfig
-
-  /**
-   *
-   */
-  public readonly filter: Filter
 
   /**
    *
@@ -47,6 +44,11 @@ export class Shape {
   /**
    *
    */
+  private readonly filter: Filter
+
+  /**
+   *
+   */
   private deleted: boolean = false
 
   constructor(
@@ -64,7 +66,7 @@ export class Shape {
     this.transformerConfig = transformerConfig
 
     this.flip = new Flip(board, events, history)
-    this.filter = new Filter(node)
+    this.filter = new Filter(board, events, history)
 
     this.registerEvents()
   }
@@ -102,6 +104,20 @@ export class Shape {
    */
   public deselect() {
     this.board.selection.deselect(this)
+  }
+
+  /**
+   *
+   */
+  public addFilter(filter: Filters) {
+    this.filter.apply([this], filter)
+  }
+
+  /**
+   *
+   */
+  public removeFilter(name: Filters['name']) {
+    this.filter.remove([this], name)
   }
 
   /**

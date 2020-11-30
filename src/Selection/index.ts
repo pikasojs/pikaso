@@ -4,8 +4,9 @@ import { Board } from '../Board'
 import { Events } from '../Events'
 import { History } from '../History'
 import { Shape } from '../Shape'
+import { Filter } from '../Filter'
 
-import type { Point } from '../types'
+import type { Point, Filters } from '../types'
 
 export class Selection {
   /**
@@ -36,6 +37,11 @@ export class Selection {
   /**
    *
    */
+  private readonly filter: Filter
+
+  /**
+   *
+   */
   private zone: Konva.Rect
 
   /**
@@ -47,6 +53,8 @@ export class Selection {
     this.board = board
     this.events = events
     this.history = history
+
+    this.filter = new Filter(board, events, history)
 
     this.createZone()
     this.createTransformer()
@@ -271,6 +279,20 @@ export class Selection {
         value
       }
     })
+  }
+
+  /**
+   *
+   */
+  public addFilter(filter: Filters) {
+    this.filter.apply(this.list, filter)
+  }
+
+  /**
+   *
+   */
+  public removeFilter(name: Filters['name']) {
+    this.filter.remove(this.list, name)
   }
 
   /**
