@@ -12,10 +12,10 @@
     "test:unit": "jest",
     "test:e2e": "cypress run",
     "coverage": "jest --coverage",
-    "_postinstall": "husky install",
+    "postinstall": "husky install",
     "prepublish": "pinst --disable",
     "postpublish": "pinst --enable",
-    "clean": "rimraf lib && rimraf pikaso.min.js",
+    "clean": "rimraf lib && rimraf umd",
     "build": "npm run clean && rollup -c"
   },
   "dependencies": {
@@ -86,11 +86,11 @@
   },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
-  "unpkg": "pikaso.min.js",
+  "unpkg": "umd/pikaso.min.js",
   "sideEffects": false,
   "files": [
     "lib",
-    "pikaso.min.js",
+    "umd",
     "LICENSE",
     "README"
   ]
