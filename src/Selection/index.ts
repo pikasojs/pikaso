@@ -118,14 +118,29 @@ export class Selection {
   /**
    *
    */
+  public reselect() {
+    const list = this.list
+
+    this.deselectAll()
+    this.multi(list)
+  }
+
+  /**
+   *
+   */
   public multi(shapes: Shape[]) {
     this.list = shapes
 
     const attrs: Partial<Konva.TransformerConfig> = shapes.reduce(
       (acc, item) => {
+        const enabledAnchors = item.node.isCached()
+          ? []
+          : item.config.transformer?.enabledAnchors
+
         return {
           ...acc,
-          ...item.config.transformer
+          ...item.config.transformer,
+          enabledAnchors
         }
       },
       {
@@ -286,6 +301,7 @@ export class Selection {
    */
   public addFilter(filter: Filters) {
     this.filter.apply(this.list, filter)
+    this.reselect()
   }
 
   /**
@@ -293,6 +309,7 @@ export class Selection {
    */
   public removeFilter(name: Filters['name']) {
     this.filter.remove(this.list, name)
+    this.reselect()
   }
 
   /**

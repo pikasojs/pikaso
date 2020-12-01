@@ -5,7 +5,7 @@ import { Events } from '../Events'
 import { History } from '../History'
 import { Shape } from '../Shape'
 
-import type { Filters } from '../types'
+import type { Filters, HistoryState } from '../types'
 
 export class Filter {
   /**
@@ -35,7 +35,11 @@ export class Filter {
   public apply(shapes: Shape[], filter: Filters) {
     this.history.create(
       this.board.layer,
-      shapes.map(shape => shape.node)
+      shapes.map(shape => shape.node),
+      {
+        undo: (states: HistoryState[]) => this.clearCache(states),
+        redo: (states: HistoryState[]) => this.addCache(states)
+      }
     )
 
     shapes.forEach(shape => {
@@ -67,7 +71,8 @@ export class Filter {
       this.board.layer,
       shapes.map(shape => shape.node),
       {
-        undo: () => shapes.forEach(shape => shape.node.cache())
+        undo: (states: HistoryState[]) => this.addCache(states),
+        redo: (states: HistoryState[]) => this.clearCache(states)
       }
     )
 
@@ -95,5 +100,37 @@ export class Filter {
         filter: name
       }
     })
+  }
+
+  /**
+   *
+   * @param states
+   */
+  private addCache(states: HistoryState[]) {
+    states.forEach(({ nodes }) =>
+      nodes.forEach(node => {
+        if (!node.isCached() && node.filters()?.length) {
+          node.cache()
+        }
+      })
+    )
+
+    this.board.selection.reselect()
+  }
+
+  /**
+   *
+   * @param states
+   */
+  private clearCache(states: HistoryState[]) {
+    states.forEach(({ nodes }) =>
+      nodes.forEach(node => {
+        if (node.isCached() && !node.filters()?.length) {
+          node.clearCache()
+        }
+      })
+    )
+
+    this.board.selection.reselect()
   }
 }

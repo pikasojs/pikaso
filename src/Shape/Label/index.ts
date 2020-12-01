@@ -117,6 +117,10 @@ export class Label {
    *
    */
   private inlineEdit(e: Konva.KonvaEventObject<MouseEvent>) {
+    if (this.label.isCached()) {
+      return
+    }
+
     this.board.setActiveDrawing(DrawType.Text)
 
     const position = e.target.absolutePosition()
