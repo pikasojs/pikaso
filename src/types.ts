@@ -133,6 +133,10 @@ export declare interface IShape {
   insert: (config: Konva.ShapeConfig) => void
 }
 
+export declare type ListenerCallback = (
+  args: EventListenerCallbackEvent
+) => void
+
 export declare interface EventListenerCallbackEvent {
   name?: string
   nodes?: (Konva.Shape | Konva.Group)[]
@@ -144,12 +148,10 @@ export declare type EventListenerNames =
   | '*'
   | 'board:rescale'
   | 'board:change-active-drawing'
-  | 'board:gc'
   | 'shape:create'
   | 'shape:move'
   | 'shape:delete'
   | 'shape:rotate'
-  | 'shape:gc'
   | 'shape:destroy'
   | 'shape:delete'
   | 'shape:undelete'

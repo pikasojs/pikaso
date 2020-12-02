@@ -1,6 +1,8 @@
-import type { EventListenerCallbackEvent, EventListenerNames } from '../types'
-
-type ListenerCallback = (args: EventListenerCallbackEvent) => void
+import type {
+  EventListenerCallbackEvent,
+  EventListenerNames,
+  ListenerCallback
+} from '../types'
 
 interface EventListeners {
   [key: string]: ListenerCallback[]
@@ -13,9 +15,10 @@ export class Events {
   private listeners: EventListeners = {}
 
   /**
+   * Subscribes to one or multiple events
    *
-   * @param eventName
-   * @param callback
+   * @param name - The event name or array of event names. it can be one of [[EventListenerNames]]
+   * @param callback - The callback [[EventListenerCallbackEvent]]
    */
   public on(
     eventName: EventListenerNames | EventListenerNames[],
@@ -33,9 +36,10 @@ export class Events {
   }
 
   /**
+   * UnSubscribes from one or multiple events
    *
-   * @param eventName
-   * @param callback
+   * @param name - The event name. it can be one of [[EventListenerNames]]
+   * @param callback - The callback [[EventListenerCallbackEvent]]
    */
   public off(
     eventName: EventListenerNames | EventListenerNames[],

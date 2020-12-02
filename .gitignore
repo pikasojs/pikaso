@@ -12,6 +12,7 @@ umd
 cypress/videos
 instrumented
 coverage
+api
 
 
 # OS generated files

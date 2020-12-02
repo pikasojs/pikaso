@@ -21,68 +21,107 @@ import { Ellipse } from './Shape/Ellipse'
 import { Polygon } from './Shape/Polygon'
 import { Triangle } from './Shape/Triangle'
 
-import type { Settings, Shapes } from './types'
+import type {
+  Settings,
+  EventListenerNames,
+  ListenerCallback,
+  Shapes
+} from './types'
 
-export { Konva }
+/**
+ * This is the main class and entry point that creates a new editor instance
+ * @see [[constructor]]
+ */
 export default class Pikaso {
   /**
-   *
+   * Represents the board
+   * @see [[Board | Board Class]]
    */
   public board: Board
 
   /**
-   *
+   * Represents exporting
+   * It lets export the active workstation to different formats
+   * @see [[Export | Export Class]]
    */
   public export: Export
 
   /**
-   *
+   * Represents shapes
+   * @see [[Shapes | Shapes Interface]] for the supported shape types
    */
   public shapes: Shapes
 
   /**
+   * Represents selection
    *
+   * Shortcut to [[Board.selection]]
+   * @see [[Selection | Selection Class]]
    */
   public selection: Selection
 
   /**
-   *
+   * Represents board rotation
+   * @see [[Rotation | Rotation Class]]
    */
   public rotation: Rotation
 
   /**
-   *
+   * Represents cropping
+   * @see [[Cropper | Cropper Class]]
    */
   public cropper: Cropper
 
   /**
-   *
+   * Represents flipping
+   * @see [[Flip | Flip Class]]
    */
   public flip: Flip
 
   /**
-   *
+   * Represents free drawing
+   * @see [[Pencil | Pencil Class]]
    */
   public pencil: Pencil
 
   /**
+   * Represents the event manager
    *
+   * This is also possible to Subscribe and Unsubscribe events
+   * with [[on | on method]] and [[off | off method]] of the main class
+   *
+   * @see [[Events]]
+   * @see list of listeneres: [[EventListenerNames]]
    */
   public events: Events
 
   /**
-   *
+   * Represents the actions history
+   * @see [[History | History Class]]
    */
   public history: History
 
   /**
-   *
+   * Represents settings
    */
   private settings: Settings
 
+  /**
+   * It creates a new editor instance
+   *
+   * @param settings - The editor settings
+   *
+   * @example
+   * ```ts
+   * const editor = new Pikaso({
+   *   container: document.getElementById('myDiv') as HTMLDivElement
+   * })
+   * ```
+   * @public
+   */
   constructor(settings: Settings) {
     if (!settings.container) {
-      throw new Error('Pikaso needs a container')
+      throw new Error('It needs to have a container element')
     }
 
     this.settings = settings
@@ -91,63 +130,96 @@ export default class Pikaso {
   }
 
   /**
-   *
+   * @returns The Konva library
    */
   public get Konva() {
     return Konva
   }
 
   /**
+   * Loads the background image from url
+   * This method is a shortcut to [[Background.setImageFromFile]]
    *
+   * @param file - The image file
    */
   public async loadFromFile(file: File) {
     await this.board.background.setImageFromFile(file)
   }
 
   /**
+   * Loads the background image from url
+   * This method is a shortcut to [[Background.setImageFromUrl]]
    *
+   * @param url - The image url
    */
   public async loadFromUrl(url: string) {
     await this.board.background.setImageFromUrl(url)
   }
 
   /**
+   * Resizes the board based on the new container size
    *
+   * This method is a shortcut to [[Board.rescale]]
+   *
+   * @remarks
+   * This method can be used with resize event of window to rescale the board
+   *
+   * @example
+   *
+   * ```ts
+   * const editor = new Pikaso({
+   *   container: document.getElementById('myDiv') as HTMLDivElement
+   * })
+   *
+   * window.addEventListener('resize', () => {
+   *  editor.board.rescale()
+   * })
+   * ```
    */
   public rescale() {
     this.board.rescale()
   }
 
   /**
-   *
+   * Reverses the last action
    */
   public undo() {
     this.history.undo()
   }
 
   /**
-   *
+   * Reverses the last [[undo]]
    */
   public redo() {
     this.history.redo()
   }
 
   /**
+   * Subscribes to one or multiple events
    *
+   * This method is a shortcut to [[Events.on]]
    */
-  public on(...args: Parameters<this['events']['on']>) {
-    this.events.on.call(this.events, ...args)
+  public on(
+    name: EventListenerNames | EventListenerNames[],
+    callback: ListenerCallback
+  ) {
+    this.events.on(name, callback)
   }
 
   /**
+   * UnSubscribes from one or multiple events
    *
+   * This method is a shortcut to [[Events.off]]
    */
-  public off(...args: Parameters<this['events']['off']>) {
-    this.events.off.call(this.events, ...args)
+  public off(
+    name: EventListenerNames | EventListenerNames[],
+    callback: ListenerCallback
+  ) {
+    this.events.off(name, callback)
   }
 
   /**
-   *
+   * Resets everything and reinitializes the editor
    */
   public reset() {
     this.init()
@@ -155,7 +227,8 @@ export default class Pikaso {
   }
 
   /**
-   *
+   * Initializes the editor
+   * @private
    */
   private init() {
     const events = new Events()

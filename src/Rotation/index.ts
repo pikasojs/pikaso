@@ -101,12 +101,10 @@ export class Rotation {
 
       shape.node.setAttrs({
         rotation: shape.node.rotation() + theta,
-        x: center.x * stageScale + this.board.getPosition().x,
-        y: center.y * stageScale + this.board.getPosition().y,
-        scale: {
-          x: shape.node.scaleX() * stageScale,
-          y: shape.node.scaleY() * stageScale
-        }
+        x: center.x * stageScale + this.board.background.getPosition().x,
+        y: center.y * stageScale + this.board.background.getPosition().y,
+        scaleX: shape.node.scaleX() * stageScale,
+        scaleY: shape.node.scaleY() * stageScale
       })
     })
 

@@ -63,6 +63,16 @@ export class Background {
 
   /**
    *
+   */
+  public getPosition() {
+    return {
+      x: this.image.node.x() || this.overlay.node.x(),
+      y: this.image.node.y() || this.overlay.node.y()
+    }
+  }
+
+  /**
+   *
    * @param file
    */
   public async setImageFromFile(file: File) {

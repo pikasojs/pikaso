@@ -9,57 +9,113 @@ import { Background } from '../Shape/Background'
 
 import type { Settings, DrawType } from '../types'
 
+/**
+ * Board class create and controls the main canvas
+ * and manages the shapes in the workspace
+ */
 export class Board {
   /**
-   *
+   * The stage
+   * @see [[https://konvajs.org/api/Konva.Stage.html | Stage]]
    */
   public readonly stage: Konva.Stage
 
   /**
-   *
+   * The main layer
+   * @see [[https://konvajs.org/api/Konva.Layer.html | Layer]]
    */
   public readonly layer: Konva.Layer
 
   /**
-   *
+   * The html container element which the editor renders into that
    */
   public readonly container: HTMLDivElement
 
   /**
-   *
+   * The settings
    */
   public readonly settings: Settings
 
   /**
+   * The background of main layer that contains image and overlay
    *
+   * @remark
+   * Background component is a not selectable shape that represents Image and Rect nodes.
+   * The nodes are accessible with `background.image` and `background.overlay` APIs
+   * @see [[https://konvajs.org/api/Konva.Image.html | Image]] and [[ https://konvajs.org/api/Konva.Rect.html | Rect]]
+   *
+   * @example
+   * ```ts
+   * editor.board.background.setImageFromUrl('<url>')
+   * ```
+   *
+   * @example
+   * ```ts
+   * editor.board.background.fill('rgba(0, 0, 0, 0.5)')
+   * ```
+   *
+   * @example
+   * ```ts
+   * editor.board.background.filter({
+   *  name: 'Blur',
+   *  options: {
+   *    blurRadius: 20
+   *  }
+   * })
+   * ```
    */
   public readonly background: Background
 
   /**
+   * The selection manager components that lets select and manage shapes with UI or API
    *
+   * @example
+   * Selects all shapes
+   * ```ts
+   * editor.board.selection.selectAll()
+   * ```
+   *
+   * @example
+   * Deselects all shapes
+   * ```ts
+   * editor.board.selection.deselectAll()
+   * ```
    */
   public readonly selection: Selection
 
   /**
+   * Demonstrates the current active drawing. it can be one of [[DrawType]] values or `null`.
    *
+   * This property is managing by [[ShapeDrawer]] directly
+   * @private
    */
   public activeDrawing: DrawType | null = null
 
   /**
+   * The array that contains all created shapes including active and deleted items. this property is managing by [[ShapeDrawer]] and [[Selection]]
+   *
+   * @see [[Board.addShape]] and [[Board.setShapes]]
    *
    */
   private shapes: Array<Shape> = []
 
   /**
-   *
+   * @see [[History]]
    */
   private readonly history: History
 
   /**
-   *
+   * @see [[Events]]
    */
   private readonly events: Events
 
+  /**
+   * Creates a new stage, layer, background and selection instance
+   *
+   * @param settings - The [[Settings]]
+   * @param events - The [[Events]]
+   * @param history - The [[History]]
+   */
   constructor(settings: Settings, events: Events, history: History) {
     this.settings = settings
     this.history = history
@@ -110,7 +166,9 @@ export class Board {
   }
 
   /**
-   * returns the stage dimensions
+   * Calculates the board dimensions based on different components
+   *
+   * @returns [[Dimension]]
    */
   public getDimensions() {
     return {
@@ -128,17 +186,9 @@ export class Board {
   }
 
   /**
-   * returns the background position
-   */
-  public getPosition() {
-    return {
-      x: this.background.image.node.x() || this.background.overlay.node.x(),
-      y: this.background.image.node.y() || this.background.overlay.node.y()
-    }
-  }
-
-  /**
+   * Returns all nodes in the main layer including background nodes
    *
+   * @returns array of [[Shape.node]]
    */
   public getNodes() {
     return [
@@ -148,21 +198,23 @@ export class Board {
   }
 
   /**
+   * Returns all created shapes
    *
+   * @see [[Shape]]
    */
   public getShapes() {
     return this.shapes.filter(shape => !shape.isDeleted)
   }
 
   /**
-   *
+   * Updates list of the shapes
    */
   public setShapes(shapes: Shape[]) {
     this.shapes = shapes
   }
 
   /**
-   *
+   * Rescales the container based on its width and height
    */
   public rescale() {
     const transform = this.getContainerTransform()
@@ -181,8 +233,10 @@ export class Board {
   }
 
   /**
+   * Adds a to the node to shapes list
    *
-   * @param shape
+   * @param node The Node [[https://konvajs.org/api/Konva.Shape.html | Shape]]
+   * @param transformerConfig [[https://konvajs.org/api/Konva.Transformer.html | Transformer Config]]
    */
   public addShape(
     node: Konva.Group | Konva.Shape,
@@ -213,7 +267,8 @@ export class Board {
   }
 
   /**
-   *
+   * Changes the active drawing mode
+   * @private
    */
   public setActiveDrawing(mode: DrawType | null) {
     if (mode) {
@@ -233,10 +288,9 @@ export class Board {
   }
 
   /**
+   * Calculates the CSS transformations of board based on stage width and height
    *
-   * @param container
-   * @param stage
-   * @param size
+   * @returns transform style of the container
    */
   public getContainerTransform() {
     const size = this.getDimensions()
@@ -255,13 +309,5 @@ export class Board {
     }
 
     return `translate(-50%, -50%) scale(${scale.toFixed(6)})`
-  }
-
-  /**
-   *
-   */
-  public gc() {
-    this.shapes.forEach(shape => shape.gc())
-    this.events.emit('board:gc')
   }
 }

@@ -185,21 +185,6 @@ export class Shape {
   }
 
   /**
-   *
-   */
-  public gc() {
-    if (!this.deleted) {
-      return
-    }
-
-    this.destroy()
-
-    this.events.emit('shape:gc', {
-      shapes: [this]
-    })
-  }
-
-  /**
    * rotates the node around its center without transforming
    * @param theta - the rotation angle
    */

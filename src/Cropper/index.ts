@@ -16,6 +16,9 @@ import type { CropOptions, CropperOptions, Point } from '../types'
 type FixedCropper = FixedCircularCropper | FixedRectangleCropper
 type FlexibleCropper = FlexibleCircularCropper | FlexibleRectangleCropper
 
+/**
+ * Represents Image Cropper
+ */
 export class Cropper {
   /**
    *
@@ -53,7 +56,8 @@ export class Cropper {
   }
 
   /**
-   *
+   * @returns a boolean that means the cropper is active or not
+   * @public
    */
   public isActive() {
     return this.active
