@@ -10,7 +10,9 @@ interface EventListeners {
 
 export class Events {
   /**
+   * Represents the list of all event listeneres
    *
+   * @private
    */
   private listeners: EventListeners = {}
 
@@ -60,9 +62,10 @@ export class Events {
   }
 
   /**
+   * Emits an event to all subscribers of that event
    *
-   * @param eventName
-   * @param data
+   * @param eventName The event Name [[EventListenerNames]]
+   * @param data The event data [[EventListenerCallbackEvent]]
    */
   public emit(
     eventName: EventListenerNames,

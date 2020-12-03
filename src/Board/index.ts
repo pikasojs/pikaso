@@ -15,13 +15,13 @@ import type { Settings, DrawType } from '../types'
  */
 export class Board {
   /**
-   * The stage
+   * The stage that contains all layers
    * @see [[https://konvajs.org/api/Konva.Stage.html | Stage]]
    */
   public readonly stage: Konva.Stage
 
   /**
-   * The main layer
+   * The main layer that contains all shapes and transformers
    * @see [[https://konvajs.org/api/Konva.Layer.html | Layer]]
    */
   public readonly layer: Konva.Layer
