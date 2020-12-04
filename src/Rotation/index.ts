@@ -108,9 +108,7 @@ export class Rotation {
       })
     })
 
-    this.board.layer.batchDraw()
-
-    // this.events.emit('rotation:transformed', {})
+    this.board.draw()
   }
 
   /**
@@ -126,6 +124,6 @@ export class Rotation {
       rotateAroundCenter(shape.node, theta)
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
   }
 }

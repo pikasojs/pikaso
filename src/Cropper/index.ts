@@ -137,7 +137,7 @@ export class Cropper {
       }
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
     this.board.stage.container().style.cursor = 'default'
   }
 

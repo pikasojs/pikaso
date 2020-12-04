@@ -237,7 +237,7 @@ export class Selection {
 
     shapes.forEach(shape => shape.delete())
 
-    this.board.layer.batchDraw()
+    this.board.draw()
 
     this.events.emit('selection:delete', {
       shapes
@@ -259,7 +259,7 @@ export class Selection {
       })
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
 
     this.events.emit('selection:move', {
       shapes: this.list,
@@ -285,7 +285,7 @@ export class Selection {
       })
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
 
     this.events.emit('selection:move', {
       shapes: this.list,
@@ -446,7 +446,7 @@ export class Selection {
       })
       .moveToTop()
 
-    this.board.layer.batchDraw()
+    this.board.draw()
   }
 
   /**
@@ -466,7 +466,7 @@ export class Selection {
       height: Math.abs(y - this.startPointerPosition.y)
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
   }
 
   /**
@@ -479,7 +479,7 @@ export class Selection {
 
     setTimeout(() => {
       this.zone.visible(false)
-      this.board.layer.batchDraw()
+      this.board.draw()
     }, 10)
 
     const box = this.zone.getClientRect()
@@ -532,17 +532,17 @@ export class Selection {
 
       case 'ArrowRight':
         this.moveX(5)
-        this.board.layer.batchDraw()
+        this.board.draw()
         break
 
       case 'ArrowUp':
         this.moveY(-5)
-        this.board.layer.batchDraw()
+        this.board.draw()
         break
 
       case 'ArrowDown':
         this.moveY(5)
-        this.board.layer.batchDraw()
+        this.board.draw()
         break
 
       case 'Escape':

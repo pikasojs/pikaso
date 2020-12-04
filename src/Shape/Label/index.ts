@@ -133,7 +133,7 @@ export class Label {
     // deselect all selected nodes
     this.board.selection.deselectAll()
 
-    this.board.layer.batchDraw()
+    this.board.draw()
 
     const input = document.createElement('span')
     this.board.container.getElementsByClassName('pikaso')[0].append(input)
@@ -199,7 +199,7 @@ export class Label {
       // select node
       this.board.selection.add(this.shape)
 
-      this.board.layer.batchDraw()
+      this.board.draw()
     })
   }
 

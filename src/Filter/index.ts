@@ -98,7 +98,7 @@ export class Filter {
       }
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
 
     this.events.emit('filter:add', {
       shapes,
@@ -140,7 +140,7 @@ export class Filter {
       shape.node.filters(filters)
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
 
     this.events.emit('filter:remove', {
       shapes,

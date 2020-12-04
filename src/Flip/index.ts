@@ -41,7 +41,7 @@ export class Flip {
       )
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
 
     this.events.emit('flip:x', {
       nodes: list
@@ -63,7 +63,7 @@ export class Flip {
       )
     })
 
-    this.board.layer.batchDraw()
+    this.board.draw()
 
     this.events.emit('flip:y', {
       nodes: list
