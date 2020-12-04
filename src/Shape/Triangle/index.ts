@@ -1,8 +1,9 @@
 import Konva from 'konva'
 
+import { getPointsDistance } from '../../utils/get-points-distance'
+
 import { Board } from '../../Board'
 import { Events } from '../../Events'
-import { History } from '../../History'
 import { ShapeDrawer } from '../../ShapeDrawer'
 
 import { DrawType } from '../../types'
@@ -13,25 +14,31 @@ interface TriangleConfig extends Omit<Konva.RegularPolygonConfig, 'sides'> {
 
 export class Triangle extends ShapeDrawer {
   /**
-   *
+   * Demonstrates the triangle (polygon) shape that is being created
    */
   public shape: Konva.RegularPolygon
 
-  constructor(board: Board, events: Events, history: History) {
-    super(board, events, history, DrawType.Triangle)
+  /**
+   * Creates a new triangle (polygon) builder component
+   *
+   * @param board The [[Board]]
+   * @param events The [[Events]]
+   */
+  constructor(board: Board, events: Events) {
+    super(board, events, DrawType.Triangle)
   }
 
   /**
-   *
-   * @param config
+   * @inheritdoc
+   * @override
    */
   public insert(config: TriangleConfig) {
     return super.insert(config)
   }
 
   /**
-   *
-   * @param config
+   * @inheritdoc
+   * @override
    */
   public draw(config: Partial<TriangleConfig> = {}) {
     super.draw({
@@ -41,8 +48,8 @@ export class Triangle extends ShapeDrawer {
   }
 
   /**
-   *
-   * @param config
+   * @inheritdoc
+   * @override
    */
   protected createShape(config: TriangleConfig) {
     this.shape = new Konva.RegularPolygon({
@@ -52,5 +59,38 @@ export class Triangle extends ShapeDrawer {
     })
 
     return this.board.addShape(this.shape)
+  }
+
+  /**
+   * Starts drawing a triangle (polygon) shape
+   */
+  protected onStartDrawing() {
+    super.onStartDrawing()
+
+    this.createShape({
+      x: this.startPoint.x,
+      y: this.startPoint.y,
+      radius: 0,
+      ...this.config
+    })
+  }
+
+  /**
+   * Continues drawing the triangle (polygon) by changing its radius
+   */
+  protected onDrawing(e: Konva.KonvaEventObject<MouseEvent>) {
+    super.onDrawing(e)
+
+    if (!this.shape) {
+      return
+    }
+
+    const point = this.board.stage.getPointerPosition()!
+
+    this.shape.setAttrs({
+      radius: getPointsDistance(point, this.getShapePosition())
+    })
+
+    this.board.draw()
   }
 }

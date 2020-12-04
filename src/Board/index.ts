@@ -310,4 +310,11 @@ export class Board {
 
     return `translate(-50%, -50%) scale(${scale.toFixed(6)})`
   }
+
+  /**
+   * Redraws the main layer
+   */
+  public draw() {
+    this.layer.batchDraw()
+  }
 }

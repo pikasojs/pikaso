@@ -1,76 +1,99 @@
 import Konva from 'konva'
 
-import { getPointsDistance } from '../utils/get-points-distance'
-
 import { Board } from '../Board'
 import { Events } from '../Events'
-import { History } from '../History'
 import { Shape } from '../Shape'
 
 import { IShape, IDrawableShape, DrawType, Point } from '../types'
 
+/**
+ * This is an abstract class that Shapes have to extend that to insert or
+ * draw their own
+ *
+ * @example
+ * ```ts
+ * editor.board.shapes.circle.insert({
+ *  x: 100,
+ *  y: 100,
+ *  radius: 10,
+ *  fill: 'red'
+ * })
+ * ```
+ *
+ * @example
+ * ```ts
+ * editor.board.shapes.circle.draw()
+ * ```
+ *
+ * @example
+ * ```
+ * editor.board.shapes.circle.stopDrawing()
+ * ```
+ */
 export abstract class ShapeDrawer implements IShape, IDrawableShape {
   /**
-   *
+   * Reperesents the configuration of the shape that is drawing that
+   */
+  public config: Partial<Konva.ShapeConfig>
+
+  /**
+   * Reperesents the start point of the drawing shape
+   */
+  public startPoint: Point
+
+  /**
+   * Reperesents the [[Board]]
    */
   protected readonly board: Board
 
   /**
-   *
+   * Reperesents the [[Events]]
    */
   private readonly events: Events
 
-  /**
-   *
-   */
-  private readonly history: History
-
   /***
-   *
+   * Reperesents [[DrawType | Draw Types]]
    */
   private drawType: DrawType
 
   /**
-   *
-   */
-  private config: Partial<Konva.ShapeConfig>
-
-  /**
-   *
-   */
-  private startPointerPosition: Point
-
-  /**
-   *
+   * Reperesents the shape that is drew
    */
   public abstract shape: Konva.Shape | null
 
-  constructor(
-    board: Board,
-    events: Events,
-    history: History,
-    drawType: DrawType
-  ) {
+  /**
+   * Creates a Shape Drawer instance to build and draw different shapes
+   *
+   * @param board The [[Board]]
+   * @param events The [[Events]]
+   * @param drawType The type of [[DrawType | Drawing]]
+   */
+  constructor(board: Board, events: Events, drawType: DrawType) {
     this.board = board
     this.events = events
-    this.history = history
     this.drawType = drawType
 
-    this.onStart = this.onStart.bind(this)
-    this.onMove = this.onMove.bind(this)
-    this.onEnd = this.onEnd.bind(this)
+    this.onStartDrawing = this.onStartDrawing.bind(this)
+    this.onFinishDrawing = this.onFinishDrawing.bind(this)
+    this.onDrawing = this.onDrawing.bind(this)
+
     this.onKeyDown = this.onKeyDown.bind(this)
   }
 
   /**
-   *
+   * Checks wheather the current shape is drawing or not
    */
   public isDrawing() {
     return this.board.activeDrawing === this.drawType
   }
 
   /**
+   * Creates a new shape and insert that into the [[Board]]
    *
+   * @param config The [[Shape]] configuration
+   * @returns The created [[Shape]]
+   *
+   * @override
    */
   public insert(config: Konva.ShapeConfig): Shape {
     this.stopDrawing()
@@ -79,7 +102,11 @@ export abstract class ShapeDrawer implements IShape, IDrawableShape {
   }
 
   /**
+   * Enables the drawing mode
    *
+   * @param config The initial [[Shape]] config
+   *
+   * @override
    */
   public draw(config: Partial<Konva.LineConfig | Konva.ArrowConfig> = {}) {
     this.config = config
@@ -89,17 +116,17 @@ export abstract class ShapeDrawer implements IShape, IDrawableShape {
 
     this.board.setActiveDrawing(this.drawType)
 
-    this.board.stage.on('mousedown touchstart', this.onStart)
-    this.board.stage.on('mousemove touchmove', this.onMove)
-    this.board.stage.on('mouseup touchend', this.onEnd)
+    this.board.stage.on('mousedown touchstart', this.onStartDrawing)
+    this.board.stage.on('mousemove touchmove', this.onDrawing)
+    this.board.stage.on('mouseup touchend', this.onFinishDrawing)
 
-    window.addEventListener('mouseup', this.onEnd)
-    window.addEventListener('touchend', this.onEnd)
+    window.addEventListener('mouseup', this.onFinishDrawing)
+    window.addEventListener('touchend', this.onFinishDrawing)
     window.addEventListener('keydown', this.onKeyDown)
   }
 
   /**
-   *
+   * Stops drawing mode
    */
   public stopDrawing() {
     this.shape = null
@@ -107,169 +134,60 @@ export abstract class ShapeDrawer implements IShape, IDrawableShape {
     this.board.setActiveDrawing(null)
     this.board.stage.container().style.cursor = 'inherit'
 
-    this.board.stage.off('mousedown touchstart', this.onStart)
-    this.board.stage.off('mousemove touchmove', this.onMove)
-    this.board.stage.off('mouseup touchend', this.onEnd)
+    this.board.stage.off('mousedown touchstart', this.onStartDrawing)
+    this.board.stage.off('mousemove touchmove', this.onDrawing)
+    this.board.stage.off('mouseup touchend', this.onFinishDrawing)
 
-    window.removeEventListener('mouseup', this.onEnd)
-    window.removeEventListener('touchend', this.onEnd)
+    window.removeEventListener('mouseup', this.onFinishDrawing)
+    window.removeEventListener('touchend', this.onFinishDrawing)
     window.removeEventListener('keydown', this.onKeyDown)
   }
 
   /**
+   * Returns current position of the shape
    *
+   * @returns the current position of the shape as a [[Point]]
    */
-  private onStart() {
+  public getShapePosition() {
+    return {
+      x: this.shape!.x(),
+      y: this.shape!.y()
+    }
+  }
+
+  /**
+   * Triggers when drawing mode is active and a click, touch or mouse
+   * down event receiving on the board. then it starting to create the
+   * initial shape for drawing that
+   */
+  protected onStartDrawing() {
     if (!this.isDrawing()) {
       return
     }
 
     const { x, y } = this.board.stage.getPointerPosition()!
-    this.startPointerPosition = { x, y }
-
-    if (this.isLineType()) {
-      this.createShape({
-        globalCompositeOperation: 'source-over',
-        points: [x, y],
-        ...this.config
-      })
-    } else {
-      this.createShape({
-        x,
-        y,
-        ...this.config
-      })
-    }
+    this.startPoint = { x, y }
   }
 
   /**
-   *
+   * Continues drawing the shape based on the mouse move points
    */
-  private onMove(e: Konva.KonvaEventObject<MouseEvent>) {
+  protected onDrawing(e: Konva.KonvaEventObject<MouseEvent>) {
     if (this.isDrawing()) {
       this.board.stage.container().style.cursor = 'crosshair'
     }
-
-    if (!this.shape) {
-      return
-    }
-
-    const point = this.board.stage.getPointerPosition()!
-
-    switch (this.drawType) {
-      case DrawType.Pencil:
-        this.drawPencil(point)
-        break
-
-      case DrawType.Line:
-      case DrawType.Arrow:
-        this.drawLine(point)
-        break
-
-      case DrawType.Ellipse:
-        this.drawEllipse(point, e)
-        break
-
-      case DrawType.Rect:
-        this.drawRect(point, e)
-        break
-
-      case DrawType.Polygon:
-      case DrawType.Triangle:
-        this.drawPolygon(point)
-        break
-
-      case DrawType.Circle:
-        this.drawCircle(point)
-        break
-    }
-
-    this.board.layer.batchDraw()
   }
 
   /**
-   *
+   * Triggers on mouse up and finalizes the drawing
    */
-  private onEnd() {
+  protected onFinishDrawing() {
     this.shape = null
     this.board.stage.container().style.cursor = 'inherit'
   }
 
   /**
-   *
-   */
-  private drawPencil({ x, y }: Point) {
-    const shape = <Konva.Line>this.shape
-    shape.points(shape.points().concat([x, y]))
-  }
-
-  /**
-   *
-   */
-  private drawLine({ x, y }: Point) {
-    const shape = <Konva.Line>this.shape
-    shape.points([...shape.points().slice(0, 2), x, y])
-  }
-
-  /**
-   *
-   * @param point
-   */
-  private drawPolygon(point: Point) {
-    const shape = <Konva.RegularPolygon>this.shape
-
-    shape.setAttrs({
-      radius: getPointsDistance(point, this.getShapePosition())
-    })
-  }
-
-  /**
-   *
-   * @param point
-   */
-  private drawCircle(point: Point) {
-    const shape = <Konva.Circle>this.shape
-
-    shape.setAttrs({
-      radius: getPointsDistance(point, this.getShapePosition())
-    })
-  }
-
-  /**
-   *
-   * @param point
-   */
-  private drawEllipse(point: Point, e: Konva.KonvaEventObject<MouseEvent>) {
-    const shape = <Konva.Ellipse>this.shape
-    const radiusX = Math.abs(point.x - shape.x())
-    const radiusY = Math.abs(point.y - shape.y())
-
-    shape.setAttrs({
-      radiusX,
-      radiusY: e.evt.shiftKey ? radiusX : radiusY
-    })
-  }
-
-  /**
-   *
-   * @param point
-   */
-  private drawRect(point: Point, e: Konva.KonvaEventObject<MouseEvent>) {
-    const shape = <Konva.Rect>this.shape
-
-    const width = Math.abs(point.x - this.startPointerPosition.x)
-    const height = Math.abs(point.y - this.startPointerPosition.y)
-
-    shape.setAttrs({
-      x: Math.min(this.startPointerPosition.x, point.x),
-      y: Math.min(this.startPointerPosition.y, point.y),
-      width,
-      height: e.evt.shiftKey ? width : height
-    })
-  }
-
-  /**
-   *
+   * The keyboard shortcuts for the drawing actions
    */
   private onKeyDown(
     e: Event & {
@@ -284,27 +202,11 @@ export abstract class ShapeDrawer implements IShape, IDrawableShape {
   }
 
   /**
+   * Creates a shape to insert into board or start drawing that
    *
-   */
-  private isLineType() {
-    return [DrawType.Pencil, DrawType.Line, DrawType.Arrow].includes(
-      this.drawType
-    )
-  }
-
-  /**
+   * @param config The [[Shape]] config
    *
-   */
-  private getShapePosition() {
-    return {
-      x: this.shape!.x(),
-      y: this.shape!.y()
-    }
-  }
-
-  /**
-   *
-   * @param config
+   * @virtual
    */
   protected abstract createShape(config: Partial<Konva.ShapeConfig>): Shape
 }

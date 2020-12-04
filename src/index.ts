@@ -241,18 +241,18 @@ export default class Pikaso {
     this.rotation = new Rotation(board, events, history)
     this.cropper = new Cropper(board, events, history)
     this.flip = new Flip(board, events, history)
-    this.pencil = new Pencil(board, events, history)
+    this.pencil = new Pencil(board, events)
 
     this.shapes = {
-      line: new Line(board, events, history),
-      rect: new Rect(board, events, history),
-      arrow: new Arrow(board, events, history),
-      image: new Image(board, events, history),
-      label: new Label(board, events, history),
-      circle: new Circle(board, events, history),
-      ellipse: new Ellipse(board, events, history),
-      polygon: new Polygon(board, events, history),
-      triangle: new Triangle(board, events, history)
+      image: new Image(board),
+      line: new Line(board, events),
+      rect: new Rect(board, events),
+      arrow: new Arrow(board, events),
+      circle: new Circle(board, events),
+      polygon: new Polygon(board, events),
+      ellipse: new Ellipse(board, events),
+      triangle: new Triangle(board, events),
+      label: new Label(board, events, history)
     }
 
     this.board = board

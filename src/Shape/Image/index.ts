@@ -4,29 +4,14 @@ import { imageToDataUrl } from '../../utils/image-to-url'
 import { createImageFromUrl } from '../../utils/create-image-from-url'
 
 import { Board } from '../../Board'
-import { Events } from '../../Events'
-import { History } from '../../History'
-
 export class Image {
   /**
    *
    */
   private readonly board: Board
 
-  /**
-   *
-   */
-  private readonly events: Events
-
-  /**
-   *
-   */
-  private readonly history: History
-
-  constructor(board: Board, events: Events, history: History) {
+  constructor(board: Board) {
     this.board = board
-    this.events = events
-    this.history = history
   }
 
   /**
