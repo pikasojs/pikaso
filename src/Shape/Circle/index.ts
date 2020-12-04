@@ -55,6 +55,10 @@ export class Circle extends ShapeDrawer {
   protected onStartDrawing() {
     super.onStartDrawing()
 
+    if (!this.isDrawing) {
+      return
+    }
+
     this.createShape({
       x: this.startPoint.x,
       y: this.startPoint.y,

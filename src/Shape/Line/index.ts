@@ -57,6 +57,10 @@ export class Line extends ShapeDrawer {
   protected onStartDrawing() {
     super.onStartDrawing()
 
+    if (!this.isDrawing) {
+      return
+    }
+
     this.createShape({
       globalCompositeOperation: 'source-over',
       points: [this.startPoint.x, this.startPoint.y],

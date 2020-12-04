@@ -83,7 +83,7 @@ export abstract class ShapeDrawer implements IShape, IDrawableShape {
   /**
    * Checks wheather the current shape is drawing or not
    */
-  public isDrawing() {
+  public get isDrawing() {
     return this.board.activeDrawing === this.drawType
   }
 
@@ -161,10 +161,6 @@ export abstract class ShapeDrawer implements IShape, IDrawableShape {
    * initial shape for drawing that
    */
   protected onStartDrawing() {
-    if (!this.isDrawing()) {
-      return
-    }
-
     const { x, y } = this.board.stage.getPointerPosition()!
     this.startPoint = { x, y }
   }
@@ -173,7 +169,7 @@ export abstract class ShapeDrawer implements IShape, IDrawableShape {
    * Continues drawing the shape based on the mouse move points
    */
   protected onDrawing(e: Konva.KonvaEventObject<MouseEvent>) {
-    if (this.isDrawing()) {
+    if (this.isDrawing) {
       this.board.stage.container().style.cursor = 'crosshair'
     }
   }
