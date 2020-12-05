@@ -10,42 +10,42 @@ import type { Point, Filters } from '../types'
 
 export class Selection {
   /**
-   *
+   * Represents list of the selected shapes
    */
   public list: Array<Shape> = []
 
   /**
-   *
+   * Represents the selections transformer object
    */
   public transformer: Konva.Transformer
 
   /**
-   *
+   * Represents the [[Board]]
    */
   private board: Board
 
   /**
-   *
-   */
-  private readonly history: History
-
-  /**
-   *
+   * Represents the [[Events]]
    */
   private readonly events: Events
 
   /**
-   *
+   * Represents the [[History]]
+   */
+  private readonly history: History
+
+  /**
+   * Represents the [[Filter]]
    */
   private readonly filter: Filter
 
   /**
-   *
+   * Represents the selection zone rectangle
    */
   private zone: Konva.Rect
 
   /**
-   *
+   * Represents the start point of selection zone rectangle
    */
   private startPointerPosition: Point
 
@@ -70,28 +70,41 @@ export class Selection {
   }
 
   /**
+   * Returns list of selected shapes
    *
+   * @returns array of [[Shape]]
    */
   public get shapes() {
     return this.list
   }
 
   /**
-   *
+   * Checks whether the selection transformer is visible or not
    */
   public get isVisible() {
-    return this.transformer.nodes().length > 0
+    return this.list.length > 0
   }
 
   /**
-   *
+   * Returns selection transformer object
    */
   public getTransformer() {
     return this.transformer
   }
 
   /**
+   * Finds and selects multiple shapes
+   * @param selector The selector function
    *
+   * @example
+   * ```ts
+   * editor.board.selection.find(shape => shape.node.getType() === 'Rect')
+   * ```
+   *
+   * @example
+   * ```ts
+   * editor.board.selection.find(shape => shape.node.getId() === '<id>')
+   * ```
    */
   public find(selector: (shape: Shape) => boolean) {
     const list = this.board.getShapes().filter(shape => {
@@ -102,21 +115,36 @@ export class Selection {
   }
 
   /**
+   * Selects all shapes in the board
    *
+   * @example
+   * ```ts
+   * editor.board.selection.selectAll()
+   * ```
    */
   public selectAll() {
     this.multi(this.board.getShapes())
   }
 
   /**
+   * Deselects all shapes in the board
    *
+   * @example
+   * ```ts
+   * editor.board.selection.deselectAll()
+   * ```
    */
   public deselectAll() {
     this.multi([])
   }
 
   /**
+   * Reselects all selected shapes
    *
+   * @example
+   * ```ts
+   * editor.board.selection.reselectAll()
+   * ```
    */
   public reselect() {
     const list = this.list
@@ -126,7 +154,9 @@ export class Selection {
   }
 
   /**
+   * Selects one or multiple shapes
    *
+   * @param shapes The array of [[Shape]]
    */
   public multi(shapes: Shape[]) {
     this.list = shapes
@@ -170,7 +200,7 @@ export class Selection {
       this.transformer.hide()
     }
 
-    this.board.layer.draw()
+    this.board.draw()
 
     this.events.emit('selection:change', {
       shapes
@@ -178,8 +208,9 @@ export class Selection {
   }
 
   /**
+   * Adds a [[Shape | shape ]] to the selections list
    *
-   * @param shape
+   * @param shape The [[Shape]]
    */
   public add(shape: Shape) {
     const isSelected = this.list.some(item => item.node === shape.node)
@@ -192,8 +223,9 @@ export class Selection {
   }
 
   /**
+   * Toggles a [[Shape | shape]]
    *
-   * @param shape
+   * @param shape The [[Shape]]
    */
   public toggle(shape: Shape) {
     const isSelected = this.list.some(item => item.node === shape.node)
@@ -207,7 +239,9 @@ export class Selection {
   }
 
   /**
+   * Deselects a shape
    *
+   * @param shape The [[Shape]]
    */
   public deselect(shape: Shape) {
     this.list = this.list.filter(item => item !== shape)
@@ -215,8 +249,8 @@ export class Selection {
     this.multi(this.list)
   }
 
-  /***
-   *
+  /**
+   * Deletes all selected shapes
    */
   public delete() {
     if (this.list.length === 0) {
@@ -245,7 +279,9 @@ export class Selection {
   }
 
   /**
+   * Moves the selected shape horizontally
    *
+   * @param value The value number
    */
   public moveX(value: number) {
     this.history.create(
@@ -271,7 +307,9 @@ export class Selection {
   }
 
   /**
+   * Moves the selected shape vertically
    *
+   * @param value The value number
    */
   public moveY(value: number) {
     this.history.create(
@@ -297,7 +335,9 @@ export class Selection {
   }
 
   /**
+   * Adds a filter to the selected shapes
    *
+   * @param filter The [[Filters | Filter]]
    */
   public addFilter(filter: Filters) {
     this.filter.apply(this.list, filter)
@@ -305,7 +345,9 @@ export class Selection {
   }
 
   /**
+   * Removes a filter from the selected shapes
    *
+   * @param name The filter name
    */
   public removeFilter(name: Filters['name']) {
     this.filter.remove(this.list, name)
@@ -313,7 +355,7 @@ export class Selection {
   }
 
   /**
-   *
+   * Creates the rectangle zone instance
    */
   private createZone() {
     this.zone = new Konva.Rect({
@@ -323,17 +365,18 @@ export class Selection {
     })
 
     this.board.layer.add(this.zone)
-    this.board.layer.draw()
+    this.board.draw()
   }
 
   /**
-   *
+   * Create the transformer and register its event listeners
    */
   private createTransformer() {
     this.transformer = new Konva.Transformer()
 
     /**
-     *
+     * registers DragStart event
+     * Triggers when the client starts dragging the transformer
      */
     this.transformer.on('dragstart', () => {
       this.history.create(
@@ -347,7 +390,8 @@ export class Selection {
     })
 
     /**
-     *
+     * registers DragMove event
+     * Triggers when the client dragging the transformer
      */
     this.transformer.on('dragmove', () => {
       this.events.emit('selection:dragmove', {
@@ -356,7 +400,8 @@ export class Selection {
     })
 
     /**
-     *
+     * registers DragEnd event
+     * Triggers when dragging finishes
      */
     this.transformer.on('dragend', () => {
       this.events.emit('selection:dragend', {
@@ -365,7 +410,8 @@ export class Selection {
     })
 
     /**
-     * selections transform start
+     * registers TransformStart event
+     * Triggers when the client starts transforming the transformer
      */
     this.transformer.on('transformstart', () => {
       this.history.create(
@@ -382,7 +428,8 @@ export class Selection {
     })
 
     /**
-     * selections transform
+     * registers Transform event
+     * Triggers when the client transforminging the transformer
      */
     this.transformer.on('transform', () => {
       this.events.emit('selection:transform', {
@@ -391,7 +438,8 @@ export class Selection {
     })
 
     /**
-     * selections transform end
+     * registers TransformEnd event
+     * Triggers when transforming finishes
      */
     this.transformer.on('transformend', () => {
       this.events.emit('selection:transformend', {
@@ -400,12 +448,13 @@ export class Selection {
     })
 
     this.board.layer.add(this.transformer)
-    this.board.layer.draw()
+    this.board.draw()
   }
 
   /**
+   * Starts creating the selection zone rectangle
    *
-   * @param e
+   * @param e The trigger event
    */
   private onDragZoneStart(e: Konva.KonvaEventObject<MouseEvent>) {
     const shape = this.board
@@ -450,7 +499,7 @@ export class Selection {
   }
 
   /**
-   *
+   * Continues creating the selection zone
    */
   private onDragZoneMove() {
     if (!this.zone.visible()) {
@@ -470,7 +519,7 @@ export class Selection {
   }
 
   /**
-   *
+   * Finalizes creating the selection zone
    */
   private onDragZoneEnd() {
     if (!this.zone.visible()) {
@@ -494,8 +543,12 @@ export class Selection {
   }
 
   /**
+   * Triggers on mouse up to finalize creating the zone
    *
-   * @param e
+   * @param e The mouse event
+   *
+   * @see [[Selection.onDragZoneEnd]]
+   *
    */
   private onWindowMouseUp(e: MouseEvent) {
     if (e.target instanceof HTMLCanvasElement) {
@@ -506,8 +559,9 @@ export class Selection {
   }
 
   /**
+   * Handles keyboard events
    *
-   *
+   * @param e The keyboard event
    */
   private onKeyDown(
     e: Event & {
@@ -552,8 +606,10 @@ export class Selection {
   }
 
   /**
+   * Finds parent node of the give node
    *
-   * @param node
+   * @returns The parent node
+   * @param node The node
    */
   private getParentNode(
     node: Konva.Stage | Konva.Group | Konva.Shape
@@ -568,8 +624,9 @@ export class Selection {
   }
 
   /**
+   * Checks wheather the node is a background node or not
    *
-   * @param node
+   * @param node The node
    */
   private isBackgroundNode(node: Konva.Stage | Konva.Group | Konva.Shape) {
     return (

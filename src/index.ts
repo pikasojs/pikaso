@@ -228,7 +228,6 @@ export default class Pikaso {
 
   /**
    * Initializes the editor
-   * @private
    */
   private init() {
     const events = new Events()
@@ -259,6 +258,6 @@ export default class Pikaso {
     this.events = events
     this.history = history
 
-    this.board.layer.draw()
+    this.board.draw()
   }
 }

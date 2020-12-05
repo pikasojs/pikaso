@@ -33,7 +33,7 @@ describe('History', () => {
 
     expect(history.getList().length).toBe(1)
     expect(history.getStep()).toBe(-1)
-    expect(history.getState()).toBe(undefined)
+    expect(history.state).toBe(undefined)
   })
 
   it('should not undo the state', () => {
@@ -42,8 +42,8 @@ describe('History', () => {
     history.undo()
 
     expect(history.getList().length).toBe(0)
-    expect(history.getStep()).toBe(-1)
-    expect(history.getState()).toBe(undefined)
+    expect(history.state).toBe(-1)
+    expect(history.state).toBe(undefined)
   })
 
   it('should redo the state', () => {
@@ -58,13 +58,13 @@ describe('History', () => {
 
     expect(history.getList().length).toBe(1)
     expect(history.getStep()).toBe(-1)
-    expect(history.getState()).toBe(undefined)
+    expect(history.state).toBe(undefined)
 
     history.redo()
 
     expect(history.getList().length).toBe(1)
     expect(history.getStep()).toBe(0)
-    expect(history.getState()).not.toBe(undefined)
+    expect(history.state).not.toBe(undefined)
   })
 
   it('should not redo the state', () => {
@@ -74,7 +74,7 @@ describe('History', () => {
 
     expect(history.getList().length).toBe(0)
     expect(history.getStep()).toBe(-1)
-    expect(history.getState()).toBe(undefined)
+    expect(history.state).toBe(undefined)
   })
 })
 

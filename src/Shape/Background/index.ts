@@ -109,7 +109,7 @@ export class Background {
       height: background.height()
     })
 
-    this.board.layer.draw()
+    this.board.draw()
   }
 
   /**
@@ -125,6 +125,6 @@ export class Background {
       fill: color
     })
 
-    this.board.layer.draw()
+    this.board.draw()
   }
 }

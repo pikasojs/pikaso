@@ -5,6 +5,9 @@ import { Board } from '../../Board'
 
 import type { Point, Dimensions, RectangleCropperOptions } from '../../types'
 
+/**
+ * @internal
+ */
 export class FixedRectangleCropper extends FixedCropper {
   constructor(board: Board, options: Partial<RectangleCropperOptions>) {
     super(board, options)
@@ -14,7 +17,7 @@ export class FixedRectangleCropper extends FixedCropper {
   }
 
   /**
-   *
+   * Returns the rect bound of the cropping area
    */
   public getRect(): (Point & Dimensions) | null {
     const options = <RectangleCropperOptions>this.options
@@ -31,7 +34,7 @@ export class FixedRectangleCropper extends FixedCropper {
   }
 
   /**
-   *
+   * Setups the overlay
    */
   protected setupOverlay() {
     const options = <RectangleCropperOptions>this.options

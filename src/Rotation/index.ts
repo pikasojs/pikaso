@@ -2,29 +2,45 @@ import Konva from 'konva'
 
 import { convertDegreeToRadian } from '../utils/degree-to-radian'
 import { rotateAroundCenter } from '../utils/rotate-around-center'
+import { getRotatedPoint } from '../utils/get-rotated-point'
 
 import { Board } from '../Board'
 import { History } from '../History'
 import { Events } from '../Events'
 
-import { getRotatedPoint } from '../utils/get-rotated-point'
-
 export class Rotation {
   /**
-   *
+   * Represents the [[Board]]
    */
   private readonly board: Board
 
   /**
-   *
+   * Represents the [[Events]]
+   */
+  private events: Events
+
+  /**
+   * Represents the [[History]]
    */
   private readonly history: History
 
   /**
+   * Rotates shapes and background
    *
+   * @example
+   * ```ts
+   * editor.rotation.transform(30)
+   * ```
+   *
+   * @example
+   * ```ts
+   * editor.rotation.straighten(-30)
+   * ```
+   *
+   * @param board The [[Board]]
+   * @param events The [[Events]]
+   * @param history The [[History]]
    */
-  private events: Events
-
   constructor(board: Board, events: Events, history: History) {
     this.board = board
     this.events = events
@@ -32,13 +48,15 @@ export class Rotation {
   }
 
   /**
-   * rotates the image around its center with scaling and transforming
+   * Rotates the board with its shapes around their center
+   * with scaling and transforming
    *
-   * Or you can use:
-   * ```typescript
-   * instance.rotation.transform(30)
+   * @param theta The rotation angle
+   *
+   * @example
+   * ```ts
+   * editor.rotation.transform(30)
    * ```
-   * @param theta - the rotation angle
    */
   public transform(theta: number) {
     this.history.create(this.board.stage, [
@@ -109,11 +127,23 @@ export class Rotation {
     })
 
     this.board.draw()
+
+    this.events.emit('rotation:transform')
   }
 
   /**
-   * rotates the image around its center without transforming
-   * @param theta - the rotation angle
+   * Rotates the board with its shapes around their center without transforming
+   * @param theta The rotation angle
+   *
+   * @example
+   * ```
+   * editor.rotation.straighten(30)
+   * ```
+   *
+   * @example
+   * ```
+   * editor.rotation.straighten(-50)
+   * ```
    */
   public straighten(theta: number) {
     this.board.background.nodes.forEach((node: Konva.Shape) => {
@@ -125,5 +155,7 @@ export class Rotation {
     })
 
     this.board.draw()
+
+    this.events.emit('rotation:straighten')
   }
 }

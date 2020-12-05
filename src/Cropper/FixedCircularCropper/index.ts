@@ -5,6 +5,9 @@ import { Board } from '../../Board'
 
 import type { CircularCropperOptions, Point, Dimensions } from '../../types'
 
+/**
+ * @internal
+ */
 export class FixedCircularCropper extends FixedCropper {
   constructor(board: Board, options: Partial<CircularCropperOptions>) {
     super(board, {
@@ -17,7 +20,7 @@ export class FixedCircularCropper extends FixedCropper {
   }
 
   /**
-   *
+   * Returns the rect bound of the cropping area
    */
   public getRect(): (Point & Dimensions) | null {
     const options = <CircularCropperOptions>this.options
@@ -34,7 +37,7 @@ export class FixedCircularCropper extends FixedCropper {
   }
 
   /**
-   *
+   * Setups the overlay
    */
   protected setupOverlay() {
     const options = <CircularCropperOptions>this.options

@@ -5,12 +5,21 @@ import { Board } from '../../Board'
 
 import type { CropperOptions, Point, Dimensions } from '../../types'
 
+/**
+ * @internal
+ */
 export abstract class FlexibleCropper extends BaseCropper {
   /**
-   *
+   * Represents the draggable cropzone
    */
   protected readonly transformer: Konva.Transformer
 
+  /**
+   * Creates a flexible cropzone
+   *
+   * @param board The [[Board]]
+   * @param options The [[CropperOptions | Cropper Options]]
+   */
   constructor(board: Board, options: Partial<CropperOptions>) {
     super(board, options)
 
@@ -24,7 +33,9 @@ export abstract class FlexibleCropper extends BaseCropper {
   }
 
   /**
+   * Updates the cropzone position
    *
+   * @param point The [[Point]]
    */
   public setPosition(
     { x, y }: Point = { x: this.options.x, y: this.options.y }
@@ -38,7 +49,7 @@ export abstract class FlexibleCropper extends BaseCropper {
   }
 
   /**
-   *
+   * Returns current rect bound of the cropzone
    */
   public getRect(): (Point & Dimensions) | null {
     return {
@@ -50,7 +61,7 @@ export abstract class FlexibleCropper extends BaseCropper {
   }
 
   /**
-   *
+   * Setups the cropzone
    */
   protected setupCropzone() {
     this.cropzone.draggable(true)
@@ -58,8 +69,9 @@ export abstract class FlexibleCropper extends BaseCropper {
   }
 
   /**
+   * Returns the bound rect of the cropzone transformer
    *
-   * @param pos
+   * @param pos The [[Point]]
    */
   private getCropzoneBoundRect(pos: Point): Point {
     const minX =
@@ -89,7 +101,7 @@ export abstract class FlexibleCropper extends BaseCropper {
   }
 
   /**
-   *
+   * Creates the draggable cropzone transformer
    */
   private createTransformer() {
     return new Konva.Transformer({

@@ -4,31 +4,34 @@ import { Board } from '../../Board'
 
 import type { CropperOptions } from '../../types'
 
+/**
+ * @internal
+ */
 export abstract class BaseCropper {
   /**
-   *
-   */
-  public readonly options: CropperOptions
-
-  /**
-   *
+   * Represents the [[Board]]
    */
   public readonly board: Board
 
   /**
-   *
+   * Represents the [[Board.layer]]
    */
   public readonly layer: Konva.Layer
 
   /**
-   *
+   * Represents the overlay that fades the background
    */
   public readonly overlay: Konva.Shape
 
   /**
-   *
+   * Represents the crop zone that demonstrates the cropping area
    */
   public cropzone: Konva.Group
+
+  /**
+   * Represents the cropping options
+   */
+  public readonly options: CropperOptions
 
   constructor(board: Board, options: Partial<CropperOptions>) {
     this.board = board
@@ -43,20 +46,7 @@ export abstract class BaseCropper {
   }
 
   /**
-   *
-   */
-  public createOverlay() {
-    return new Konva.Shape({
-      x: 0,
-      y: 0,
-      opacity: this.options.overlayOpacity,
-      width: this.board.stage.width(),
-      height: this.board.stage.height()
-    })
-  }
-
-  /**
-   *
+   * Returns the array of mouse events and their relevent cursor names
    */
   protected getCursorEvents() {
     return [
@@ -80,7 +70,7 @@ export abstract class BaseCropper {
   }
 
   /**
-   *
+   * Creates the cropzone node
    */
   private createCropzone() {
     const group = new Konva.Group({
@@ -132,7 +122,7 @@ export abstract class BaseCropper {
   }
 
   /**
-   *
+   * Creates the guide lines of the cropzone
    */
   private createGuideLines() {
     const { guidesCount, guidesColor, guidesWidth, guidesDash } = this.options
@@ -181,7 +171,22 @@ export abstract class BaseCropper {
   }
 
   /**
+   * Create the overlay node
+   */
+  private createOverlay() {
+    return new Konva.Shape({
+      x: 0,
+      y: 0,
+      opacity: this.options.overlayOpacity,
+      width: this.board.stage.width(),
+      height: this.board.stage.height()
+    })
+  }
+
+  /**
+   * Normalizes the cropping options
    *
+   * @param options The [[CropperOptions]]
    */
   private createOptions(options: Partial<CropperOptions>) {
     const base = {
@@ -272,6 +277,17 @@ export abstract class BaseCropper {
     }
   }
 
+  /**
+   * Setups the cropzone
+   *
+   * @virtual
+   */
   protected abstract setupCropzone(): void
+
+  /**
+   * Setups the overlay
+   *
+   * @virtual
+   */
   protected abstract setupOverlay(): void
 }

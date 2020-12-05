@@ -13,7 +13,7 @@ import type {
 
 export class History {
   /**
-   *
+   * Represents the list of history states
    */
   private list: Array<{
     container: Konva.Stage | Konva.Layer
@@ -22,12 +22,12 @@ export class History {
   }> = []
 
   /**
-   *
+   * Represents the current step of the history
    */
   private step = -1
 
   /**
-   *
+   * Represents [[Events]]
    */
   private events: Events
 
@@ -36,40 +36,28 @@ export class History {
   }
 
   /**
-   *
+   * Returns the current step
    */
   public getStep() {
     return this.step
   }
 
   /**
-   *
+   * Returns the list of states
    */
   public getList() {
     return this.list
   }
 
   /**
-   *
+   * Returns state of current step
    */
-  public getState() {
+  public get state() {
     return this.list[this.step]
   }
 
-  public getEventData() {
-    return {
-      data: {
-        step: this.step,
-        total: this.list.length,
-        canUndo: this.step > -1,
-        canReset: this.step > -1,
-        canRedo: this.step > -1 && this.step < this.list.length - 1
-      }
-    }
-  }
-
   /**
-   *
+   * Creates a new state action
    */
   public create(
     container: Konva.Stage | Konva.Layer,
@@ -90,27 +78,7 @@ export class History {
   }
 
   /**
-   *
-   * @param node
-   */
-  public getNodeState(node: HistoryNode): HistoryState {
-    const snapshpot = <HistoryNode>node.clone({})
-
-    if (node.getType() === 'Group') {
-      return {
-        nodes: this.getNodesTree(node),
-        snapshots: this.getNodesTree(snapshpot).map(node => node.attrs)
-      }
-    }
-
-    return {
-      nodes: [node],
-      snapshots: [snapshpot.attrs]
-    }
-  }
-
-  /**
-   *
+   * Reverses the last action
    */
   public undo() {
     if (this.step < 0) {
@@ -126,7 +94,7 @@ export class History {
   }
 
   /**
-   *
+   * Reverses the last [[History.undo]]
    */
   public redo() {
     if (this.step === this.list.length - 1) {
@@ -143,8 +111,9 @@ export class History {
   }
 
   /**
+   * Jumps to a specific state
    *
-   * @param step
+   * @param step The step number to jump in
    */
   public jump(to: number) {
     if (to < 0 || to > this.list.length - 1 || this.step === to) {
@@ -157,7 +126,30 @@ export class History {
   }
 
   /**
+   * Calculates state of the given node
    *
+   * @param node The [[Shape | shape's]] node
+   */
+  private getNodeState(node: HistoryNode): HistoryState {
+    const snapshpot = <HistoryNode>node.clone({})
+
+    if (node.getType() === 'Group') {
+      return {
+        nodes: this.getNodesTree(node),
+        snapshots: this.getNodesTree(snapshpot).map(node => node.attrs)
+      }
+    }
+
+    return {
+      nodes: [node],
+      snapshots: [snapshpot.attrs]
+    }
+  }
+
+  /**
+   * Applies the given attributes to the state
+   *
+   * @param getAttributes
    */
   private applyAttributes(
     getAttributes: (node: HistoryNode, snapshot: UnknownObject) => UnknownObject
@@ -184,8 +176,9 @@ export class History {
   }
 
   /**
+   * Creates a tree from the node and its children
    *
-   *
+   * @param node The shape's node
    */
   private getNodesTree(node: HistoryNode | HistoryNode[]): HistoryNode[] {
     if (node) {
@@ -204,8 +197,9 @@ export class History {
   }
 
   /**
+   * Normalizes the attributes of the given node
    *
-   * @param node
+   * @param node The shape's node
    */
   private getNodeAttributes(node: HistoryNode) {
     return omit(
@@ -220,5 +214,20 @@ export class History {
       },
       ['id', 'container']
     )
+  }
+
+  /**
+   * Returns the event data of current step
+   */
+  private getEventData() {
+    return {
+      data: {
+        step: this.step,
+        total: this.list.length,
+        canUndo: this.step > -1,
+        canReset: this.step > -1,
+        canRedo: this.step > -1 && this.step < this.list.length - 1
+      }
+    }
   }
 }

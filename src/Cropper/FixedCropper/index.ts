@@ -5,12 +5,21 @@ import { Board } from '../../Board'
 
 import type { CropperOptions, Point } from '../../types'
 
+/**
+ * @internal
+ */
 export abstract class FixedCropper extends BaseCropper {
   /**
-   *
+   * Represents the draggable overlay for the fixed cropper
    */
   public readonly draggable: Konva.Rect
 
+  /**
+   * Creates a fixed cropper
+   *
+   * @param board The [[Board]]
+   * @param options The [[CropperOptions | Cropper Options]]
+   */
   constructor(board: Board, options: Partial<CropperOptions>) {
     super(board, options)
 
@@ -24,7 +33,9 @@ export abstract class FixedCropper extends BaseCropper {
   }
 
   /**
+   * Zooms on the background
    *
+   * @param scale The scaling value
    */
   public zoom(scale: number) {
     this.board.layer.scale({
@@ -51,11 +62,13 @@ export abstract class FixedCropper extends BaseCropper {
     this.board.layer.x(this.draggable.x())
     this.board.layer.y(this.draggable.y())
 
-    this.board.layer.batchDraw()
+    this.board.draw()
   }
 
   /**
+   * Updates position of the cropzone
    *
+   * @param point The Point
    */
   public setDraggableOverlayPosition({ x, y }: Point) {
     const { x: left, y: top } = this.getDraggableOverlayBoundRect({
@@ -69,19 +82,20 @@ export abstract class FixedCropper extends BaseCropper {
     this.draggable.y(top)
     this.board.layer.y(top)
 
-    this.board.layer.batchDraw()
+    this.board.draw()
   }
 
   /**
-   *
+   * Setups the cropzone
    */
   protected setupCropzone() {
     this.cropzone.draggable(false)
   }
 
   /**
+   * Returns the rect bound of the draggable overlay
    *
-   * @param pos - Point
+   * @param pos The [[Point]]
    */
   private getDraggableOverlayBoundRect(pos: Point) {
     const node = this.draggable
@@ -123,7 +137,8 @@ export abstract class FixedCropper extends BaseCropper {
   }
 
   /**
-   *
+   * Creates the draggable overlay. for fixed croppers, the cropzone has a
+   * fixed position and the overlay is draggable instead
    */
   private createDraggableOverlay() {
     const rect = new Konva.Rect({
@@ -139,7 +154,7 @@ export abstract class FixedCropper extends BaseCropper {
 
         this.board.layer.x(x)
         this.board.layer.y(y)
-        this.board.layer.batchDraw()
+        this.board.draw()
 
         return {
           x,

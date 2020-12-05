@@ -9,20 +9,17 @@ import type { Filters, HistoryState } from '../types'
 
 export class Filter {
   /**
-   * @see [[Board]]
-   * @private
+   * Represents the [[Board]]
    */
   private board: Board
 
   /**
-   * @see [[Events]]
-   * @private
+   * Represents the [[Events]]
    */
   private events: Events
 
   /**
-   * @see [[History]]
-   * @private
+   * Represents the [[History]]
    */
   private history: History
 
@@ -159,8 +156,6 @@ export class Filter {
    * about methods. so this function does the job
    *
    * @param states The history state
-   *
-   * @private
    */
   private addCache(states: HistoryState[]) {
     states.forEach(({ nodes }) =>
@@ -180,7 +175,6 @@ export class Filter {
    * @see [[Filter.addCache]]
    *
    * @param states The history state
-   * @private
    */
   private clearCache(states: HistoryState[]) {
     states.forEach(({ nodes }) =>

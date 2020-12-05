@@ -16,45 +16,54 @@ interface ShapeConfig {
 }
 export class Shape {
   /**
-   *
+   * Represents the shape's node
    */
   public node: Konva.Group | Konva.Shape
 
   /**
-   *
+   * Represents the configuration of the shape
    */
   public config: ShapeConfig
 
   /**
-   *
+   * Represents the [[Board]]
    */
   private readonly board: Board
 
   /**
-   *
+   * Represents the [[Events]]
    */
   private readonly events: Events
 
   /**
-   *
+   * Represents the [[History]]
    */
   private readonly history: History
 
   /**
-   *
+   * Represents the [[Flip]]
    */
   private readonly flip: Flip
 
   /**
-   *
+   * Represents the [[Filter]]
    */
   private readonly filter: Filter
 
   /**
-   *
+   * Represents whether the shape is deleted or not
    */
   private deleted: boolean = false
 
+  /**
+   * Creates a new shape
+   *
+   * @param board The [[Board]]
+   * @param events The [[Events]]
+   * @param history The [[History]]
+   * @param node The Node
+   * @param config The [[ShapeConfig | Config]]
+   */
   constructor(
     board: Board,
     events: Events,
@@ -84,56 +93,62 @@ export class Shape {
   }
 
   /**
-   *
+   * Returns whether the shape is deleted or not
    */
   public get isDeleted() {
     return this.deleted
   }
 
   /**
-   *
+   * Flips the shape horizontally
    */
   public flipX() {
-    this.flip.horizontal([this.node])
+    this.flip.horizontal([this])
   }
 
   /**
-   *
+   * Flips the shape vertically
    */
   public flipY() {
-    this.flip.vertical([this.node])
+    this.flip.vertical([this])
   }
 
   /**
-   *
+   * Adds the shape to the selections
    */
   public select() {
     this.board.selection.add(this)
   }
 
   /**
-   *
+   * Deselects the shape
    */
   public deselect() {
     this.board.selection.deselect(this)
   }
 
   /**
+   * Adds a filter to the shape
    *
+   * @param filter The [[Filters | Filter]]
    */
   public addFilter(filter: Filters) {
     this.filter.apply([this], filter)
   }
 
   /**
+   * Removes filter from the shape
    *
+   * @param name The filter name
    */
   public removeFilter(name: Filters['name']) {
     this.filter.remove([this], name)
   }
 
   /**
+   * Deletes the shape.
    *
+   * This action can undo with [[Shape.undelete]] method
    */
   public delete() {
     if (this.deleted) {
@@ -151,7 +166,7 @@ export class Shape {
   }
 
   /**
-   *
+   * Undeletes a deleted shape
    */
   public undelete() {
     if (!this.deleted) {
@@ -168,7 +183,7 @@ export class Shape {
   }
 
   /**
-   *
+   * Destroys a deleted shape
    */
   public destroy() {
     this.node.destroy()
@@ -185,12 +200,13 @@ export class Shape {
   }
 
   /**
-   * rotates the node around its center without transforming
+   * Rotates the node around its center without transforming
+   *
    * @param theta - the rotation angle
    */
   public rotate(theta: number) {
     rotateAroundCenter(this.node, theta)
-    this.board.layer.draw()
+    this.board.draw()
 
     this.events.emit('shape:rotate', {
       shapes: [this]
@@ -198,56 +214,59 @@ export class Shape {
   }
 
   /**
-   *
+   * Returns `x` position of the shape
    */
   public x() {
     return this.node.x()
   }
 
   /**
-   *
+   * Returns `y` position of the shape
    */
   public y() {
     return this.node.y()
   }
 
   /**
-   *
+   * Returns `scale` value of the shape
    */
   public scale() {
     return this.node.scale()
   }
 
   /**
-   *
+   * Returns `scaleX` value of the shape
    */
   public scaleX() {
     return this.node.scaleX()
   }
 
   /**
-   *
+   * Returns `scaleY` value of the shape
    */
   public scaleY() {
     return this.node.scaleY()
   }
 
   /**
-   *
+   * Makes the shape visible if is hidden
    */
   public show() {
     return this.node.show()
   }
 
   /**
-   *
+   * Makes the shape hidden if is visible
    */
   public hide() {
     return this.node.hide()
   }
 
   /**
+   * Updates attribute of the shape
    *
+   * @param name The attribute name
+   * @param value The attribute value
    */
   public setAttr(name: string, value: unknown) {
     return this.setAttrs({
@@ -256,7 +275,9 @@ export class Shape {
   }
 
   /**
+   * Updates attributes of the shape
    *
+   * @param attributes The list of attributes
    */
   public setAttrs(attributes: Partial<Konva.ShapeConfig>) {
     this.history.create(this.board.layer, this.node)
@@ -264,6 +285,9 @@ export class Shape {
     return this.node.setAttrs(attributes)
   }
 
+  /**
+   * Registers required events of the shape
+   */
   private registerEvents() {
     /**
      * mouseorver event

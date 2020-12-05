@@ -11,8 +11,6 @@ interface EventListeners {
 export class Events {
   /**
    * Represents the list of all event listeneres
-   *
-   * @private
    */
   private listeners: EventListeners = {}
 

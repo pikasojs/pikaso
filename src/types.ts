@@ -172,6 +172,8 @@ export declare type EventListenerNames =
   | 'selection:delete'
   | 'filter:add'
   | 'filter:remove'
+  | 'rotation:straighten'
+  | 'rotation:transform'
   | 'crop'
 
 export declare type Filters =

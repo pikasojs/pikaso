@@ -103,7 +103,7 @@ export class Label {
       this.board.selection.transformer.forceUpdate()
     }
 
-    this.board.layer.draw()
+    this.board.draw()
 
     this.events.emit('label:update-text', {
       shapes: [this.shape],

@@ -5,7 +5,16 @@ import { FlexibleCropper } from '../FlexibleCropper'
 
 import type { CircularCropperOptions } from '../../types'
 
+/**
+ * @internal
+ */
 export class FlexibleCircularCropper extends FlexibleCropper {
+  /**
+   * Creates a flexible circular instance
+   *
+   * @param board The [[Board]]
+   * @param options The [[RectangleCropperOptions]]
+   */
   constructor(board: Board, options: Partial<CircularCropperOptions>) {
     super(board, {
       ...options,
@@ -18,7 +27,7 @@ export class FlexibleCircularCropper extends FlexibleCropper {
   }
 
   /**
-   *
+   * Setups the overlay
    */
   protected setupOverlay() {
     this.overlay.sceneFunc(

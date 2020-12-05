@@ -87,7 +87,6 @@ export class Board {
    * Demonstrates the current active drawing. it can be one of [[DrawType]] values or `null`.
    *
    * This property is managing by [[ShapeDrawer]] directly
-   * @private
    */
   public activeDrawing: DrawType | null = null
 
@@ -252,7 +251,7 @@ export class Board {
     this.shapes = [...this.shapes, shape]
 
     this.layer.add(node)
-    this.layer.draw()
+    this.draw()
 
     this.history.create(this.layer, [], {
       undo: () => shape.delete(),
@@ -268,12 +267,11 @@ export class Board {
 
   /**
    * Changes the active drawing mode
-   * @private
    */
   public setActiveDrawing(mode: DrawType | null) {
     if (mode) {
       this.selection.transformer.hide()
-      this.layer.draw()
+      this.draw()
     }
 
     if (mode !== this.activeDrawing) {

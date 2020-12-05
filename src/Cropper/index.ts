@@ -16,27 +16,24 @@ import type { CropOptions, CropperOptions, Point } from '../types'
 type FixedCropper = FixedCircularCropper | FixedRectangleCropper
 type FlexibleCropper = FlexibleCircularCropper | FlexibleRectangleCropper
 
-/**
- * Represents Image Cropper
- */
 export class Cropper {
   /**
-   *
+   * Represents the [[Board]]
    */
   private readonly board: Board
 
   /**
-   *
-   */
-  private readonly history: History
-
-  /**
-   *
+   * Represents the [[Events]]
    */
   private readonly events: Events
 
   /**
-   *
+   * Represents the [[History]]
+   */
+  private readonly history: History
+
+  /**
+   * Represents the current cropper instance
    */
   private instance:
     | FixedCircularCropper
@@ -45,33 +42,41 @@ export class Cropper {
     | FlexibleRectangleCropper
 
   /**
-   *
+   * Represents the cropper is active or not
    */
   private active: boolean
 
-  constructor(canvas: Board, events: Events, history: History) {
-    this.board = canvas
+  /**
+   * Creates a new cropper instance
+   *
+   * @param board The [[Board]]
+   * @param events The [[Events]]
+   * @param history The [[History]]
+   */
+  constructor(board: Board, events: Events, history: History) {
+    this.board = board
     this.events = events
     this.history = history
   }
 
   /**
-   * @returns a boolean that means the cropper is active or not
-   * @public
+   * Returns whether the cropper is active or not
    */
-  public isActive() {
+  public get isActive() {
     return this.active
   }
 
   /**
-   *
+   * Returns the active cropper instance
    */
   public getInstance() {
     return this.instance
   }
 
   /**
+   * Starts the cropper
    *
+   * @param options [[CropperOptions]]
    */
   public start(options: Partial<CropperOptions>) {
     if (this.active) {
@@ -117,7 +122,7 @@ export class Cropper {
   }
 
   /**
-   *
+   * Stops the active cropper
    */
   public stop() {
     if (!this.active) {
@@ -142,8 +147,9 @@ export class Cropper {
   }
 
   /**
+   * Zooms on the board. It only works in `fixed` mode
    *
-   * @param value
+   * @param value The zooming value
    */
   public zoom(value: number) {
     if (!this.instance.options.fixed) {
@@ -155,8 +161,9 @@ export class Cropper {
   }
 
   /**
+   * Changes position of cropper zone
    *
-   * @param param
+   * @param point The [[Point]]
    */
   public setPosition(point: Point) {
     let instance: FixedCropper | FlexibleCropper
@@ -173,7 +180,9 @@ export class Cropper {
   }
 
   /**
+   * Crops the selected area
    *
+   * @param options The [[CropOptions | options]]
    */
   public async crop(options: Partial<CropOptions> = {}) {
     const rect = options.rect || this.instance.getRect()
