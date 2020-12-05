@@ -111,9 +111,9 @@ export class Board {
   /**
    * Creates a new stage, layer, background and selection instance
    *
-   * @param settings - The [[Settings]]
-   * @param events - The [[Events]]
-   * @param history - The [[History]]
+   * @param settings The [[Settings]]
+   * @param events The [[Events]]
+   * @param history The [[History]]
    */
   constructor(settings: Settings, events: Events, history: History) {
     this.settings = settings

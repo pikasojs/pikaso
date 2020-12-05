@@ -109,7 +109,7 @@ export default class Pikaso {
   /**
    * It creates a new editor instance
    *
-   * @param settings - The editor settings
+   * @param settings The editor settings
    *
    * @example
    * ```ts
@@ -140,7 +140,7 @@ export default class Pikaso {
    * Loads the background image from url
    * This method is a shortcut to [[Background.setImageFromFile]]
    *
-   * @param file - The image file
+   * @param file The image file
    */
   public async loadFromFile(file: File) {
     await this.board.background.setImageFromFile(file)
@@ -150,7 +150,7 @@ export default class Pikaso {
    * Loads the background image from url
    * This method is a shortcut to [[Background.setImageFromUrl]]
    *
-   * @param url - The image url
+   * @param url The image url
    */
   public async loadFromUrl(url: string) {
     await this.board.background.setImageFromUrl(url)

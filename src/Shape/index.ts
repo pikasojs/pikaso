@@ -202,7 +202,7 @@ export class Shape {
   /**
    * Rotates the node around its center without transforming
    *
-   * @param theta - the rotation angle
+   * @param theta The rotation angle
    */
   public rotate(theta: number) {
     rotateAroundCenter(this.node, theta)

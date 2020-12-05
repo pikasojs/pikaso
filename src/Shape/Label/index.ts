@@ -11,30 +11,37 @@ import { Shape } from '..'
 
 export class Label {
   /**
-   *
+   * Represents the [[Board]]
    */
   private readonly board: Board
 
   /**
-   *
+   * Represents the [[Events]]
    */
   private readonly events: Events
 
   /**
-   *
+   * Represents the [[History]]
    */
   private readonly history: History
 
   /**
-   *
+   * Represents the label shape
    */
   private shape: Shape
 
   /**
-   *
+   * Represents the label node
    */
   private label: Konva.Label
 
+  /**
+   * Creates a new label builder component
+   *
+   * @param board The [[Board]]
+   * @param events The [[Events]]
+   * @param history The [[History]]
+   */
   constructor(board: Board, events: Events, history: History) {
     this.board = board
     this.events = events
@@ -42,21 +49,23 @@ export class Label {
   }
 
   /**
-   *
+   * Returns the text node of the label
    */
   public get text() {
     return this.label.getText() as Konva.Text
   }
 
   /**
-   *
+   * Returns the tag node of the label
    */
   public get tag() {
     return this.label.getTag() as Konva.Tag
   }
 
   /**
+   * Inserts a new label into the board
    *
+   * @param config The configuration of the label
    */
   public insert(config: {
     container: Konva.LabelConfig
@@ -87,8 +96,9 @@ export class Label {
   }
 
   /**
+   * Updates text value of the label
    *
-   * @param value
+   * @param value The text value
    */
   public updateText(value: string) {
     this.text.setAttrs({
@@ -114,7 +124,9 @@ export class Label {
   }
 
   /**
+   * Enables inline editing of the label with double clicking on the node
    *
+   * @param e The [[MouseEvent | Mouse Event]
    */
   private inlineEdit(e: Konva.KonvaEventObject<MouseEvent>) {
     if (this.label.isCached()) {
@@ -170,9 +182,6 @@ export class Label {
       transform: `${input.style.transform} rotateZ(${this.label.rotation()}deg)`
     })
 
-    /**
-     *
-     */
     input.addEventListener('blur', (e: Event) => {
       input.parentNode?.removeChild(input)
 
@@ -204,8 +213,9 @@ export class Label {
   }
 
   /**
+   * Focuses on the input to start editing that
    *
-   * @param input
+   * @param input The [[HTMLSpanElement]]
    */
   private async setInputFocus(input: HTMLSpanElement) {
     await new Promise(resolve => setTimeout(resolve, 50))
@@ -220,7 +230,9 @@ export class Label {
   }
 
   /**
-   *
+   * Controls transforming the label
+   * This function rescales the text node and label node
+   * to avoid from stretching that
    */
   private transform() {
     if (this.board.selection.transformer.getActiveAnchor() === 'rotater') {

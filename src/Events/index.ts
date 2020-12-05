@@ -17,8 +17,8 @@ export class Events {
   /**
    * Subscribes to one or multiple events
    *
-   * @param name - The event name or array of event names. it can be one of [[EventListenerNames]]
-   * @param callback - The callback [[EventListenerCallbackEvent]]
+   * @param name The event name or array of event names. it can be one of [[EventListenerNames]]
+   * @param callback The callback [[EventListenerCallbackEvent]]
    */
   public on(
     eventName: EventListenerNames | EventListenerNames[],
@@ -38,8 +38,8 @@ export class Events {
   /**
    * UnSubscribes from one or multiple events
    *
-   * @param name - The event name. it can be one of [[EventListenerNames]]
-   * @param callback - The callback [[EventListenerCallbackEvent]]
+   * @param name The event name. it can be one of [[EventListenerNames]]
+   * @param callback The callback [[EventListenerCallbackEvent]]
    */
   public off(
     eventName: EventListenerNames | EventListenerNames[],

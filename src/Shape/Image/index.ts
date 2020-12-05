@@ -6,16 +6,24 @@ import { createImageFromUrl } from '../../utils/create-image-from-url'
 import { Board } from '../../Board'
 export class Image {
   /**
-   *
+   * Represents the [[Board]]
    */
   private readonly board: Board
 
+  /**
+   * Create a new image builder component
+   *
+   * @param board The [[Board]]
+   */
   constructor(board: Board) {
     this.board = board
   }
 
   /**
+   * Inserts a new image into the board
    *
+   * @param file The image [[File]]
+   * @param config The image node configuration
    */
   public async insert(
     file: File | string,

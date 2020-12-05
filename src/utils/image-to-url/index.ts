@@ -1,3 +1,7 @@
+/**
+ * @returns The converted image to data url
+ * @param file The image [[File]]
+ */
 export async function imageToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()

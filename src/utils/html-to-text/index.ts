@@ -1,3 +1,7 @@
+/**
+ * @returns The converted html code to the plain text
+ * @param html The html code
+ */
 export function convertHtmlToText(html = '') {
   let value = String(html)
 

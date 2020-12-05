@@ -1,7 +1,12 @@
 import type { UnknownObject } from '../../types'
 
-export function omit(state: object, keys: string[]): UnknownObject {
-  return Object.entries(state).reduce((acc, [key, value]) => {
+/**
+ * @returns The object without the given keys
+ * @param object The object
+ * @param keys The array of the keys
+ */
+export function omit(object: object, keys: string[]): UnknownObject {
+  return Object.entries(object).reduce((acc, [key, value]) => {
     if (keys.includes(key)) {
       return acc
     }
