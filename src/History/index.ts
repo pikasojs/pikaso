@@ -52,7 +52,7 @@ export class History {
   /**
    * Returns state of current step
    */
-  public get state() {
+  public getState() {
     return this.list[this.step]
   }
 
