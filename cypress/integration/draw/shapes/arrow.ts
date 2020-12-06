@@ -1,29 +1,28 @@
 /// <reference types="cypress" />
 /// <reference path="../../../support/index.d.ts" />
 
-describe('Shapes -> Circle', () => {
+describe('Shapes -> Arrow', () => {
   beforeEach(() => {
     cy.reload()
   })
 
-  it('should insert a circle', () => {
+  it('should insert an arrow', () => {
     cy.getEditor().then(editor => {
       expect(editor.board.getShapes().length).equal(0)
 
-      editor.shapes.circle.insert({
-        x: 50,
-        y: 50,
-        radius: 20,
-        fill: 'red'
+      editor.shapes.arrow.insert({
+        stroke: 'red',
+        points: [50, 50, 400, 400],
+        strokeWidth: 15
       })
 
       expect(editor.board.getShapes().length).equal(1)
     })
   })
 
-  it('should draw a circle', () => {
+  it('should draw an arrow', () => {
     cy.getEditor().then(editor => {
-      editor.shapes.circle.draw({
+      editor.shapes.arrow.draw({
         fill: '#ccc'
       })
 
@@ -33,13 +32,12 @@ describe('Shapes -> Circle', () => {
     })
   })
 
-  it('should select the circle after creation', () => {
+  it('should select the arrow after creation', () => {
     cy.getEditor().then(editor => {
-      const circle = editor.shapes.circle.insert({
-        x: 200,
-        y: 200,
-        radius: 100,
-        fill: '#ccc'
+      const arrow = editor.shapes.arrow.insert({
+        stroke: 'red',
+        points: [50, 50, 400, 400],
+        strokeWidth: 15
       })
 
       cy.mouseTrigger('mousedown', [200, 200], {
@@ -48,7 +46,7 @@ describe('Shapes -> Circle', () => {
         expect(editor.selection.transformer.attrs.visible).equal(true)
 
         expect(
-          editor.board.selection.transformer.nodes().indexOf(circle.node)
+          editor.board.selection.transformer.nodes().indexOf(arrow.node)
         ).equal(0)
       })
     })

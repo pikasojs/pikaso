@@ -8,6 +8,13 @@ declare namespace Cypress {
       from: [number, number],
       to: [number, number]
     ): Cypress.Chainable<Element>
+    mouseTrigger(
+      name: 'mousedown' | 'mousemove' | 'mouseup',
+      point: [number, number],
+      options?: {
+        delay: number
+      }
+    ): Cypress.Chainable<Element>
     loadAsset(
       fileName: string,
       encoding: Encodings,

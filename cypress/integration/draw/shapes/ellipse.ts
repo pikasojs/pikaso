@@ -1,27 +1,30 @@
 /// <reference types="cypress" />
 /// <reference path="../../../support/index.d.ts" />
 
-describe('Shapes -> Triangle', () => {
+describe('Shapes -> Ellipse', () => {
   beforeEach(() => {
     cy.reload()
   })
 
-  it('should insert a triangle', () => {
+  it('should insert a ellipse', () => {
     cy.getEditor().then(editor => {
-      editor.shapes.triangle.insert({
-        x: 100,
-        y: 100,
-        radius: 10,
-        fill: '#ccc'
+      expect(editor.board.getShapes().length).equal(0)
+
+      editor.shapes.ellipse.insert({
+        x: 50,
+        y: 50,
+        radiusX: 20,
+        radiusY: 30,
+        fill: 'red'
       })
 
       expect(editor.board.getShapes().length).equal(1)
     })
   })
 
-  it('should draw a triangle', () => {
+  it('should draw a ellipse', () => {
     cy.getEditor().then(editor => {
-      editor.shapes.triangle.draw({
+      editor.shapes.ellipse.draw({
         fill: '#ccc'
       })
 
@@ -31,22 +34,22 @@ describe('Shapes -> Triangle', () => {
     })
   })
 
-  it('should select the triangle after creation', () => {
+  it('should select the ellipse after creation', () => {
     cy.getEditor().then(editor => {
-      const triangle = editor.shapes.triangle.insert({
+      const ellipse = editor.shapes.ellipse.insert({
         x: 200,
         y: 200,
-        radius: 100,
+        radiusX: 100,
+        radiusY: 50,
         fill: '#ccc'
       })
 
       cy.mouseTrigger('mousedown', [200, 200], {
         delay: 1000
       }).then(() => {
-        expect(editor.board.selection.transformer.attrs.visible).equal(true)
-
+        expect(editor.selection.transformer.attrs.visible).equal(true)
         expect(
-          editor.board.selection.transformer.nodes().indexOf(triangle.node)
+          editor.board.selection.transformer.nodes().indexOf(ellipse.node)
         ).equal(0)
       })
     })

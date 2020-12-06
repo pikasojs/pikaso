@@ -18,15 +18,12 @@ describe('Selection', () => {
         fill: '#ccc'
       })
 
-      cy.get('canvas')
-        .trigger('mousedown', {
-          clientX: 220,
-          clientY: 220
-        })
-        .then(() => {
-          expect(editor.selection.shapes.length).eq(1)
-          expect(editor.selection.getTransformer().nodes().length).eq(1)
-        })
+      cy.mouseTrigger('mousedown', [220, 220], {
+        delay: 1000
+      }).then(() => {
+        expect(editor.selection.shapes.length).eq(1)
+        expect(editor.selection.getTransformer().nodes().length).eq(1)
+      })
     })
   })
 

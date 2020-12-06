@@ -1,17 +1,18 @@
 /// <reference types="cypress" />
 /// <reference path="../../../support/index.d.ts" />
 
-describe('Shapes -> Triangle', () => {
+describe('Shapes -> Rect', () => {
   beforeEach(() => {
     cy.reload()
   })
 
-  it('should insert a triangle', () => {
+  it('should insert a rect', () => {
     cy.getEditor().then(editor => {
-      editor.shapes.triangle.insert({
+      editor.shapes.rect.insert({
         x: 100,
         y: 100,
-        radius: 10,
+        width: 50,
+        height: 50,
         fill: '#ccc'
       })
 
@@ -19,9 +20,9 @@ describe('Shapes -> Triangle', () => {
     })
   })
 
-  it('should draw a triangle', () => {
+  it('should draw a rect', () => {
     cy.getEditor().then(editor => {
-      editor.shapes.triangle.draw({
+      editor.shapes.rect.draw({
         fill: '#ccc'
       })
 
@@ -31,22 +32,23 @@ describe('Shapes -> Triangle', () => {
     })
   })
 
-  it('should select the triangle after creation', () => {
+  it('should select the rect after creation', () => {
     cy.getEditor().then(editor => {
-      const triangle = editor.shapes.triangle.insert({
-        x: 200,
-        y: 200,
-        radius: 100,
+      const rect = editor.shapes.rect.insert({
+        x: 100,
+        y: 100,
+        width: 50,
+        height: 50,
         fill: '#ccc'
       })
 
-      cy.mouseTrigger('mousedown', [200, 200], {
+      cy.mouseTrigger('mousedown', [120, 120], {
         delay: 1000
       }).then(() => {
         expect(editor.board.selection.transformer.attrs.visible).equal(true)
 
         expect(
-          editor.board.selection.transformer.nodes().indexOf(triangle.node)
+          editor.board.selection.transformer.nodes().indexOf(rect.node)
         ).equal(0)
       })
     })
