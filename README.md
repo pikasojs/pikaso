@@ -16,16 +16,16 @@ Pikaso is a seamless, headless and fully-tested canvas library that provides a c
 
 This project is under heavy development and most of the APIs might change in the next versions, so don't use that in Production.   
    
-### Pikaso vs Konva
+### Pikaso vs. Konva
 [Konva](https://konvajs.org/docs/index.html) is a great HTML5 Canvas JavaScript framework that extends the 2d context by enabling canvas interactivity for desktop and mobile applications.  
 
-Pikaso is built on top of Konva to provice a couple of advanced features that Konva doesn't support out of the box.
+Pikaso is built on top of Konva to provide a couple of advanced features that Konva doesn't support out of the box.
 
 | Library |  |
 | - | - |
 | HTML5 Canvas | Provides low level APIs to draw graphics |
-| Konva | Adds Shapes, Dragging, Styling, Events, Transformation and Filters features to HTML5 canvas  |
-| Pikaso | Adds Simplicity, Free and Shape Drawing, State Management (Undo/Redo/Reset), JSON Import/Export, Text Editing, Cropping, Rotation, Transformation, Event Manager, Advanced Transformation and Selection, Flipping, Background Image and Background Overlay management, Filter Management to Konva |
+| Konva | Provides Shapes, Dragging, Styling, Events, Transformation and Filters features to HTML5 canvas  |
+| Pikaso | Adds a lot of Simplicity and provides Free and Shape Drawing, State Management (Undo/Redo/Reset), JSON Import/Export, Text Editing, Cropping, Rotation, Transformation, Event Manager, Advanced Transformation and Selection, Flipping, Background Image and Background Overlay management, Filter Management to Konva |
 
 ### Install   
 
