@@ -4,9 +4,10 @@ describe('Export', () => {
   it('should export to json', async () => {
     const editor = createEditor()
 
-    await editor.board.background.setImageFromUrl('1200x500')
+    const image = [1200, 500]
+    await editor.board.background.setImageFromUrl(`${image[0]}x${image[1]}`)
 
-    editor.shapes.label.insert({
+    const labelConfig = {
       container: {
         x: 400,
         y: 400
@@ -20,13 +21,48 @@ describe('Export', () => {
         fill: '#fff',
         fontSize: 100
       }
+    }
+
+    editor.shapes.label.insert(labelConfig)
+
+    const json = editor.export.toJson()
+
+    expect(json).toStrictEqual({
+      stage: { attrs: { width: image[0], height: image[1] } },
+      layer: { attrs: {} },
+      background: {
+        image: {
+          attrs: { url: `http://localhost/${image[0]}x${image[1]}` },
+          className: 'Image'
+        },
+        overlay: {
+          attrs: { width: image[0], height: image[1] },
+          className: 'Rect'
+        }
+      },
+      shapes: [
+        {
+          attrs: {
+            x: labelConfig.container.x,
+            y: labelConfig.container.y,
+            draggable: true
+          },
+          className: 'Label',
+          children: [
+            {
+              attrs: { fill: labelConfig.tag.fill, width: 400, height: 100 },
+              className: 'Tag'
+            },
+            {
+              attrs: {
+                height: 'auto',
+                ...labelConfig.text
+              },
+              className: 'Text'
+            }
+          ]
+        }
+      ]
     })
-
-    const json = editor.export.json()
-
-    console.log(json)
-    // expect(json).toBe(
-    //   '{"attrs":{"width":1280,"height":720},"className":"Stage","children":[{"attrs":{},"className":"Layer","children":[{"attrs":{"fill":"rgba(105, 105, 105, 0.7)","stroke":"#dbdbdb","visible":false},"className":"Rect"},{"attrs":{},"className":"Transformer"},{"attrs":{},"className":"Image"},{"attrs":{},"className":"Rect"},{"attrs":{"x":400,"y":400,"draggable":true},"className":"Label","children":[{"attrs":{"fill":"blue","width":400,"height":100},"className":"Tag"},{"attrs":{"text":"Test","width":400,"fill":"#fff","fontSize":100,"height":"auto"},"className":"Text"}]}]}]}'
-    // )
   })
 })
