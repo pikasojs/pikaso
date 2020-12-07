@@ -296,3 +296,5 @@ export declare type Filters =
       name: 'Sepia'
       options?: {}
     }
+
+export declare type ExportImageConfig = Parameters<Konva.Stage['toDataURL']>[0]
