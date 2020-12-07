@@ -55,13 +55,18 @@ export class Flip {
    *
    * @param shapes List of the [[Shape | Shapes]]
    */
-  public horizontal(shapes: Shape[] = this.board.getShapes()) {
+  public horizontal(shapes?: Shape[]) {
+    const list = shapes || [
+      ...this.board.getShapes(),
+      this.board.background.image
+    ]
+
     this.history.create(
       this.board.layer,
-      shapes.map(shape => shape.node)
+      list.map(shape => shape.node)
     )
 
-    shapes.forEach(shape => {
+    list.forEach(shape => {
       const node = shape.node
 
       node.scaleX(node.scaleX() * -1)
@@ -73,7 +78,7 @@ export class Flip {
     this.board.draw()
 
     this.events.emit('flip:x', {
-      shapes
+      shapes: list
     })
   }
 
@@ -82,13 +87,18 @@ export class Flip {
    *
    * @param shapes List of the [[Shape | Shapes]]
    */
-  public vertical(shapes: Shape[] = this.board.getShapes()) {
+  public vertical(shapes?: Shape[]) {
+    const list = shapes || [
+      ...this.board.getShapes(),
+      this.board.background.image
+    ]
+
     this.history.create(
       this.board.layer,
-      shapes.map(shape => shape.node)
+      list.map(shape => shape.node)
     )
 
-    shapes.forEach(shape => {
+    list.forEach(shape => {
       const node = shape.node
 
       node.scaleY(node.scaleY() * -1)
@@ -100,7 +110,7 @@ export class Flip {
     this.board.draw()
 
     this.events.emit('flip:y', {
-      shapes
+      shapes: list
     })
   }
 }
