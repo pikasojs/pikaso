@@ -85,6 +85,9 @@ export class Cropper {
 
     this.active = true
 
+    // deselect all shapes
+    this.board.selection.deselectAll()
+
     const isCircular = options.circular
     const isFixed = options.fixed && this.board.stage.rotation() === 0
 
