@@ -4,6 +4,7 @@ import { Board } from './Board'
 import { Events } from './Events'
 import { History } from './History'
 import { Export } from './Export'
+import { Import } from './Import'
 
 import { Flip } from './Flip'
 import { Cropper } from './Cropper'
@@ -25,7 +26,8 @@ import type {
   Settings,
   EventListenerNames,
   ListenerCallback,
-  Shapes
+  Shapes,
+  JsonData
 } from './types'
 
 /**
@@ -34,58 +36,52 @@ import type {
  */
 export default class Pikaso {
   /**
-   * Represents the board
-   * @see [[Board | Board Class]]
+   * Represents the [[Board]]
    */
   public board: Board
 
   /**
-   * Represents exporting
-   * It lets export the active workstation to different formats
-   * @see [[Export | Export Class]]
+   * Represents the [[Export]]
    */
   public export: Export
 
   /**
-   * Represents shapes
-   * @see [[Shapes | Shapes Interface]] for the supported shape types
+   * Represents the [[Import]]
+   */
+  public import: Import
+
+  /**
+   * Represents the [[Shapes]]
    */
   public shapes: Shapes
 
   /**
-   * Represents selection
-   *
-   * Shortcut to [[Board.selection]]
-   * @see [[Selection | Selection Class]]
+   * Represents the [[Selection]] component
    */
   public selection: Selection
 
   /**
-   * Represents board rotation
-   * @see [[Rotation | Rotation Class]]
+   * Represents the [[Rotation]] component
    */
   public rotation: Rotation
 
   /**
-   * Represents cropping
-   * @see [[Cropper | Cropper Class]]
+   * Represents [[Cropper]] component
    */
   public cropper: Cropper
 
   /**
-   * Represents flipping
-   * @see [[Flip | Flip Class]]
+   * Represents [[Flip]] component
    */
   public flip: Flip
 
   /**
-   * Represents free drawing
-   * @see [[Pencil | Pencil Class]]
+   * Represents the free drawing [[Pencil]] component
    */
   public pencil: Pencil
 
   /**
-   * Represents the event manager
+   * Represents the [[Events | event manager]]
    *
    * This is also possible to Subscribe and Unsubscribe events
    * with [[on | on method]] and [[off | off method]] of the main class
@@ -96,18 +92,17 @@ export default class Pikaso {
   public events: Events
 
   /**
-   * Represents the actions history
-   * @see [[History | History Class]]
+   * Represents the [[History | actions history]]
    */
   public history: History
 
   /**
-   * Represents settings
+   * Represents [[Settings]]
    */
   private settings: Settings
 
   /**
-   * It creates a new editor instance
+   * Creates a new editor instance
    *
    * @param settings The editor settings
    *
@@ -227,6 +222,16 @@ export default class Pikaso {
   }
 
   /**
+   * Reloads the workspace with the given data
+   *
+   * @param data The JSON object
+   */
+  public async load(data: JsonData) {
+    this.reset()
+    await this.import.json(data)
+  }
+
+  /**
    * Initializes the editor
    */
   private init() {
@@ -241,8 +246,6 @@ export default class Pikaso {
     this.flip = new Flip(board, events, history)
     this.pencil = new Pencil(board, events)
 
-    this.export = new Export(board, this.cropper)
-
     this.shapes = {
       image: new Image(board),
       line: new Line(board, events),
@@ -254,6 +257,9 @@ export default class Pikaso {
       triangle: new Triangle(board, events),
       label: new Label(board, events, history)
     }
+
+    this.import = new Import(board, this.shapes)
+    this.export = new Export(board, this.cropper)
 
     this.board = board
     this.events = events

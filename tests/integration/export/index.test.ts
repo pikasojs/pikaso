@@ -28,41 +28,74 @@ describe('Export', () => {
     const json = editor.export.toJson()
 
     expect(json).toStrictEqual({
-      stage: { attrs: { width: image[0], height: image[1] } },
-      layer: { attrs: {} },
+      stage: {
+        className: 'Stage',
+        filters: [],
+        children: undefined,
+        attrs: { width: image[0], height: image[1], x: 0, y: 0 }
+      },
+      layer: {
+        className: 'Layer',
+        filters: [],
+        children: undefined,
+        attrs: { x: 0, y: 0, width: image[0], height: image[1] }
+      },
       background: {
         image: {
-          attrs: { url: `http://localhost/${image[0]}x${image[1]}` },
-          className: 'Image'
+          className: 'Image',
+          filters: [],
+          children: undefined,
+          attrs: {
+            url: `http://localhost/${image[0]}x${image[1]}`,
+            x: 0,
+            y: 0,
+            width: image[0],
+            height: image[1]
+          }
         },
         overlay: {
-          attrs: { width: image[0], height: image[1] },
-          className: 'Rect'
+          className: 'Rect',
+          filters: [],
+          children: undefined,
+          attrs: { width: image[0], height: image[1], x: 0, y: 0 }
         }
       },
       shapes: [
         {
-          attrs: {
-            x: labelConfig.container.x,
-            y: labelConfig.container.y,
-            draggable: true
-          },
           className: 'Label',
+          filters: [],
           children: [
             {
-              attrs: { fill: labelConfig.tag.fill, width: 400, height: 100 },
+              attrs: {
+                width: labelConfig.text.width,
+                height: 100,
+                ...labelConfig.tag
+              },
               className: 'Tag'
             },
             {
               attrs: {
-                height: 'auto',
-                ...labelConfig.text
+                ...labelConfig.text,
+                height: 'auto'
               },
               className: 'Text'
             }
-          ]
+          ],
+          attrs: {
+            width: labelConfig.text.width,
+            height: 100,
+            ...labelConfig.container
+          }
         }
       ]
     })
+  })
+
+  it('should export to image', async () => {
+    const editor = createEditor()
+
+    const url = editor.export.toImage()
+
+    expect(url).toBe('data:image/png;base64,00')
   })
 })

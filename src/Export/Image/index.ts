@@ -4,6 +4,9 @@ import { Board } from '../../Board'
 
 import type { ExportImageConfig } from '../../types'
 
+/**
+ * @internal
+ */
 export class ImageExport {
   /**
    * Represents the [[Board]]
@@ -15,7 +18,7 @@ export class ImageExport {
   }
 
   /**
-   * Exports the current workstation to image
+   * Exports the current workspace to image
    *
    * @returns The exported image data url
    * @param config The [[ExportImageConfig | config]]

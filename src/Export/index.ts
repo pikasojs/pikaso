@@ -36,8 +36,9 @@ export class Export {
   }
 
   /**
-   * Exports the current workstation to image
+   * Exports the current workspace to image
    *
+   * @returns The exported image data url
    * @param config The export options
    */
   public toImage(config?: Partial<ExportImageConfig>) {
@@ -47,7 +48,9 @@ export class Export {
   }
 
   /**
-   * Exports the current workstation to json string
+   * Exports the current workspace to json string
+   *
+   * @returns The exported JSON object
    */
   public toJson() {
     return this.json.export()
