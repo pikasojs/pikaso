@@ -11,7 +11,7 @@ import { FixedRectangleCropper } from './FixedRectangleCropper'
 import { FlexibleCircularCropper } from './FlexibleCircularCropper'
 import { FlexibleRectangleCropper } from './FlexibleRectangleCropper'
 
-import type { CropOptions, CropperOptions, Point } from '../types'
+import type { CropOptions, CropperOptions, Dimensions, Point } from '../types'
 
 type FixedCropper = FixedCircularCropper | FixedRectangleCropper
 type FlexibleCropper = FlexibleCircularCropper | FlexibleRectangleCropper
@@ -183,12 +183,25 @@ export class Cropper {
   }
 
   /**
+   * Returns current rect of the cropper
+   *
+   * @returns left, top, width and height of the cropzone rect
+   */
+  public getRect(): (Point & Dimensions) | null {
+    if (!this.isActive) {
+      return null
+    }
+
+    return this.instance.getRect()
+  }
+
+  /**
    * Crops the selected area
    *
    * @param options The [[CropOptions | options]]
    */
   public async crop(options: Partial<CropOptions> = {}) {
-    const rect = options.rect || this.instance.getRect()
+    const rect = options.rect || this.getRect()
 
     if (!rect) {
       return null
