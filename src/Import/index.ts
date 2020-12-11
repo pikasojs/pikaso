@@ -44,8 +44,11 @@ export class Import {
       )
     }
 
+    // update layer attributes
+    this.board.layer.setAttrs(omit(layer.attrs, ['width', 'height']))
+
+    // update stage attributes
     this.board.stage.setAttrs(stage.attrs)
-    this.board.layer.setAttrs(layer.attrs)
 
     await Promise.all(
       shapes.map(async shape => {

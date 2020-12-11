@@ -10,6 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "Node",
+    "resolveJsonModule": true,
     "rootDir": "src",
     "baseUrl": "/",
     "lib": [
