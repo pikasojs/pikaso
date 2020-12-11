@@ -39,4 +39,18 @@ describe('Events', () => {
 
     expect(callback).toBeCalledTimes(2)
   })
+
+  it('should unsubscribe from the events', () => {
+    const event = new Events()
+
+    event.on('shape:create', callback)
+
+    event.emit('shape:create', obj)
+    expect(callback).toBeCalledTimes(1)
+
+    event.off('shape:create', callback)
+
+    event.emit('shape:create', obj)
+    expect(callback).toBeCalledTimes(1)
+  })
 })
