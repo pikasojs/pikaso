@@ -5,32 +5,53 @@ import { terser } from 'rollup-plugin-terser'
 
 import pkg from './package.json'
 
-const plugins = [
-  nodeResolve(),
-  commonjs({
-    exclude: '/node_modules/'
-  })
-]
-
 export default [
   {
     plugins: [
-      ...plugins,
+      nodeResolve(),
+      commonjs({
+        exclude: '/node_modules/'
+      }),
       typescript({
         declaration: true,
-        outDir: 'lib',
-        declarationDir: 'lib'
+        outDir: 'es',
+        declarationDir: 'es'
       })
     ],
     input: 'src/index.ts',
     preserveModules: false,
     output: {
-      dir: 'lib',
+      dir: 'es',
       format: 'esm'
     }
   },
   {
-    plugins: [...plugins, typescript(), terser()],
+    plugins: [
+      nodeResolve(),
+      commonjs({
+        exclude: '/node_modules/'
+      }),
+      typescript({
+        declaration: true,
+        outDir: 'cjs',
+        declarationDir: 'cjs'
+      })
+    ],
+    input: 'src/index.cjs.ts',
+    output: {
+      dir: 'cjs',
+      format: 'cjs'
+    }
+  },
+  {
+    plugins: [
+      nodeResolve(),
+      commonjs({
+        exclude: '/node_modules/'
+      }),
+      typescript(),
+      terser()
+    ],
     input: 'src/index.ts',
     output: {
       name: 'Pikaso',
