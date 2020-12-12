@@ -32,16 +32,14 @@ export class Import {
    * @param data The [[JsonData | data]]
    */
   public async json({ stage, layer, background, shapes }: JsonData) {
-    this.board.background.overlay.setAttrs(background.overlay)
+    this.board.background.overlay.update(background.overlay)
 
     if (background.image.attrs.url) {
       await this.board.background.setImageFromUrl(
         background.image.attrs.url as string
       )
 
-      this.board.background.image.setAttrs(
-        omit(background.image.attrs, ['url'])
-      )
+      this.board.background.image.update(omit(background.image.attrs, ['url']))
     }
 
     // update layer attributes

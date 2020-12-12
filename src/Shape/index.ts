@@ -10,6 +10,11 @@ import { History } from '../History'
 
 import type { Filters } from '../types'
 
+interface SetAttributesAnimationOptions {
+  duration: number
+  onUpdate?: () => void
+  onFinish?: () => void
+}
 interface ShapeConfig {
   transformer?: Konva.TransformerConfig
   selectable?: boolean
@@ -263,26 +268,29 @@ export class Shape {
   }
 
   /**
-   * Updates attribute of the shape
-   *
-   * @param name The attribute name
-   * @param value The attribute value
-   */
-  public setAttr(name: string, value: unknown) {
-    return this.setAttrs({
-      [name]: value
-    })
-  }
-
-  /**
    * Updates attributes of the shape
    *
    * @param attributes The list of attributes
+   * @param animationOptions The animation options
    */
-  public setAttrs(attributes: Partial<Konva.ShapeConfig>) {
+  public update(
+    attributes: Partial<Konva.ShapeConfig>,
+    animationOptions?: SetAttributesAnimationOptions
+  ) {
     this.history.create(this.board.layer, this.node)
 
-    return this.node.setAttrs(attributes)
+    if (animationOptions) {
+      this.node.to({
+        ...attributes,
+        duration: animationOptions.duration || 0.5,
+        onUpdate: () => animationOptions.onUpdate?.(),
+        onFinish: () => animationOptions.onFinish?.()
+      })
+    } else {
+      this.node.setAttrs(attributes)
+    }
+
+    this.board.draw()
   }
 
   /**
