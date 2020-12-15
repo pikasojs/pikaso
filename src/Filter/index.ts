@@ -1,9 +1,7 @@
 import Konva from 'konva'
 
 import { Board } from '../Board'
-import { Events } from '../Events'
-import { History } from '../History'
-import { Shape } from '../Shape'
+import { ShapeModel } from '../shape/ShapeModel'
 
 import type { Filters, HistoryState } from '../types'
 
@@ -14,25 +12,13 @@ export class Filter {
   private board: Board
 
   /**
-   * Represents the [[Events]]
-   */
-  private events: Events
-
-  /**
-   * Represents the [[History]]
-   */
-  private history: History
-
-  /**
    * Creates a filter instance that lets apply various filters
    * on every shape that extends the class.
    *
-   * Basically every [[Shape]] has exposed [[Shape.addFilter]] and
+   * Basically every [[ShapeModel]] has exposed [[Shape.addFilter]] and
    * [[Shape.removeFilter]] to work with filters
    *
    * @param board The [[Board]]
-   * @param events The [[Events]]
-   * @param history The [[History]]
    *
    * @example
    * Adds a blur filter to background image
@@ -62,10 +48,8 @@ export class Filter {
    * editor.selection.removeFilter('Contrast')
    * ```
    */
-  constructor(board: Board, events: Events, history: History) {
+  constructor(board: Board) {
     this.board = board
-    this.events = events
-    this.history = history
   }
 
   /**
@@ -74,8 +58,8 @@ export class Filter {
    * @param shapes List of the [[Shape | Shapes]]
    * @param filter The [[Filters | Filter]]
    */
-  public apply(shapes: Shape[], filter: Filters) {
-    this.history.create(
+  public apply(shapes: ShapeModel[], filter: Filters) {
+    this.board.history.create(
       this.board.layer,
       shapes.map(shape => shape.node),
       {
@@ -97,7 +81,7 @@ export class Filter {
 
     this.board.draw()
 
-    this.events.emit('filter:add', {
+    this.board.events.emit('filter:add', {
       shapes,
       data: {
         filter: filter.name
@@ -111,8 +95,8 @@ export class Filter {
    * @param shapes List of the [[Shape | Shapes]]
    * @param name The [[Filters | filter]] name
    */
-  public remove(shapes: Shape[], name: Filters['name']) {
-    this.history.create(
+  public remove(shapes: ShapeModel[], name: Filters['name']) {
+    this.board.history.create(
       this.board.layer,
       shapes.map(shape => shape.node),
       {
@@ -139,7 +123,7 @@ export class Filter {
 
     this.board.draw()
 
-    this.events.emit('filter:remove', {
+    this.board.events.emit('filter:remove', {
       shapes,
       data: {
         filter: name

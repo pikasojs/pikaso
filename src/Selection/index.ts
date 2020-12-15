@@ -1,10 +1,8 @@
 import Konva from 'konva'
 
 import { Board } from '../Board'
-import { Events } from '../Events'
-import { History } from '../History'
-import { Shape } from '../Shape'
 import { Filter } from '../Filter'
+import { ShapeModel } from '../shape/ShapeModel'
 
 import type { Point, Filters } from '../types'
 
@@ -12,7 +10,7 @@ export class Selection {
   /**
    * Represents list of the selected shapes
    */
-  public list: Array<Shape> = []
+  public list: Array<ShapeModel> = []
 
   /**
    * Represents the selections transformer object
@@ -23,16 +21,6 @@ export class Selection {
    * Represents the [[Board]]
    */
   private board: Board
-
-  /**
-   * Represents the [[Events]]
-   */
-  private readonly events: Events
-
-  /**
-   * Represents the [[History]]
-   */
-  private readonly history: History
 
   /**
    * Represents the [[Filter]]
@@ -49,12 +37,10 @@ export class Selection {
    */
   private startPointerPosition: Point
 
-  constructor(board: Board, events: Events, history: History) {
+  constructor(board: Board) {
     this.board = board
-    this.events = events
-    this.history = history
 
-    this.filter = new Filter(board, events, history)
+    this.filter = new Filter(board)
 
     this.createZone()
     this.createTransformer()
@@ -72,7 +58,7 @@ export class Selection {
   /**
    * Returns list of selected shapes
    *
-   * @returns array of [[Shape]]
+   * @returns array of [[ShapeModel]]
    */
   public get shapes() {
     return this.list
@@ -106,7 +92,7 @@ export class Selection {
    * editor.board.selection.find(shape => shape.node.getId() === '<id>')
    * ```
    */
-  public find(selector: (shape: Shape) => boolean) {
+  public find(selector: (shape: ShapeModel) => boolean) {
     const list = this.board.getShapes().filter(shape => {
       return selector(shape)
     })
@@ -156,9 +142,9 @@ export class Selection {
   /**
    * Selects one or multiple shapes
    *
-   * @param shapes The array of [[Shape]]
+   * @param shapes The array of [[ShapeModel]]
    */
-  public multi(shapes: Shape[]) {
+  public multi(shapes: ShapeModel[]) {
     this.list = shapes
 
     const attrs: Partial<Konva.TransformerConfig> = shapes.reduce(
@@ -202,17 +188,17 @@ export class Selection {
 
     this.board.draw()
 
-    this.events.emit('selection:change', {
+    this.board.events.emit('selection:change', {
       shapes
     })
   }
 
   /**
-   * Adds a [[Shape | shape ]] to the selections list
+   * Adds a [[ShapeModel | shape ]] to the selections list
    *
-   * @param shape The [[Shape]]
+   * @param shape The [[ShapeModel]]
    */
-  public add(shape: Shape) {
+  public add(shape: ShapeModel) {
     const isSelected = this.list.some(item => item.node === shape.node)
 
     if (isSelected) {
@@ -223,11 +209,11 @@ export class Selection {
   }
 
   /**
-   * Toggles a [[Shape | shape]]
+   * Toggles a [[ShapeModel | shape]]
    *
-   * @param shape The [[Shape]]
+   * @param shape The [[ShapeModel]]
    */
-  public toggle(shape: Shape) {
+  public toggle(shape: ShapeModel) {
     const isSelected = this.list.some(item => item.node === shape.node)
 
     if (isSelected) {
@@ -241,9 +227,9 @@ export class Selection {
   /**
    * Deselects a shape
    *
-   * @param shape The [[Shape]]
+   * @param shape The [[ShapeModel]]
    */
-  public deselect(shape: Shape) {
+  public deselect(shape: ShapeModel) {
     this.list = this.list.filter(item => item !== shape)
 
     this.multi(this.list)
@@ -264,7 +250,7 @@ export class Selection {
     this.board.stage.getContent().style.cursor = 'inherit'
     this.transformer.nodes([])
 
-    this.history.create(this.board.layer, [], {
+    this.board.history.create(this.board.layer, [], {
       undo: () => shapes.forEach(shape => shape.undelete()),
       redo: () => shapes.forEach(shape => shape.delete())
     })
@@ -273,7 +259,7 @@ export class Selection {
 
     this.board.draw()
 
-    this.events.emit('selection:delete', {
+    this.board.events.emit('selection:delete', {
       shapes
     })
   }
@@ -284,7 +270,7 @@ export class Selection {
    * @param value The value number
    */
   public moveX(value: number) {
-    this.history.create(
+    this.board.history.create(
       this.board.layer,
       this.transformer.nodes() as Konva.Shape[]
     )
@@ -297,7 +283,7 @@ export class Selection {
 
     this.board.draw()
 
-    this.events.emit('selection:move', {
+    this.board.events.emit('selection:move', {
       shapes: this.list,
       data: {
         axis: 'x',
@@ -312,7 +298,7 @@ export class Selection {
    * @param value The value number
    */
   public moveY(value: number) {
-    this.history.create(
+    this.board.history.create(
       this.board.layer,
       this.transformer.nodes() as Konva.Shape[]
     )
@@ -325,7 +311,7 @@ export class Selection {
 
     this.board.draw()
 
-    this.events.emit('selection:move', {
+    this.board.events.emit('selection:move', {
       shapes: this.list,
       data: {
         axis: 'y',
@@ -379,12 +365,12 @@ export class Selection {
      * Triggers when the client starts dragging the transformer
      */
     this.transformer.on('dragstart', () => {
-      this.history.create(
+      this.board.history.create(
         this.board.layer,
         this.list.map(shape => shape.node)
       )
 
-      this.events.emit('selection:dragstart', {
+      this.board.events.emit('selection:dragstart', {
         shapes: this.list
       })
     })
@@ -394,7 +380,7 @@ export class Selection {
      * Triggers when the client dragging the transformer
      */
     this.transformer.on('dragmove', () => {
-      this.events.emit('selection:dragmove', {
+      this.board.events.emit('selection:dragmove', {
         shapes: this.list
       })
     })
@@ -404,7 +390,7 @@ export class Selection {
      * Triggers when dragging finishes
      */
     this.transformer.on('dragend', () => {
-      this.events.emit('selection:dragend', {
+      this.board.events.emit('selection:dragend', {
         shapes: this.list
       })
     })
@@ -414,7 +400,7 @@ export class Selection {
      * Triggers when the client starts transforming the transformer
      */
     this.transformer.on('transformstart', () => {
-      this.history.create(
+      this.board.history.create(
         this.board.layer,
         this.list.map(shape => shape.node),
         {
@@ -422,7 +408,7 @@ export class Selection {
         }
       )
 
-      this.events.emit('selection:transformstart', {
+      this.board.events.emit('selection:transformstart', {
         shapes: this.list
       })
     })
@@ -432,7 +418,7 @@ export class Selection {
      * Triggers when the client transforminging the transformer
      */
     this.transformer.on('transform', () => {
-      this.events.emit('selection:transform', {
+      this.board.events.emit('selection:transform', {
         shapes: this.list
       })
     })
@@ -442,7 +428,7 @@ export class Selection {
      * Triggers when transforming finishes
      */
     this.transformer.on('transformend', () => {
-      this.events.emit('selection:transformend', {
+      this.board.events.emit('selection:transformend', {
         shapes: this.list
       })
     })

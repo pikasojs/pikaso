@@ -5,24 +5,12 @@ import { rotateAroundCenter } from '../utils/rotate-around-center'
 import { getRotatedPoint } from '../utils/get-rotated-point'
 
 import { Board } from '../Board'
-import { History } from '../History'
-import { Events } from '../Events'
 
 export class Rotation {
   /**
    * Represents the [[Board]]
    */
   private readonly board: Board
-
-  /**
-   * Represents the [[Events]]
-   */
-  private events: Events
-
-  /**
-   * Represents the [[History]]
-   */
-  private readonly history: History
 
   /**
    * Rotates shapes and background
@@ -38,13 +26,9 @@ export class Rotation {
    * ```
    *
    * @param board The [[Board]]
-   * @param events The [[Events]]
-   * @param history The [[History]]
    */
-  constructor(board: Board, events: Events, history: History) {
+  constructor(board: Board) {
     this.board = board
-    this.events = events
-    this.history = history
   }
 
   /**
@@ -59,7 +43,7 @@ export class Rotation {
    * ```
    */
   public transform(theta: number) {
-    this.history.create(this.board.stage, [
+    this.board.history.create(this.board.stage, [
       this.board.stage,
       ...this.board.getNodes()
     ])
@@ -128,7 +112,7 @@ export class Rotation {
 
     this.board.draw()
 
-    this.events.emit('rotation:transform')
+    this.board.events.emit('rotation:transform')
   }
 
   /**
@@ -156,6 +140,6 @@ export class Rotation {
 
     this.board.draw()
 
-    this.events.emit('rotation:straighten')
+    this.board.events.emit('rotation:straighten')
   }
 }

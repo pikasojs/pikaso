@@ -8,7 +8,7 @@ describe('Shapes -> Pencil', () => {
 
   it('should free draw a line', () => {
     cy.getEditor().then(editor => {
-      editor.pencil.draw({
+      editor.shapes.pencil.draw({
         stroke: 'red',
         strokeWidth: 10
       })
@@ -40,7 +40,7 @@ describe('Shapes -> Pencil', () => {
 
   it('should select the free drawn line', () => {
     cy.getEditor().then(editor => {
-      editor.pencil.draw({
+      editor.shapes.pencil.draw({
         stroke: 'red',
         strokeWidth: 15
       })

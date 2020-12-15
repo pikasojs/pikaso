@@ -10,17 +10,17 @@ import { Flip } from './Flip'
 import { Cropper } from './Cropper'
 import { Rotation } from './Rotation'
 import { Selection } from './Selection'
-import { Pencil } from './Pencil'
 
-import { Line } from './Shape/Line'
-import { Rect } from './Shape/Rect'
-import { Arrow } from './Shape/Arrow'
-import { Label } from './Shape/Label'
-import { Image } from './Shape/Image'
-import { Circle } from './Shape/Circle'
-import { Ellipse } from './Shape/Ellipse'
-import { Polygon } from './Shape/Polygon'
-import { Triangle } from './Shape/Triangle'
+import { LineDrawer } from './shape/drawers/LineDrawer'
+import { RectDrawer } from './shape/drawers/RectDrawer'
+import { ArrowDrawer } from './shape/drawers/ArrowDrawer'
+import { LabelDrawer } from './shape/drawers/LabelDrawer'
+import { PencilDrawer } from './shape/drawers/PencilDrawer'
+import { ImageDrawer } from './shape/drawers/ImageDrawer'
+import { CircleDrawer } from './shape/drawers/CircleDrawer'
+import { EllipseDrawer } from './shape/drawers/EllipseDrawer'
+import { PolygonDrawer } from './shape/drawers/PolygonDrawer'
+import { TriangleDrawer } from './shape/drawers/TriangleDrawer'
 
 import type {
   Settings,
@@ -74,11 +74,6 @@ export default class Pikaso {
    * Represents [[Flip]] component
    */
   public flip: Flip
-
-  /**
-   * Represents the free drawing [[Pencil]] component
-   */
-  public pencil: Pencil
 
   /**
    * Represents the [[Events | event manager]]
@@ -241,21 +236,21 @@ export default class Pikaso {
 
     this.selection = board.selection
 
-    this.rotation = new Rotation(board, events, history)
-    this.cropper = new Cropper(board, events, history)
-    this.flip = new Flip(board, events, history)
-    this.pencil = new Pencil(board, events)
+    this.rotation = new Rotation(board)
+    this.cropper = new Cropper(board)
+    this.flip = new Flip(board)
 
     this.shapes = {
-      image: new Image(board),
-      line: new Line(board, events),
-      rect: new Rect(board, events),
-      arrow: new Arrow(board, events),
-      circle: new Circle(board, events),
-      polygon: new Polygon(board, events),
-      ellipse: new Ellipse(board, events),
-      triangle: new Triangle(board, events),
-      label: new Label(board, events, history)
+      arrow: new ArrowDrawer(board),
+      circle: new CircleDrawer(board),
+      ellipse: new EllipseDrawer(board),
+      image: new ImageDrawer(board),
+      label: new LabelDrawer(board),
+      line: new LineDrawer(board),
+      pencil: new PencilDrawer(board),
+      polygon: new PolygonDrawer(board),
+      rect: new RectDrawer(board),
+      triangle: new TriangleDrawer(board)
     }
 
     this.import = new Import(board, this.shapes)
@@ -268,3 +263,5 @@ export default class Pikaso {
     this.board.draw()
   }
 }
+
+export { Konva }

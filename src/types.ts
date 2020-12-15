@@ -1,15 +1,17 @@
 import Konva from 'konva'
 
-import type { Line } from './Shape/Line'
-import type { Rect } from './Shape/Rect'
-import type { Arrow } from './Shape/Arrow'
-import type { Label } from './Shape/Label'
-import type { Image } from './Shape/Image'
-import type { Circle } from './Shape/Circle'
-import type { Ellipse } from './Shape/Ellipse'
-import type { Polygon } from './Shape/Polygon'
-import type { Triangle } from './Shape/Triangle'
-import type { Shape } from './Shape'
+import type { LineDrawer } from './shape/drawers/LineDrawer'
+import type { RectDrawer } from './shape/drawers/RectDrawer'
+import type { ArrowDrawer } from './shape/drawers/ArrowDrawer'
+import type { LabelDrawer } from './shape/drawers/LabelDrawer'
+import type { ImageDrawer } from './shape/drawers/ImageDrawer'
+import type { CircleDrawer } from './shape/drawers/CircleDrawer'
+import type { EllipseDrawer } from './shape/drawers/EllipseDrawer'
+import type { PolygonDrawer } from './shape/drawers/PolygonDrawer'
+import type { TriangleDrawer } from './shape/drawers/TriangleDrawer'
+import type { PencilDrawer } from './shape/drawers/PencilDrawer'
+
+import type { ShapeModel } from './shape/ShapeModel'
 
 export type Nullable<T> = T | null
 
@@ -113,15 +115,16 @@ export enum DrawType {
 }
 
 export declare interface Shapes {
-  line: Line
-  rect: Rect
-  arrow: Arrow
-  label: Label
-  image: Image
-  circle: Circle
-  ellipse: Ellipse
-  triangle: Triangle
-  polygon: Polygon
+  line: LineDrawer
+  rect: RectDrawer
+  arrow: ArrowDrawer
+  label: LabelDrawer
+  image: ImageDrawer
+  circle: CircleDrawer
+  ellipse: EllipseDrawer
+  triangle: TriangleDrawer
+  polygon: PolygonDrawer
+  pencil: PencilDrawer
 }
 
 export declare interface IDrawableShape {
@@ -133,6 +136,11 @@ export declare interface IShape {
   insert: (config: Konva.ShapeConfig) => void
 }
 
+export declare interface ShapeConfig {
+  transformer?: Konva.TransformerConfig
+  selectable?: boolean
+}
+
 export declare type ListenerCallback = (
   args: EventListenerCallbackEvent
 ) => void
@@ -140,7 +148,7 @@ export declare type ListenerCallback = (
 export declare interface EventListenerCallbackEvent {
   name?: string
   nodes?: (Konva.Shape | Konva.Group)[]
-  shapes?: Shape[]
+  shapes?: ShapeModel<Konva.Shape | Konva.Group>[]
   data?: UnknownObject
 }
 
@@ -324,4 +332,9 @@ export declare interface JsonData {
     children?: Omit<JsonData['shapes'], 'filters'>
     className: string
   }[]
+}
+
+export interface TriangleConfig
+  extends Omit<Konva.RegularPolygonConfig, 'sides'> {
+  sides?: 3
 }

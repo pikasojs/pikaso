@@ -1,23 +1,11 @@
 import { Board } from '../Board'
-import { Events } from '../Events'
-import { History } from '../History'
-import { Shape } from '../Shape'
+import { ShapeModel } from '../shape/ShapeModel'
 
 export class Flip {
   /**
    * Reperesents the [[Board]]
    */
   private readonly board: Board
-
-  /**
-   * Reperesents the [[History]]
-   */
-  private readonly history: History
-
-  /**
-   * Reperesents the [[Events]]
-   */
-  private readonly events: Events
 
   /**
    * Lets the shapes to get flipped vertically and horizontally
@@ -41,13 +29,9 @@ export class Flip {
    * ```
    *
    * @param board The [[Board]]
-   * @param events The [[Events]]
-   * @param history The [[History]]
    */
-  constructor(board: Board, events: Events, history: History) {
+  constructor(board: Board) {
     this.board = board
-    this.events = events
-    this.history = history
   }
 
   /**
@@ -55,13 +39,13 @@ export class Flip {
    *
    * @param shapes List of the [[Shape | Shapes]]
    */
-  public horizontal(shapes?: Shape[]) {
+  public horizontal(shapes?: ShapeModel[]) {
     const list = shapes || [
       ...this.board.getShapes(),
       this.board.background.image
     ]
 
-    this.history.create(
+    this.board.history.create(
       this.board.layer,
       list.map(shape => shape.node)
     )
@@ -77,7 +61,7 @@ export class Flip {
 
     this.board.draw()
 
-    this.events.emit('flip:x', {
+    this.board.events.emit('flip:x', {
       shapes: list
     })
   }
@@ -87,13 +71,13 @@ export class Flip {
    *
    * @param shapes List of the [[Shape | Shapes]]
    */
-  public vertical(shapes?: Shape[]) {
+  public vertical(shapes?: ShapeModel[]) {
     const list = shapes || [
       ...this.board.getShapes(),
       this.board.background.image
     ]
 
-    this.history.create(
+    this.board.history.create(
       this.board.layer,
       list.map(shape => shape.node)
     )
@@ -109,7 +93,7 @@ export class Flip {
 
     this.board.draw()
 
-    this.events.emit('flip:y', {
+    this.board.events.emit('flip:y', {
       shapes: list
     })
   }

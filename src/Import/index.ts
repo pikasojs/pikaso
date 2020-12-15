@@ -3,7 +3,7 @@ import Konva from 'konva'
 import { omit } from '../utils/omit'
 
 import { Board } from '../Board'
-import { Shape } from '../Shape'
+import { ShapeModel } from '../shape/ShapeModel'
 
 import type { JsonData, Shapes } from '../types'
 
@@ -50,7 +50,7 @@ export class Import {
 
     await Promise.all(
       shapes.map(async shape => {
-        let instance: Shape | undefined
+        let instance: ShapeModel | undefined
 
         switch (shape.className) {
           case 'Image':

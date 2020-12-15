@@ -1,6 +1,4 @@
 import { Board } from '../Board'
-import { Events } from '../Events'
-import { History } from '../History'
 
 import { createImageFromUrl } from '../utils/create-image-from-url'
 import { getRotatedPoint } from '../utils/get-rotated-point'
@@ -23,16 +21,6 @@ export class Cropper {
   private readonly board: Board
 
   /**
-   * Represents the [[Events]]
-   */
-  private readonly events: Events
-
-  /**
-   * Represents the [[History]]
-   */
-  private readonly history: History
-
-  /**
    * Represents the current cropper instance
    */
   private instance:
@@ -50,13 +38,9 @@ export class Cropper {
    * Creates a new cropper instance
    *
    * @param board The [[Board]]
-   * @param events The [[Events]]
-   * @param history The [[History]]
    */
-  constructor(board: Board, events: Events, history: History) {
+  constructor(board: Board) {
     this.board = board
-    this.events = events
-    this.history = history
   }
 
   /**
@@ -207,7 +191,7 @@ export class Cropper {
       return null
     }
 
-    this.history.create(this.board.stage, [
+    this.board.history.create(this.board.stage, [
       this.board.stage,
       ...this.board.layer.children.toArray()
     ])
@@ -303,7 +287,7 @@ export class Cropper {
 
     stage.batchDraw()
 
-    this.events.emit('crop', {
+    this.board.events.emit('crop', {
       data: {
         options,
         rect

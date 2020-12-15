@@ -2,10 +2,11 @@ import Konva from 'konva'
 
 import { History } from '../History'
 import { Events } from '../Events'
-import { Selection } from '../Selection'
 
-import { Shape } from '../Shape'
-import { Background } from '../Shape/Background'
+import { Selection } from '../Selection'
+import { Background } from '../Background'
+
+import { ShapeModel } from '../shape/ShapeModel'
 
 import type { Settings, DrawType } from '../types'
 
@@ -91,22 +92,22 @@ export class Board {
   public activeDrawing: DrawType | null = null
 
   /**
+   * @see [[Events]]
+   */
+  public readonly events: Events
+
+  /**
+   * @see [[History]]
+   */
+  public readonly history: History
+
+  /**
    * The array that contains all created shapes including active and deleted items. this property is managing by [[ShapeDrawer]] and [[Selection]]
    *
    * @see [[Board.addShape]] and [[Board.setShapes]]
    *
    */
-  private shapes: Array<Shape> = []
-
-  /**
-   * @see [[History]]
-   */
-  private readonly history: History
-
-  /**
-   * @see [[Events]]
-   */
-  private readonly events: Events
+  private shapes: Array<ShapeModel> = []
 
   /**
    * Creates a new stage, layer, background and selection instance
@@ -158,8 +159,8 @@ export class Board {
     this.layer = new Konva.Layer()
     this.stage.add(this.layer)
 
-    this.selection = new Selection(this, events, history)
-    this.background = new Background(this, events, history)
+    this.background = new Background(this)
+    this.selection = new Selection(this)
 
     this.container = this.settings.container
   }
@@ -199,16 +200,23 @@ export class Board {
   /**
    * Returns all created shapes
    *
-   * @see [[Shape]]
+   * @see [[ShapeModel]]
    */
   public getShapes() {
     return this.shapes.filter(shape => !shape.isDeleted)
   }
 
   /**
+   * Add a new shape to the list of the shapes
+   */
+  public addShape(shape: ShapeModel) {
+    this.shapes.push(shape)
+  }
+
+  /**
    * Updates list of the shapes
    */
-  public setShapes(shapes: Shape[]) {
+  public setShapes(shapes: ShapeModel[]) {
     this.shapes = shapes
   }
 
@@ -229,40 +237,6 @@ export class Board {
         transform
       }
     })
-  }
-
-  /**
-   * Adds a to the node to shapes list
-   *
-   * @param node The Node [[https://konvajs.org/api/Konva.Shape.html | Shape]]
-   * @param transformerConfig [[https://konvajs.org/api/Konva.Transformer.html | Transformer Config]]
-   */
-  public addShape(
-    node: Konva.Group | Konva.Shape,
-    transformerConfig: Konva.TransformerConfig = {}
-  ) {
-    node.setAttrs({
-      draggable: true
-    })
-
-    const shape = new Shape(this, this.events, this.history, node, {
-      transformer: transformerConfig
-    })
-    this.shapes = [...this.shapes, shape]
-
-    this.layer.add(node)
-    this.draw()
-
-    this.history.create(this.layer, [], {
-      undo: () => shape.delete(),
-      redo: () => shape.undelete()
-    })
-
-    this.events.emit('shape:create', {
-      shapes: [shape]
-    })
-
-    return shape
   }
 
   /**

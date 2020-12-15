@@ -128,7 +128,7 @@ export class History {
   /**
    * Calculates state of the given node
    *
-   * @param node The [[Shape | shape's]] node
+   * @param node The [[ShapeModel | shape's]] node
    */
   private getNodeState(node: HistoryNode): HistoryState {
     const snapshpot = <HistoryNode>node.clone({})
