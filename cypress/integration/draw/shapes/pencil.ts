@@ -33,7 +33,7 @@ describe('Shapes -> Pencil', () => {
         })
         .trigger('mouseup', { force: true })
         .then(() => {
-          expect(editor.board.getShapes().length).equal(1)
+          expect(editor.board.shapes.length).equal(1)
         })
     })
   })

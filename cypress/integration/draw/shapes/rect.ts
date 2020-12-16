@@ -16,7 +16,7 @@ describe('Shapes -> Rect', () => {
         fill: '#ccc'
       })
 
-      expect(editor.board.getShapes().length).equal(1)
+      expect(editor.board.shapes.length).equal(1)
     })
   })
 
@@ -27,7 +27,7 @@ describe('Shapes -> Rect', () => {
       })
 
       cy.draw([300, 300], [400, 400]).then(() => {
-        expect(editor.board.getShapes().length).equal(1)
+        expect(editor.board.shapes.length).equal(1)
       })
     })
   })

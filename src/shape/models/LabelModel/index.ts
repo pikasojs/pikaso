@@ -8,6 +8,11 @@ import { ShapeModel } from '../../ShapeModel'
 import { DrawType, ShapeConfig, Shapes } from '../../../types'
 
 export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
+  /**
+   * Represents whether the label is editing (inline edit) or not
+   */
+  private isEditingEnabled = false
+
   constructor(board: Board, node: Konva.Label, config: ShapeConfig = {}) {
     super(board, node, config)
 
@@ -23,16 +28,23 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
   }
 
   /**
+   * Returns the label is in inline editing mode or not
+   */
+  public get isEditing() {
+    return this.isEditingEnabled
+  }
+
+  /**
    * Returns the text node of the label
    */
-  public get text() {
+  public get textNode() {
     return this.node.getText() as Konva.Text
   }
 
   /**
    * Returns the tag node of the label
    */
-  public get tag() {
+  public get tagNode() {
     return this.node.getTag() as Konva.Tag
   }
 
@@ -43,8 +55,8 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    * @param options The options of updading attributes
    */
   public updateTag(attributes: Partial<Konva.TagConfig>) {
-    this.board.history.create(this.board.layer, this.tag)
-    this.tag.setAttrs(attributes)
+    this.board.history.create(this.board.layer, this.tagNode)
+    this.tagNode.setAttrs(attributes)
 
     this.board.draw()
   }
@@ -56,8 +68,12 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    * @param options The options of updading attributes
    */
   public updateText(attributes: Partial<Konva.TextConfig>) {
-    this.board.history.create(this.board.layer, this.text)
-    this.text.setAttrs(attributes)
+    this.board.history.create(this.board.layer, this.textNode)
+    this.textNode.setAttrs(attributes)
+
+    if (this.board.selection.isVisible) {
+      this.board.selection.transformer.forceUpdate()
+    }
 
     this.board.draw()
   }
@@ -72,13 +88,13 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
       return
     }
 
-    this.text.setAttrs({
+    this.textNode.setAttrs({
       width: this.node.width() * this.node.scaleX(),
       scaleX: this.node.scaleY()
     })
 
-    this.node.scaleX(this.text.scaleY())
-    this.tag.scaleX(this.node.scaleY())
+    this.node.scaleX(this.textNode.scaleY())
+    this.tagNode.scaleX(this.node.scaleY())
   }
 
   /**
@@ -91,10 +107,12 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
       return
     }
 
+    this.isEditingEnabled = true
+
     this.board.setActiveDrawing(DrawType.Text)
 
     const position = e.target.absolutePosition()
-    const textBeforeEdit = this.text.getAttr('text')
+    const textBeforeEdit = this.textNode.getAttr('text')
 
     // hide node
     this.node.hide()
@@ -112,35 +130,37 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
 
     input.setAttribute('contenteditable', '')
     input.setAttribute('role', 'textbox')
-    input.innerText = this.text.getAttr('text')
+    input.innerText = this.textNode.getAttr('text')
 
     Object.assign(input.style, {
       position: 'absolute',
       display: 'inline-block',
-      left: `${position.x - this.text.padding()}px`,
-      top: `${position.y - this.text.padding()}px`,
-      width: `${this.text.width() * this.node.scaleX()}px`,
-      minWidth: `${this.text.padding() * 2}px`,
-      maxWidth: `${this.text.width() * this.node.scaleX()}px`,
-      minHeight: `${this.text.height() * this.node.scaleY()}px`,
-      fontSize: `${this.text.fontSize() * this.node.scaleY()}px`,
+      left: `${position.x - this.textNode.padding()}px`,
+      top: `${position.y - this.textNode.padding()}px`,
+      width: `${this.textNode.width() * this.node.scaleX()}px`,
+      minWidth: `${this.textNode.padding() * 2}px`,
+      maxWidth: `${this.textNode.width() * this.node.scaleX()}px`,
+      minHeight: `${this.textNode.height() * this.node.scaleY()}px`,
+      fontSize: `${this.textNode.fontSize() * this.node.scaleY()}px`,
       border: 'none',
-      padding: `${this.text.padding()}px`,
-      margin: `${this.text.padding()}px`,
+      padding: `${this.textNode.padding()}px`,
+      margin: `${this.textNode.padding()}px`,
       overflow: 'hidden',
-      background: this.tag.fill(),
-      borderRadius: `${this.tag.cornerRadius()}px`,
+      background: this.tagNode.fill(),
+      borderRadius: `${this.tagNode.cornerRadius()}px`,
       outline: 'none',
       resize: 'none',
-      lineHeight: this.text.lineHeight(),
-      fontFamily: this.text.fontFamily(),
+      lineHeight: this.textNode.lineHeight(),
+      fontFamily: this.textNode.fontFamily(),
       transformOrigin: 'left top',
-      textAlign: this.text.align(),
-      color: this.text.fill(),
+      textAlign: this.textNode.align(),
+      color: this.textNode.fill(),
       transform: `${input.style.transform} rotateZ(${this.node.rotation()}deg)`
     })
 
     input.addEventListener('blur', (e: Event) => {
+      this.isEditingEnabled = false
+
       input.parentNode?.removeChild(input)
 
       this.board.setActiveDrawing(null)
@@ -155,12 +175,12 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
       }
 
       // update label's text
-      this.text.setText(newText)
+      this.textNode.setText(newText)
 
       this.node.show()
       this.node.setAttrs({
         draggable: true,
-        width: this.text.width()
+        width: this.textNode.width()
       })
 
       // select node
@@ -176,19 +196,9 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    * @param value The text value
    */
   private changeText(value: string) {
-    this.text.setAttrs({
+    this.updateText({
       text: value
     })
-
-    this.node.setAttrs({
-      width: this.text.width()
-    })
-
-    if (this.board.selection.isVisible) {
-      this.board.selection.transformer.forceUpdate()
-    }
-
-    this.board.draw()
 
     this.board.events.emit('label:update-text', {
       shapes: [this],

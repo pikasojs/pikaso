@@ -107,7 +107,7 @@ export class Board {
    * @see [[Board.addShape]] and [[Board.setShapes]]
    *
    */
-  private shapes: Array<ShapeModel> = []
+  private shapesList: Array<ShapeModel> = []
 
   /**
    * Creates a new stage, layer, background and selection instance
@@ -193,7 +193,7 @@ export class Board {
   public getNodes() {
     return [
       ...this.background.nodes,
-      ...this.getShapes().map(shape => shape.node)
+      ...this.shapesList.map(shape => shape.node)
     ]
   }
 
@@ -202,22 +202,22 @@ export class Board {
    *
    * @see [[ShapeModel]]
    */
-  public getShapes() {
-    return this.shapes.filter(shape => !shape.isDeleted)
+  public get shapes() {
+    return this.shapesList.filter(shape => !shape.isDeleted)
   }
 
   /**
    * Add a new shape to the list of the shapes
    */
   public addShape(shape: ShapeModel) {
-    this.shapes.push(shape)
+    this.shapesList.push(shape)
   }
 
   /**
    * Updates list of the shapes
    */
   public setShapes(shapes: ShapeModel[]) {
-    this.shapes = shapes
+    this.shapesList = shapes
   }
 
   /**

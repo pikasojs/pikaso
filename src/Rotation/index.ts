@@ -88,7 +88,7 @@ export class Rotation {
         .y(stageHeight / 2 - center.y)
     })
 
-    this.board.getShapes().forEach(shape => {
+    this.board.shapes.forEach(shape => {
       if (shape.node.rotation() === theta) {
         return
       }
@@ -134,7 +134,7 @@ export class Rotation {
       rotateAroundCenter(node, theta)
     })
 
-    this.board.getShapes().forEach(shape => {
+    this.board.shapes.forEach(shape => {
       rotateAroundCenter(shape.node, theta)
     })
 

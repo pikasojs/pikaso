@@ -179,7 +179,7 @@ export abstract class ShapeModel<
     this.node.destroy()
 
     const shapes = this.board
-      .getShapes()
+      .shapes
       .filter(shape => shape.node !== this.node)
 
     this.board.setShapes(shapes)

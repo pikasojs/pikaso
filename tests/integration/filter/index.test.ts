@@ -22,9 +22,9 @@ describe('Filter', () => {
       }
     })
 
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(1)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(1)
 
-    expect(editor.board.getShapes()[0].node.attrs.filters[0]).toEqual(
+    expect(editor.board.shapes[0].node.attrs.filters[0]).toEqual(
       Konva.Filters['Blur']
     )
   })
@@ -45,13 +45,13 @@ describe('Filter', () => {
       name: 'Invert'
     })
 
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(2)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(2)
 
-    expect(editor.board.getShapes()[0].node.attrs.filters[0]).toEqual(
+    expect(editor.board.shapes[0].node.attrs.filters[0]).toEqual(
       Konva.Filters['Blur']
     )
 
-    expect(editor.board.getShapes()[0].node.attrs.filters[1]).toEqual(
+    expect(editor.board.shapes[0].node.attrs.filters[1]).toEqual(
       Konva.Filters['Invert']
     )
   })
@@ -68,11 +68,11 @@ describe('Filter', () => {
       }
     })
 
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(1)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(1)
 
     shape.removeFilter('Blur')
 
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(0)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(0)
   })
 
   it('should remove all filters from the shape', () => {
@@ -91,12 +91,12 @@ describe('Filter', () => {
       name: 'Invert'
     })
 
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(2)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(2)
 
     shape.removeFilter('Blur')
     shape.removeFilter('Invert')
 
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(0)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(0)
   })
 
   it('should undo and redo after adding filter', () => {
@@ -113,15 +113,15 @@ describe('Filter', () => {
       }
     })
 
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(1)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(1)
 
     editor.undo()
-    expect(editor.board.getShapes()[0].node.attrs.filters?.length).toBe(
+    expect(editor.board.shapes[0].node.attrs.filters?.length).toBe(
       undefined
     )
 
     editor.redo()
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(1)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(1)
   })
 
   it('should undo and redo after removing filter', () => {
@@ -139,13 +139,13 @@ describe('Filter', () => {
     })
 
     shape.removeFilter('Blur')
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(0)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(0)
 
     editor.undo()
-    expect(editor.board.getShapes()[0].node.attrs.filters?.length).toBe(1)
+    expect(editor.board.shapes[0].node.attrs.filters?.length).toBe(1)
 
     editor.redo()
-    expect(editor.board.getShapes()[0].node.attrs.filters.length).toBe(0)
+    expect(editor.board.shapes[0].node.attrs.filters.length).toBe(0)
   })
 
   it('should work with remove filter on shapes without filter', () => {
@@ -153,13 +153,13 @@ describe('Filter', () => {
 
     const shape = editor.shapes.circle.insert(shapeConfig)
 
-    expect(editor.board.getShapes()[0].node.attrs.filters?.length).toBe(
+    expect(editor.board.shapes[0].node.attrs.filters?.length).toBe(
       undefined
     )
 
     shape.removeFilter('Blur')
 
-    expect(editor.board.getShapes()[0].node.attrs.filters?.length).toBe(
+    expect(editor.board.shapes[0].node.attrs.filters?.length).toBe(
       undefined
     )
   })

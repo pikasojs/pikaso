@@ -93,7 +93,7 @@ export class Selection {
    * ```
    */
   public find(selector: (shape: ShapeModel) => boolean) {
-    const list = this.board.getShapes().filter(shape => {
+    const list = this.board.shapes.filter(shape => {
       return selector(shape)
     })
 
@@ -109,7 +109,7 @@ export class Selection {
    * ```
    */
   public selectAll() {
-    this.multi(this.board.getShapes())
+    this.multi(this.board.shapes)
   }
 
   /**
@@ -269,26 +269,29 @@ export class Selection {
    *
    * @param value The value number
    */
-  public moveX(value: number) {
-    this.board.history.create(
-      this.board.layer,
-      this.transformer.nodes() as Konva.Shape[]
-    )
+  public async moveX(value: number) {
+    return new Promise(resolve => {
+      this.board.history.create(
+        this.board.layer,
+        this.transformer.nodes() as Konva.Shape[]
+      )
 
-    this.list.forEach(shape => {
-      shape.node.to({
-        x: shape.node.x() + value
+      this.list.forEach(shape => {
+        shape.node.to({
+          x: shape.node.x() + value,
+          onFinish: resolve
+        })
       })
-    })
 
-    this.board.draw()
+      this.board.draw()
 
-    this.board.events.emit('selection:move', {
-      shapes: this.list,
-      data: {
-        axis: 'x',
-        value
-      }
+      this.board.events.emit('selection:move', {
+        shapes: this.list,
+        data: {
+          axis: 'x',
+          value
+        }
+      })
     })
   }
 
@@ -297,26 +300,29 @@ export class Selection {
    *
    * @param value The value number
    */
-  public moveY(value: number) {
-    this.board.history.create(
-      this.board.layer,
-      this.transformer.nodes() as Konva.Shape[]
-    )
+  public async moveY(value: number) {
+    return new Promise(resolve => {
+      this.board.history.create(
+        this.board.layer,
+        this.transformer.nodes() as Konva.Shape[]
+      )
 
-    this.list.forEach(shape => {
-      shape.node.to({
-        y: shape.node.y() + value
+      this.list.forEach(shape => {
+        shape.node.to({
+          y: shape.node.y() + value,
+          onFinish: resolve
+        })
       })
-    })
 
-    this.board.draw()
+      this.board.draw()
 
-    this.board.events.emit('selection:move', {
-      shapes: this.list,
-      data: {
-        axis: 'y',
-        value
-      }
+      this.board.events.emit('selection:move', {
+        shapes: this.list,
+        data: {
+          axis: 'y',
+          value
+        }
+      })
     })
   }
 
@@ -443,9 +449,9 @@ export class Selection {
    * @param e The trigger event
    */
   private onDragZoneStart(e: Konva.KonvaEventObject<MouseEvent>) {
-    const shape = this.board
-      .getShapes()
-      .find(shape => shape.node === this.getParentNode(e.target))
+    const shape = this.board.shapes.find(
+      shape => shape.node === this.getParentNode(e.target)
+    )
 
     if (shape && !this.list.includes(shape)) {
       const isShiftKeyUp = e.evt.shiftKey === true
@@ -519,11 +525,9 @@ export class Selection {
 
     const box = this.zone.getClientRect()
 
-    const shapes = this.board
-      .getShapes()
-      .filter(shape =>
-        Konva.Util.haveIntersection(box, shape.node.getClientRect())
-      )
+    const shapes = this.board.shapes.filter(shape =>
+      Konva.Util.haveIntersection(box, shape.node.getClientRect())
+    )
 
     this.multi(shapes)
   }

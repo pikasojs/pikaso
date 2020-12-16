@@ -41,7 +41,7 @@ export class Flip {
    */
   public horizontal(shapes?: ShapeModel[]) {
     const list = shapes || [
-      ...this.board.getShapes(),
+      ...this.board.shapes,
       this.board.background.image
     ]
 
@@ -73,7 +73,7 @@ export class Flip {
    */
   public vertical(shapes?: ShapeModel[]) {
     const list = shapes || [
-      ...this.board.getShapes(),
+      ...this.board.shapes,
       this.board.background.image
     ]
 

@@ -8,7 +8,7 @@ describe('Shapes -> Circle', () => {
 
   it('should insert a circle', () => {
     cy.getEditor().then(editor => {
-      expect(editor.board.getShapes().length).equal(0)
+      expect(editor.board.shapes.length).equal(0)
 
       editor.shapes.circle.insert({
         x: 50,
@@ -17,7 +17,7 @@ describe('Shapes -> Circle', () => {
         fill: 'red'
       })
 
-      expect(editor.board.getShapes().length).equal(1)
+      expect(editor.board.shapes.length).equal(1)
     })
   })
 
@@ -28,7 +28,7 @@ describe('Shapes -> Circle', () => {
       })
 
       cy.draw([300, 300], [400, 400]).then(() => {
-        expect(editor.board.getShapes().length).equal(1)
+        expect(editor.board.shapes.length).equal(1)
       })
     })
   })
