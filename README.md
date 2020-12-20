@@ -5,7 +5,7 @@
 ![coverage](https://img.shields.io/coveralls/github/pikasojs/pikaso)
 
 
-![logo](assets/logo.svg | width=100)
+<img src="assets/logo.svg" width="150" />
 
 Pikaso is a seamless, headless and fully-tested canvas library that provides a couple of high level APIs like image cropping, rotation, flipping, undo/redo state management, import/export json, shape drawing (circle, ellipse, rectangle, triangle, polygon, line, arrow), free drawing (pencil) and preset filters
 
