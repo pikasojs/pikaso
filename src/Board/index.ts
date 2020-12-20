@@ -8,8 +8,6 @@ import { Background } from '../Background'
 
 import { ShapeModel } from '../shape/ShapeModel'
 
-import { defaultSettings } from '../defaultSettings'
-
 import type { Settings, DrawType } from '../types'
 
 /**
@@ -37,9 +35,7 @@ export class Board {
   /**
    * The settings
    */
-  public readonly settings: Partial<Settings> & {
-    container: HTMLDivElement
-  }
+  public readonly settings: Settings
 
   /**
    * The background of main layer that contains image and overlay
@@ -127,13 +123,6 @@ export class Board {
 
     const width = this.settings.width || this.settings.container.clientWidth
     const height = this.settings.height || this.settings.container.clientHeight
-
-    this.settings = {
-      ...defaultSettings,
-      ...settings,
-      width,
-      height
-    }
 
     this.stage = new Konva.Stage({
       container: this.settings.container,

@@ -2,8 +2,10 @@ import Konva from 'konva'
 
 import { CropperOptions } from './cropper'
 
-export declare interface Settings {
+export declare interface RequiredSettings {
   container: HTMLDivElement
+}
+export declare interface OptionalSettings {
   width: number
   height: number
   disableCanvasContextMenu: boolean
@@ -38,3 +40,5 @@ export declare interface Settings {
     }
   }
 }
+
+export declare type Settings = Partial<OptionalSettings> & RequiredSettings

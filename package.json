@@ -19,6 +19,7 @@
     "build": "npm run clean && rollup -c"
   },
   "dependencies": {
+    "deepmerge": "^4.2.2",
     "konva": "^7.2.1"
   },
   "devDependencies": {

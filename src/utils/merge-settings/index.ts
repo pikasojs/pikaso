@@ -1,4 +1,8 @@
+import merge from 'deepmerge'
+
 import { defaultSettings } from '../../defaultSettings'
+import { omit } from '../omit'
+
 import type { Settings } from '../../types'
 
 /**
@@ -9,27 +13,7 @@ import type { Settings } from '../../types'
  */
 export function mergeSettings(settings: Settings): Settings {
   return {
-    ...defaultSettings,
-    ...settings,
-    transformer: {
-      ...defaultSettings.transformer,
-      ...settings.transformer
-    },
-    history: {
-      ...defaultSettings.history,
-      ...settings.history
-    },
-    cropper: {
-      ...defaultSettings.cropper,
-      ...settings.cropper
-    },
-    drawing: {
-      ...defaultSettings.drawing,
-      ...settings.drawing
-    },
-    selection: {
-      ...defaultSettings.selection,
-      ...settings.selection
-    }
+    container: settings.container,
+    ...merge(defaultSettings, omit(settings, ['container']))
   }
 }

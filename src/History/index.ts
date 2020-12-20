@@ -30,14 +30,14 @@ export class History {
   /**
    * Represents the history settings
    */
-  private settings: Partial<Settings['history']>
+  private settings: Partial<Settings>
 
   /**
    * Represents the [[Events]]
    */
   private events: Events
 
-  constructor(settings: Partial<Settings['history']>, events: Events) {
+  constructor(settings: Partial<Settings>, events: Events) {
     this.settings = settings
     this.events = events
 
@@ -253,7 +253,7 @@ export class History {
       shiftKey: boolean
     }
   ) {
-    if (this.settings?.keyboard?.enabled === false) {
+    if (this.settings?.history?.keyboard?.enabled === false) {
       return
     }
 

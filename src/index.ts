@@ -233,7 +233,7 @@ export default class Pikaso {
    */
   private init() {
     const events = new Events()
-    const history = new History(this.settings.history, events)
+    const history = new History(this.settings, events)
     const board = new Board(this.settings, events, history)
 
     this.selection = board.selection
