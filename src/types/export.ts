@@ -2,10 +2,6 @@ import Konva from 'konva'
 
 import { UnknownObject } from './common'
 
-export declare interface ExportOptions {
-  pixelRatio?: number
-}
-
 export declare interface JsonData {
   stage: {
     attrs: UnknownObject

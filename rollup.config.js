@@ -18,7 +18,7 @@ export default [
         declarationDir: 'es'
       })
     ],
-    input: 'src/index.ts',
+    input: 'src/index.es.ts',
     preserveModules: false,
     output: {
       dir: 'es',

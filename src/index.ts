@@ -1,5 +1,3 @@
-import Konva from 'konva'
-
 import { mergeSettings } from './utils/merge-settings'
 
 import { Board } from './Board'
@@ -119,13 +117,6 @@ export default class Pikaso {
     this.settings = mergeSettings(settings)
 
     this.init()
-  }
-
-  /**
-   * @returns The Konva library
-   */
-  public get Konva() {
-    return Konva
   }
 
   /**
@@ -265,5 +256,3 @@ export default class Pikaso {
     this.board.draw()
   }
 }
-
-export { Konva }

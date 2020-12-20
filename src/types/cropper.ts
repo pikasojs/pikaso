@@ -1,11 +1,12 @@
 import Konva from 'konva'
 
 import { Dimensions, Point } from './common'
-import { ExportOptions } from './export'
+import { ExportImageConfig } from './export'
 
-export interface CropOptions extends ExportOptions {
+interface BaseCropOptions {
   rect: Point & Dimensions
 }
+export type CropOptions = BaseCropOptions & ExportImageConfig
 
 export interface BaseCropperOptions {
   x: number
