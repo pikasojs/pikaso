@@ -86,7 +86,7 @@ function createState() {
     height: 100
   }
 
-  const history = new History(new Events())
+  const history = new History({}, new Events())
   const layer = new Konva.Layer()
   const node = new Konva.Rect(shapeConfig)
 

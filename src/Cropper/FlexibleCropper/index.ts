@@ -74,25 +74,23 @@ export abstract class FlexibleCropper extends BaseCropper {
    * @param pos The [[Point]]
    */
   private getCropzoneBoundRect(pos: Point): Point {
+    const borderWidth = this.options.transformer.borderStrokeWidth!
+
     const minX =
-      (this.options.circular ? this.transformer.width() / 2 : 0) +
-      this.options.borderWidth
+      (this.options.circular ? this.transformer.width() / 2 : 0) + borderWidth
 
     const minY =
-      (this.options.circular ? this.transformer.height() / 2 : 0) +
-      this.options.borderWidth
+      (this.options.circular ? this.transformer.height() / 2 : 0) + borderWidth
 
     const maxX =
       (this.options.circular
         ? this.board.stage.width() - this.transformer.width() / 2
-        : this.board.stage.width() - this.transformer.width()) -
-      this.options.borderWidth
+        : this.board.stage.width() - this.transformer.width()) - borderWidth
 
     const maxY =
       (this.options.circular
         ? this.board.stage.height() - this.transformer.height() / 2
-        : this.board.stage.height() - this.transformer.height()) -
-      this.options.borderWidth
+        : this.board.stage.height() - this.transformer.height()) - borderWidth
 
     const x = pos.x <= minX ? Math.max(pos.x, minX) : Math.min(pos.x, maxX)
     const y = pos.y <= minY ? Math.max(pos.y, minY) : Math.min(pos.y, maxY)
@@ -108,12 +106,7 @@ export abstract class FlexibleCropper extends BaseCropper {
       nodes: [this.cropzone],
       keepRatio: this.options.keepRatio,
       rotateEnabled: false,
-      anchorSize: this.options.anchorSize,
-      anchorFill: this.options.anchorColor,
-      anchorStroke: this.options.anchorBorderColor,
-      borderDash: this.options.borderDash,
-      borderStroke: this.options.borderColor,
-      borderStrokeWidth: this.options.borderWidth,
+      ...this.options.transformer,
       enabledAnchors: [
         'top-left',
         'top-right',

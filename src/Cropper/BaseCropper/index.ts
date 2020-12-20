@@ -2,7 +2,11 @@ import Konva from 'konva'
 
 import { Board } from '../../Board'
 
-import type { CropperOptions } from '../../types'
+import type {
+  CircularCropperOptions,
+  CropperOptions,
+  RectangleCropperOptions
+} from '../../types'
 
 /**
  * @internal
@@ -36,7 +40,7 @@ export abstract class BaseCropper {
   constructor(board: Board, options: Partial<CropperOptions>) {
     this.board = board
 
-    this.options = this.createOptions(options)
+    this.options = <CropperOptions>this.createOptions(options)
 
     this.layer = new Konva.Layer()
     this.overlay = this.createOverlay()
@@ -82,7 +86,7 @@ export abstract class BaseCropper {
       x: 0,
       y: 0,
       fill: 'transparent',
-      dash: this.options.borderDash
+      dash: this.options.transformer.borderDash
     }
 
     if (this.options.circular) {
@@ -90,10 +94,15 @@ export abstract class BaseCropper {
         new Konva.Circle({
           ...shapeOptions,
           radius: this.options.radius,
-          stroke: this.options.circleBorderColor || this.options.borderColor,
+          stroke:
+            this.options.circle?.borderStroke ??
+            this.options.transformer.borderStroke,
           strokeWidth:
-            this.options.circleBorderWidth || this.options.borderWidth,
-          dash: this.options.circleBorderDash || this.options.borderDash
+            this.options.circle?.borderStrokeWidth ??
+            this.options.transformer.borderStrokeWidth,
+          dash:
+            this.options.circle?.borderDash ??
+            this.options.transformer.borderDash
         })
       )
     } else {
@@ -102,8 +111,12 @@ export abstract class BaseCropper {
           ...shapeOptions,
           width: this.options.width,
           height: this.options.height,
-          stroke: this.options.fixed ? this.options.borderColor : undefined,
-          strokeWidth: this.options.fixed ? this.options.borderWidth : undefined
+          stroke: this.options.fixed
+            ? this.options.transformer.borderStroke
+            : undefined,
+          strokeWidth: this.options.fixed
+            ? this.options.transformer.borderStrokeWidth
+            : undefined
         })
       )
     }
@@ -125,12 +138,12 @@ export abstract class BaseCropper {
    * Creates the guide lines of the cropzone
    */
   private createGuideLines() {
-    const { guidesCount, guidesColor, guidesWidth, guidesDash } = this.options
+    const { guides } = this.options
 
     const lineConfig = {
-      stroke: guidesColor,
-      strokeWidth: guidesWidth,
-      dash: guidesDash
+      stroke: guides.color,
+      strokeWidth: guides.width,
+      dash: guides.dash
     }
 
     if (this.options.circular) {
@@ -149,12 +162,12 @@ export abstract class BaseCropper {
     const { width, height } = this.options
 
     return Array.from({
-      length: this.options.guidesCount
+      length: guides.count
     }).flatMap((_, index) => {
-      const wx = width / (guidesCount + 1)
+      const wx = width / (guides.count + 1)
       const x = wx + index * wx
 
-      const wy = height / (guidesCount + 1)
+      const wy = height / (guides.count + 1)
       const y = wy + index * wy
 
       return [
@@ -177,7 +190,7 @@ export abstract class BaseCropper {
     return new Konva.Shape({
       x: 0,
       y: 0,
-      opacity: this.options.overlayOpacity,
+      opacity: this.options.overlay.opacity,
       width: this.board.stage.width(),
       height: this.board.stage.height()
     })
@@ -189,90 +202,109 @@ export abstract class BaseCropper {
    * @param options The [[CropperOptions]]
    */
   private createOptions(options: Partial<CropperOptions>) {
-    const base = {
-      circular: false,
-      x: -1,
-      y: -1,
-      width: 0,
-      height: 0,
-      radius: 0,
-      overlayOpacity: 0.5,
-      borderWidth: 3,
-      borderColor: '#fff',
-      overlayColor: '#000',
-      borderDash: options.fixed ? [0, 0] : [15, 10],
-      keepRatio: true,
-      fixed: false,
-      aspectRatio: 1,
-      anchorSize: 15,
-      minWidth: 100,
-      minHeight: 100,
-      anchorColor: '#fff',
-      anchorBorderColor: '#fff',
-      anchorBorderWidth: 1,
-      marginRatio: options.fixed ? 1 : 1.3,
-      guides: true,
-      guidesCount: 3,
-      guidesColor: '#fff',
-      guidesWidth: 1,
-      guidesDash: [15, 10],
-      circleBorderColor: '#fff',
-      circleBorderWidth: 3,
-      circleBorderDash: [0, 0],
+    const base: Partial<CropperOptions> = {
+      ...this.board.settings.cropper,
+      transformer: {
+        ...this.board.settings.transformer,
+        ...this.board.settings.cropper?.transformer,
+        ...options.transformer
+      },
       ...options
     }
 
-    const borderSize = base.fixed ? base.borderWidth * 2 : base.anchorSize * 2
+    // console.log(this.board.settings.cropper?.transformer)
 
     if (options.circular) {
-      const defaultRadius =
-        (Math.min(this.board.stage.width(), this.board.stage.height()) -
-          base.borderWidth * 2) /
-        2
-
-      const radius = options.radius || defaultRadius / base.marginRatio
-
       return {
-        ...base,
         circular: true,
-        radius,
-        x:
-          base.x >= Math.max(base.x, base.borderWidth)
-            ? base.x
-            : this.board.stage.width() / 2,
-        y:
-          base.y >= Math.max(base.y, base.borderWidth)
-            ? base.y
-            : this.board.stage.height() / 2
+        ...base,
+        ...this.getCircularCropperOptions(base as CircularCropperOptions)
       }
     }
 
+    return {
+      circular: false,
+      ...base,
+      ...this.getRectangularCropperOptions(base as RectangleCropperOptions)
+    }
+  }
+
+  /**
+   * Calculates options of circular cropper
+   *
+   * @returns The calculated options
+   * @param options The circular cropper options
+   */
+  private getCircularCropperOptions(
+    options: Partial<CircularCropperOptions>
+  ): Partial<CircularCropperOptions> {
+    const borderWidth = options.transformer?.borderStrokeWidth!
+
+    const defaultRadius =
+      (Math.min(this.board.stage.width(), this.board.stage.height()) -
+        borderWidth * 2) /
+      2
+
+    const baseX = options.x ?? -1
+    const baseY = options.y ?? -1
+
+    return {
+      radius: options.radius ?? defaultRadius / options.marginRatio!,
+      x:
+        baseX >= Math.max(baseX, borderWidth)
+          ? baseX
+          : this.board.stage.width() / 2,
+      y:
+        baseY >= Math.max(baseY, borderWidth)
+          ? baseY
+          : this.board.stage.height() / 2
+    }
+  }
+
+  /**
+   * Calculates options of rectangular cropper
+   *
+   * @returns The calculated options
+   * @param options The rectangular cropper options
+   */
+  private getRectangularCropperOptions(
+    options: Partial<RectangleCropperOptions>
+  ): Partial<RectangleCropperOptions> {
+    const borderWidth = options.transformer?.borderStrokeWidth!
+
+    const borderSize = options.fixed
+      ? borderWidth * 2
+      : options.transformer?.anchorSize! * 2
+
     const aspectRatio =
-      base.aspectRatio || this.board.stage.width() / this.board.stage.height()
+      options.aspectRatio ||
+      this.board.stage.width() / this.board.stage.height()
 
     let width =
-      base.width || (this.board.stage.width() - borderSize) / base.marginRatio
+      options.width ||
+      (this.board.stage.width() - borderSize) / options.marginRatio!
 
-    let height = base.height || width / aspectRatio
+    let height = options.height || width / aspectRatio
 
     if (height > this.board.stage.height() - borderSize) {
       height = this.board.stage.height() - borderSize
       width = height * aspectRatio
     }
 
+    const baseX = options.x ?? -1
+    const baseY = options.y ?? -1
+
     return {
-      ...base,
-      circular: false,
       aspectRatio,
       width,
       height,
       x:
-        base.x >= 0
-          ? Math.max(base.x, base.borderWidth)
+        baseX >= 0
+          ? Math.max(baseX, borderWidth)
           : (this.board.stage.width() - width) / 2,
       y:
-        base.y >= 0
-          ? Math.max(base.y, base.borderWidth)
+        baseY >= 0
+          ? Math.max(baseY, borderWidth)
           : (this.board.stage.height() - height) / 2
     }
   }

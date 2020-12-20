@@ -39,7 +39,7 @@ export class FlexibleCircularCropper extends FlexibleCropper {
       ) => {
         ctx.beginPath()
 
-        ctx.fillStyle = this.options.overlayColor
+        ctx.fillStyle = this.options.overlay.color
         ctx.fillRect(0, 0, shape.width(), shape.height())
 
         const radius = this.transformer.width() / 2

@@ -40,9 +40,9 @@ export interface CircularCropperOptions extends BaseCropperOptions {
   circular: true
   radius: number
   circle: {
-    stroke?: string
+    borderStroke?: string
     borderDash?: number[]
-    borderWidth?: number
+    borderStrokeWidth?: number
   }
 }
 

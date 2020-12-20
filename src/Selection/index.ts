@@ -174,7 +174,9 @@ export class Selection {
           'bottom-center',
           'middle-left',
           'middle-right'
-        ]
+        ],
+        ...this.board.settings.transformer,
+        ...this.board.settings.selection?.transformer
       } as Konva.TransformerConfig
     )
 
@@ -351,9 +353,8 @@ export class Selection {
    */
   private createZone() {
     this.zone = new Konva.Rect({
-      fill: 'rgba(105, 105, 105, 0.7)',
-      stroke: '#dbdbdb',
-      visible: false
+      visible: false,
+      ...this.board.settings.selection?.zone
     })
 
     this.board.layer.add(this.zone)
@@ -449,6 +450,10 @@ export class Selection {
    * @param e The trigger event
    */
   private onDragZoneStart(e: Konva.KonvaEventObject<MouseEvent>) {
+    if (this.board.settings.selection?.interactive === false) {
+      return
+    }
+
     const shape = this.board.shapes.find(
       shape => shape.node === this.getParentNode(e.target)
     )
@@ -558,40 +563,47 @@ export class Selection {
       key: string
     }
   ) {
+    const keyboard = this.board.settings.selection?.keyboard
+
+    if (keyboard?.enabled === false) {
+      return
+    }
+
     const nodes = this.transformer.nodes()
+    const movingSpaces = keyboard?.movingSpaces ?? 5
 
     if (this.transformer.getAttr('visible') === false || nodes.length === 0) {
       return
     }
 
-    switch (e.key) {
-      case 'Backspace':
-      case 'Delete':
-        this.delete()
-        break
+    if (keyboard?.map.delete.includes(e.key)) {
+      this.delete()
+      this.board.draw()
+    }
 
-      case 'ArrowLeft':
-        this.moveX(-5)
-        break
+    if (keyboard?.map.moveLeft.includes(e.key)) {
+      this.moveX(-movingSpaces)
+      this.board.draw()
+    }
 
-      case 'ArrowRight':
-        this.moveX(5)
-        this.board.draw()
-        break
+    if (keyboard?.map.moveRight.includes(e.key)) {
+      this.moveX(movingSpaces)
+      this.board.draw()
+    }
 
-      case 'ArrowUp':
-        this.moveY(-5)
-        this.board.draw()
-        break
+    if (keyboard?.map.moveUp.includes(e.key)) {
+      this.moveY(-movingSpaces)
+      this.board.draw()
+    }
 
-      case 'ArrowDown':
-        this.moveY(5)
-        this.board.draw()
-        break
+    if (keyboard?.map.moveDown.includes(e.key)) {
+      this.moveY(movingSpaces)
+      this.board.draw()
+    }
 
-      case 'Escape':
-        this.deselectAll()
-        break
+    if (keyboard?.map.deselect.includes(e.key)) {
+      this.deselectAll()
+      this.board.draw()
     }
   }
 

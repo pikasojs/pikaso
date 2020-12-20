@@ -1,5 +1,7 @@
 import Konva from 'konva'
 
+import { mergeSettings } from './utils/merge-settings'
+
 import { Board } from './Board'
 import { Events } from './Events'
 import { History } from './History'
@@ -114,7 +116,7 @@ export default class Pikaso {
       throw new Error('It needs to have a container element')
     }
 
-    this.settings = settings
+    this.settings = mergeSettings(settings)
 
     this.init()
   }
@@ -231,7 +233,7 @@ export default class Pikaso {
    */
   private init() {
     const events = new Events()
-    const history = new History(events)
+    const history = new History(this.settings.history, events)
     const board = new Board(this.settings, events, history)
 
     this.selection = board.selection

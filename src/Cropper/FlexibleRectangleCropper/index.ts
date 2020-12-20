@@ -1,7 +1,7 @@
 import type { Context } from 'konva/types/Context'
 
-import { FlexibleCropper } from '../FlexibleCropper'
 import { Board } from '../../Board'
+import { FlexibleCropper } from '../FlexibleCropper'
 
 import type { RectangleCropperOptions } from '../../types'
 
@@ -35,7 +35,7 @@ export class FlexibleRectangleCropper extends FlexibleCropper {
       ) => {
         ctx.beginPath()
 
-        ctx.fillStyle = this.options.overlayColor
+        ctx.fillStyle = this.options.overlay.color
         ctx.fillRect(0, 0, shape.width(), shape.height())
 
         ctx.clearRect(

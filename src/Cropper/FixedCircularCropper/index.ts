@@ -51,7 +51,7 @@ export class FixedCircularCropper extends FixedCropper {
       ) => {
         ctx.beginPath()
 
-        ctx.fillStyle = options.overlayColor
+        ctx.fillStyle = options.overlay.color
         ctx.fillRect(0, 0, shape.width(), shape.height())
 
         ctx.arc(options.x, options.y, options.radius, 0, 2 * Math.PI, false)

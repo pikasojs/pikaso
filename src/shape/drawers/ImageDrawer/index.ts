@@ -45,7 +45,7 @@ export class ImageDrawer {
       x: (this.board.stage.width() - defaultWidth) / 2,
       y: (this.board.stage.height() - defaultHeight) / 2,
       rotation: this.board.stage.rotation() * -1,
-      draggable: true,
+      draggable: this.board.settings.selection?.interactive,
       ...config
     })
 

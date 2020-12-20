@@ -1,5 +1,5 @@
 export * from './common'
-export * from './crop'
+export * from './cropper'
 export * from './drawing'
 export * from './events'
 export * from './export'

@@ -124,7 +124,9 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
     this.board.draw()
 
     const input = document.createElement('span')
-    this.board.container.getElementsByClassName('pikaso')[0].append(input)
+    this.board.container
+      .getElementsByClassName(this.board.settings.containerClassName!)[0]
+      .append(input)
 
     this.setInputFocus(input)
 
@@ -179,7 +181,7 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
 
       this.node.show()
       this.node.setAttrs({
-        draggable: true,
+        draggable: this.board.settings.selection?.interactive,
         width: this.textNode.width()
       })
 

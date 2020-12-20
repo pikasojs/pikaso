@@ -8,7 +8,8 @@ import type {
   HistoryNode,
   HistoryHooks,
   HistoryState,
-  UnknownObject
+  UnknownObject,
+  Settings
 } from '../types'
 
 export class History {
@@ -27,12 +28,20 @@ export class History {
   private step = -1
 
   /**
-   * Represents [[Events]]
+   * Represents the history settings
+   */
+  private settings: Partial<Settings['history']>
+
+  /**
+   * Represents the [[Events]]
    */
   private events: Events
 
-  constructor(events: Events) {
+  constructor(settings: Partial<Settings['history']>, events: Events) {
+    this.settings = settings
     this.events = events
+
+    window.addEventListener('keydown', this.onKeyDown.bind(this))
   }
 
   /**
@@ -229,5 +238,30 @@ export class History {
         canRedo: this.step > -1 && this.step < this.list.length - 1
       }
     }
+  }
+
+  /**
+   * Handles global keyboard events
+   *
+   * @param e The keyboard event
+   */
+  private onKeyDown(
+    e: Event & {
+      key: string
+      metaKey: boolean
+      ctrlKey: boolean
+      shiftKey: boolean
+    }
+  ) {
+    if (this.settings?.keyboard?.enabled === false) {
+      return
+    }
+
+    const isSpecialKey = e.metaKey || e.ctrlKey
+    const isShiftKey = e.shiftKey === true
+    const key = e.key.toLowerCase()
+
+    isSpecialKey && !isShiftKey && key === 'z' && this.undo()
+    isSpecialKey && isShiftKey && key === 'z' && this.redo()
   }
 }

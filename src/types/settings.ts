@@ -1,14 +1,40 @@
 import Konva from 'konva'
 
-import { CropperOptions } from './crop'
+import { CropperOptions } from './cropper'
 
 export declare interface Settings {
   container: HTMLDivElement
-  width?: number
-  height?: number
-  transformer?: Konva.TransformerConfig
-  cropper?: Partial<CropperOptions>
-  selection?: {
-    transformer?: Konva.TransformerConfig
+  width: number
+  height: number
+  disableCanvasContextMenu: boolean
+  containerClassName: string
+  transformer: Konva.TransformerConfig
+  cropper: Partial<CropperOptions>
+  drawing: {
+    keyboard: {
+      cancelOnEscape: boolean
+    }
+  }
+  selection: {
+    interactive: boolean
+    keyboard: {
+      enabled: boolean
+      movingSpaces: number
+      map: {
+        delete: string[]
+        moveLeft: string[]
+        moveRight: string[]
+        moveUp: string[]
+        moveDown: string[]
+        deselect: string[]
+      }
+    }
+    transformer: Konva.TransformerConfig
+    zone: Konva.RectConfig
+  }
+  history: {
+    keyboard: {
+      enabled: boolean
+    }
   }
 }

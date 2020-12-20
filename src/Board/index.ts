@@ -8,6 +8,8 @@ import { Background } from '../Background'
 
 import { ShapeModel } from '../shape/ShapeModel'
 
+import { defaultSettings } from '../defaultSettings'
+
 import type { Settings, DrawType } from '../types'
 
 /**
@@ -35,7 +37,9 @@ export class Board {
   /**
    * The settings
    */
-  public readonly settings: Settings
+  public readonly settings: Partial<Settings> & {
+    container: HTMLDivElement
+  }
 
   /**
    * The background of main layer that contains image and overlay
@@ -124,9 +128,9 @@ export class Board {
     const width = this.settings.width || this.settings.container.clientWidth
     const height = this.settings.height || this.settings.container.clientHeight
 
-    // store settings
     this.settings = {
-      ...this.settings,
+      ...defaultSettings,
+      ...settings,
       width,
       height
     }
@@ -138,7 +142,7 @@ export class Board {
     })
 
     // rename class name
-    this.stage.content.className = 'pikaso'
+    this.stage.content.className = this.settings.containerClassName!
 
     // set container position to center-center
     Object.assign(this.stage.content.style, {
@@ -152,9 +156,11 @@ export class Board {
     this.stage.on('heightChange', this.rescale.bind(this))
 
     // disable context menu
-    this.settings.container.addEventListener('contextmenu', (e: MouseEvent) =>
-      e.preventDefault()
-    )
+    if (this.settings.disableCanvasContextMenu) {
+      this.settings.container.addEventListener('contextmenu', (e: MouseEvent) =>
+        e.preventDefault()
+      )
+    }
 
     this.layer = new Konva.Layer()
     this.stage.add(this.layer)

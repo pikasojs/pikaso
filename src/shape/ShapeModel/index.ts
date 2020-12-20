@@ -58,7 +58,7 @@ export abstract class ShapeModel<
 
     this.config = {
       transformer: {},
-      selectable: true,
+      selectable: this.board.settings.selection?.interactive,
       ...config
     }
 
@@ -178,9 +178,7 @@ export abstract class ShapeModel<
   public destroy() {
     this.node.destroy()
 
-    const shapes = this.board
-      .shapes
-      .filter(shape => shape.node !== this.node)
+    const shapes = this.board.shapes.filter(shape => shape.node !== this.node)
 
     this.board.setShapes(shapes)
 

@@ -31,7 +31,7 @@ export class LabelDrawer {
   }): LabelModel {
     const label = new Konva.Label({
       ...config.container,
-      draggable: true
+      draggable: this.board.settings.selection?.interactive
     })
 
     const text = new Konva.Text(config.text)
