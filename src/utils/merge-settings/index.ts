@@ -9,6 +9,7 @@ import type { Settings } from '../../types'
  */
 export function mergeSettings(settings: Settings): Settings {
   return {
+    ...defaultSettings,
     ...settings,
     transformer: {
       ...defaultSettings.transformer,
