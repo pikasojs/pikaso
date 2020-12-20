@@ -154,4 +154,24 @@ describe('Selection', () => {
     editor.board.selection.removeFilter('Invert')
     expect(circle.node.filters().length).toBe(0)
   })
+
+  it('should get transformer', () => {
+    const editor = createEditor()
+
+    const transformer = editor.selection.getTransformer()
+
+    expect(transformer.className).toBe('Transformer')
+  })
+
+  it('should find and select shapes', () => {
+    const editor = createEditor()
+
+    const circle = editor.shapes.circle.insert(shapeConfig)
+
+    editor.selection.find(item => item.node.className === 'Circle')
+    expect(editor.selection.list.length).toBe(1)
+
+    editor.selection.find(item => item === circle)
+    expect(editor.selection.list.length).toBe(1)
+  })
 })
