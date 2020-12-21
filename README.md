@@ -54,10 +54,12 @@ const editor = new Pikaso({
 
 ## Features
 
+- Global Configurations
 - Fully Customizable Cropping
 - Rotation and Transformation
-- Drawing and Free Pencil Drawing
-- Simple Shapes
+- Shape Drawing and Free Pencil Drawing
+- Simple Geometric Shapes
+- Interactive Text Editing
 - Customizable Shapes
 - Image and SVG
 - Background Image
@@ -67,8 +69,11 @@ const editor = new Pikaso({
 - Interactive Selection Management
 - Export to PNG and JPEG
 - Import/Export JSON
+- Filters
+
+## Demo
+TBD 
 
 
 ## Documentation
-
 TBD
