@@ -41,5 +41,6 @@ export { RectModel } from './shape/models/RectModel'
 export { TriangleModel } from './shape/models/TriangleModel'
 
 export { Konva }
+export { Pikaso }
 
 export default Pikaso

@@ -84,9 +84,9 @@
     "type": "git",
     "url": "git://github.com/pikasojs/pikaso.git"
   },
-  "typings": "es/index.es.d.ts",
-  "module": "es/index.es.js",
-  "main": "cjs/index.cjs.js",
+  "typings": "es/index.all.d.ts",
+  "module": "es/index.all.js",
+  "main": "cjs/index.all.js",
   "unpkg": "umd/pikaso.min.js",
   "sideEffects": false,
   "files": [

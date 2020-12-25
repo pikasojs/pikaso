@@ -18,7 +18,7 @@ export default [
         declarationDir: 'es'
       })
     ],
-    input: 'src/index.es.ts',
+    input: 'src/index.all.ts',
     preserveModules: false,
     output: {
       dir: 'es',
@@ -37,10 +37,11 @@ export default [
         declarationDir: 'cjs'
       })
     ],
-    input: 'src/index.cjs.ts',
+    input: 'src/index.all.ts',
     output: {
       dir: 'cjs',
-      format: 'cjs'
+      format: 'cjs',
+      exports: 'named'
     }
   },
   {
