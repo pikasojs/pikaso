@@ -8,6 +8,7 @@ node_modules/
 *.log
 lib
 cjs
+esm
 es
 umd
 cypress/videos

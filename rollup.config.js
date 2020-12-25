@@ -14,14 +14,14 @@ export default [
       }),
       typescript({
         declaration: true,
-        outDir: 'es',
-        declarationDir: 'es'
+        outDir: 'esm',
+        declarationDir: 'esm'
       })
     ],
     input: 'src/index.all.ts',
     preserveModules: false,
     output: {
-      dir: 'es',
+      dir: 'esm',
       format: 'esm'
     }
   },
@@ -33,13 +33,13 @@ export default [
       }),
       typescript({
         declaration: true,
-        outDir: 'cjs',
-        declarationDir: 'cjs'
+        outDir: 'lib',
+        declarationDir: 'lib'
       })
     ],
     input: 'src/index.all.ts',
     output: {
-      dir: 'cjs',
+      dir: 'lib',
       format: 'cjs',
       exports: 'named'
     }

@@ -23,8 +23,8 @@ jobs:
         name: Pikaso Bundles
         path: |
           umd
-          cjs
-          es
+          lib
+          esm
     - uses: coverallsapp/github-action@master
       with:
         name: Coveralls
