@@ -79,8 +79,8 @@ https://github.com/pikasojs/pikaso-react-hook
 - Filters
 
 ## Demos
-[React Setup](https://codesandbox.io/s/pikaso-react-hook-vrx3d)   
-[Vue 3 Setup](https://codesandbox.io/s/pikaso-vue3-9v7el)   
+[React Setup](https://codesandbox.io/s/pikaso-react-hook-example-i0uwg)   
+[Vue 3 Setup](https://codesandbox.io/s/vue3-example-o3cig)   
 
 
 TBD
