@@ -1,4 +1,6 @@
-<img src="assets/logo.svg" width="150" />
+<div align="center">
+  <img src="assets/logo.svg" width="150" />
+</div>
 
 # Pikaso
 Seamless, headless and fully-tested HTML5 canvas library that provides a couple of high level APIs
@@ -51,6 +53,11 @@ const editor = new Pikaso({
   container: document.getElementById('<YOUR_DIV_ID>'),
 })
 ```
+
+## React 
+This is possible to directly import the library or reuse the official hook   
+https://github.com/pikasojs/pikaso-react-hook
+
 
 ## Features
 
