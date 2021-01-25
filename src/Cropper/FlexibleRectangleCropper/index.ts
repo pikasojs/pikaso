@@ -34,17 +34,12 @@ export class FlexibleRectangleCropper extends FlexibleCropper {
         shape
       ) => {
         ctx.beginPath()
-
-        ctx.fillStyle = this.options.overlay.color
-        ctx.fillRect(0, 0, shape.width(), shape.height())
-
         ctx.clearRect(
           this.cropzone.x(),
           this.cropzone.y(),
           this.transformer.width(),
           this.transformer.height()
         )
-
         ctx.closePath()
         ctx.fillStrokeShape(shape)
       }

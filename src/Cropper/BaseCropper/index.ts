@@ -43,10 +43,29 @@ export abstract class BaseCropper {
     this.options = <CropperOptions>this.createOptions(options)
 
     this.layer = new Konva.Layer()
+
+    /**
+     * creates the background to fade the underlay image
+     */
+    const background = new Konva.Rect({
+      fill: this.options.overlay.color,
+      opacity: this.options.overlay.opacity,
+      width: this.board.stage.width(),
+      height: this.board.stage.height()
+    })
+
+    /**
+     * creates the overlay
+     * it updates with cropzone moving to display the visible area
+     */
     this.overlay = this.createOverlay()
+
+    /**
+     * creates the movable cropzone area
+     */
     this.cropzone = this.createCropzone()
 
-    this.layer.add(this.overlay, this.cropzone)
+    this.layer.add(background, this.overlay, this.cropzone)
   }
 
   /**
@@ -187,10 +206,9 @@ export abstract class BaseCropper {
    * Create the overlay node
    */
   private createOverlay() {
-    return new Konva.Shape({
+    return new Konva.Rect({
       x: 0,
       y: 0,
-      opacity: this.options.overlay.opacity,
       width: this.board.stage.width(),
       height: this.board.stage.height()
     })

@@ -48,9 +48,6 @@ export class FixedRectangleCropper extends FixedCropper {
       ) => {
         ctx.beginPath()
 
-        ctx.fillStyle = options.overlay.color
-        ctx.fillRect(0, 0, shape.width(), shape.height())
-
         ctx.clearRect(options.x, options.y, options.width, options.height)
 
         ctx.closePath()
