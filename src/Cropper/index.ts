@@ -193,7 +193,7 @@ export class Cropper {
 
     this.board.history.create(this.board.stage, [
       this.board.stage,
-      ...this.board.layer.children.toArray()
+      ...(this.board.layer.children || [])
     ])
 
     const isTransformerVisible = this.board.selection.isVisible

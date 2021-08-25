@@ -25,23 +25,21 @@ export class ImageExport {
    */
   export(config?: Partial<ExportImageConfig>) {
     // find visible transformers to exclude them from the exported image
-    const transformers = this.board.stage.children.toArray().flatMap(layer => {
-      return layer.children
-        .toArray()
-        .filter(
-          node =>
-            node.getClassName() === 'Transformer' &&
-            (node as Konva.Transformer).nodes().length > 0
-        )
+    const transformers = this.board.stage.children?.flatMap(layer => {
+      return layer.children?.filter(
+        node =>
+          node.getClassName() === 'Transformer' &&
+          (node as Konva.Transformer).nodes().length > 0
+      )
     })
 
     // hide visible transformers
-    transformers.forEach(node => node.hide())
+    transformers?.forEach(node => node?.hide())
 
     const url = this.board.stage.toDataURL(config)
 
     // revert transformers to their previous state
-    transformers.forEach(node => node.show())
+    transformers?.forEach(node => node?.show())
 
     return url
   }

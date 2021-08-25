@@ -6,6 +6,7 @@ import type { Events } from '../Events'
 
 import type {
   HistoryNode,
+  HistoryNodeWithChildren,
   HistoryHooks,
   HistoryState,
   UnknownObject,
@@ -196,7 +197,11 @@ export class History {
         (acc, item) => [
           ...acc,
           item,
-          ...this.getNodesTree(item.children.toArray())
+          ...this.getNodesTree(
+            item.hasChildren()
+              ? (item as HistoryNodeWithChildren).children!
+              : []
+          )
         ],
         []
       )

@@ -28,7 +28,8 @@ export function rotateAroundCenter(
   const dx = rotated.x - current.x
   const dy = rotated.y - current.y
 
-  node.x(node.x() + dx)
-  node.y(node.y() + dy)
+  node.attrs.x && node.x(node.x() + dx)
+  node.attrs.y && node.y(node.y() + dy)
+
   node.rotation(theta)
 }

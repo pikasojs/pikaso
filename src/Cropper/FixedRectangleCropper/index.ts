@@ -1,4 +1,4 @@
-import type { Context } from 'konva/types/Context'
+import type { Context } from 'konva/lib/Context'
 
 import { FixedCropper } from '../FixedCropper'
 import { Board } from '../../Board'

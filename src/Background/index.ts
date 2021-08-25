@@ -32,7 +32,9 @@ export class Background {
   constructor(board: Board) {
     this.board = board
 
-    const image = new Konva.Image()
+    const image = new Konva.Image({
+      image: undefined
+    })
     const overlay = new Konva.Rect()
 
     this.image = new ImageModel(board, image, {

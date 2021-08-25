@@ -4,7 +4,13 @@ global.document.createElement = (function (create) {
 
     if (element.tagName === 'IMG') {
       setTimeout(() => {
-        const [width, height] = element.getAttribute('src')!.split('x')
+        let src = element.getAttribute('src') || ''
+
+        if (/\d+x\d+/gm.test(src) === false) {
+          src = '1200x800'
+        }
+
+        const [width, height] = src.split('x')
 
         element.setAttribute('width', width)
         element.setAttribute('naturalWidth', width)

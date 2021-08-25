@@ -51,9 +51,12 @@ export class Flip {
       const node = shape.node
 
       node.scaleX(node.scaleX() * -1)
-      node.x(
-        node.scaleX() < 0 ? node.width() + node.x() : node.x() - node.width()
-      )
+
+      if (node.attrs.x && node.attrs.width) {
+        node.x(
+          node.scaleX() < 0 ? node.width() + node.x() : node.x() - node.width()
+        )
+      }
     })
 
     this.board.draw()
@@ -80,9 +83,14 @@ export class Flip {
       const node = shape.node
 
       node.scaleY(node.scaleY() * -1)
-      node.y(
-        node.scaleY() < 0 ? node.height() + node.y() : node.y() - node.height()
-      )
+
+      if (node.attrs.y && node.attrs.height) {
+        node.y(
+          node.scaleY() < 0
+            ? node.height() + node.y()
+            : node.y() - node.height()
+        )
+      }
     })
 
     this.board.draw()
