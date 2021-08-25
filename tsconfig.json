@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "moduleResolution": "Node",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "rootDir": "src",
     "baseUrl": "/",
     "lib": [
