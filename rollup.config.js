@@ -2,12 +2,14 @@ import typescript from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
+import ignore from 'rollup-plugin-ignore'
 
 import pkg from './package.json'
 
 export default [
   {
     plugins: [
+      ignore(['canvas']),
       nodeResolve(),
       commonjs({
         exclude: '/node_modules/'
@@ -27,6 +29,7 @@ export default [
   },
   {
     plugins: [
+      ignore(['canvas']),
       nodeResolve(),
       commonjs({
         exclude: '/node_modules/'
@@ -46,6 +49,7 @@ export default [
   },
   {
     plugins: [
+      ignore(['canvas']),
       nodeResolve(),
       commonjs({
         exclude: '/node_modules/'
