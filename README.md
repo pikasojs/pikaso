@@ -32,7 +32,7 @@ Pikaso provides both ES module and CommonJS bundles, which is easy to use with t
 `npm install pikaso --save` 
 
 #### Yarn
-`yard add pikaso`
+`yarn add pikaso`
 
 
 #### <script> tag
