@@ -2,7 +2,7 @@ import Konva from 'konva'
 
 import { Board } from '../Board'
 import { Filter } from '../Filter'
-import { LabelModel } from '../index.all'
+import { LabelModel } from '../shape/models/LabelModel'
 import { ShapeModel } from '../shape/ShapeModel'
 
 import type { Point, Filters } from '../types'
