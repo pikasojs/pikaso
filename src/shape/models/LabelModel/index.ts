@@ -107,8 +107,8 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
       return
     }
 
+    e.cancelBubble = true
     this.isEditingEnabled = true
-
     this.board.setActiveDrawing(DrawType.Text)
 
     const position = e.target.absolutePosition()

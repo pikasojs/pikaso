@@ -2,6 +2,7 @@ import Konva from 'konva'
 
 import { Board } from '../Board'
 import { Filter } from '../Filter'
+import { LabelModel } from '../index.all'
 import { ShapeModel } from '../shape/ShapeModel'
 
 import type { Point, Filters } from '../types'
@@ -349,6 +350,17 @@ export class Selection {
   }
 
   /**
+   * Determines whether the selection has been locked by another component
+   *
+   * @returns the lock status which is true or false
+   */
+  public get isLocked(): boolean {
+    return this.board.shapes.some(
+      shape => shape instanceof LabelModel && shape.isEditing
+    )
+  }
+
+  /**
    * Creates the rectangle zone instance
    */
   private createZone() {
@@ -450,7 +462,7 @@ export class Selection {
    * @param e The trigger event
    */
   private onDragZoneStart(e: Konva.KonvaEventObject<MouseEvent>) {
-    if (this.board.settings.selection?.interactive === false) {
+    if (this.board.settings.selection?.interactive === false || this.isLocked) {
       return
     }
 

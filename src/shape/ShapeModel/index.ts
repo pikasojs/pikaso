@@ -293,6 +293,13 @@ export abstract class ShapeModel<
     this.node.addEventListener('mouseout', () => {
       this.board.stage.getContent().style.cursor = 'inherit'
     })
+
+    /**
+     * dragging start event
+     */
+    this.node.addEventListener('dragstart', () => {
+      this.board.selection.isLocked && this.node.stopDrag()
+    })
   }
 
   /**
