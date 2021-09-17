@@ -6,7 +6,7 @@
 Seamless, headless and fully-tested HTML5 canvas library that provides a couple of high level APIs
 
 ![Language](https://badgen.net/badge/icon/typescript?icon=typescript&label=Language)
-![Test, Build and Publish](https://github.com/pikasojs/pikaso/workflows/Test,%20Build%20and%20Publish/badge.svg)
+![Test, Build and Publish](https://github.com/pikasojs/pikaso/workflows/Test/Build/Publish/badge.svg)
 ![npm](https://badgen.net/npm/v/pikaso)
 ![bundle](https://badgen.net/bundlephobia/minzip/pikaso)
 ![coverage](https://img.shields.io/coveralls/github/pikasojs/pikaso)
