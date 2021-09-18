@@ -40,7 +40,7 @@ export class Flip {
    * @param shapes List of the [[Shape | Shapes]]
    */
   public horizontal(shapes?: ShapeModel[]) {
-    const list = shapes || [...this.board.shapes, this.board.background.image]
+    const list = shapes ?? [...this.board.shapes, this.board.background.image]
 
     this.board.history.create(
       this.board.layer,
@@ -52,14 +52,10 @@ export class Flip {
 
       node.scaleX(node.scaleX() * -1)
 
-      if (node.attrs.x && node.attrs.width) {
-        node.x(
-          node.scaleX() < 0 ? node.width() + node.x() : node.x() - node.width()
-        )
-      }
+      node.x(
+        node.scaleX() < 0 ? node.width() + node.x() : node.x() - node.width()
+      )
     })
-
-    this.board.draw()
 
     this.board.events.emit('flip:x', {
       shapes: list
@@ -72,7 +68,7 @@ export class Flip {
    * @param shapes List of the [[Shape | Shapes]]
    */
   public vertical(shapes?: ShapeModel[]) {
-    const list = shapes || [...this.board.shapes, this.board.background.image]
+    const list = shapes ?? [...this.board.shapes, this.board.background.image]
 
     this.board.history.create(
       this.board.layer,
@@ -84,13 +80,9 @@ export class Flip {
 
       node.scaleY(node.scaleY() * -1)
 
-      if (node.attrs.y && node.attrs.height) {
-        node.y(
-          node.scaleY() < 0
-            ? node.height() + node.y()
-            : node.y() - node.height()
-        )
-      }
+      node.y(
+        node.scaleY() < 0 ? node.height() + node.y() : node.y() - node.height()
+      )
     })
 
     this.board.draw()

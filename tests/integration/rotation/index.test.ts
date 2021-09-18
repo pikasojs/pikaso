@@ -16,10 +16,10 @@ describe('Rotation', () => {
     expect(editor.board.stage.rotation()).toBe(0)
   })
 
-  it('should rotate and transform the board with its shapes', () => {
+  it('should rotate and transform the board with its shapes', async () => {
     const editor = createEditor()
 
-    editor.loadFromUrl('1200x720')
+    await editor.loadFromUrl('1200x720')
     editor.shapes.rect.insert(shapeConfig)
 
     editor.rotation.transform(30)
@@ -35,10 +35,10 @@ describe('Rotation', () => {
     })
   })
 
-  it('should spin the board with its shapes', () => {
+  it('should spin the board with its shapes', async () => {
     const editor = createEditor()
 
-    editor.loadFromUrl('1200x720')
+    await editor.loadFromUrl('1200x720')
     editor.shapes.rect.insert(shapeConfig)
 
     editor.rotation.straighten(30)
