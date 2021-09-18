@@ -434,7 +434,7 @@ export class Selection {
 
     /**
      * registers Transform event
-     * Triggers when the client transforminging the transformer
+     * Triggers when the client transforming the transformer
      */
     this.transformer.on('transform', () => {
       this.board.events.emit('selection:transform', {

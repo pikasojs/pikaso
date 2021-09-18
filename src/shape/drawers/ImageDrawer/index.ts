@@ -1,4 +1,5 @@
 import Konva from 'konva'
+import { ImageConfig } from 'konva/lib/shapes/Image'
 
 import { imageToDataUrl } from '../../../utils/image-to-url'
 import { createImageFromUrl } from '../../../utils/create-image-from-url'
@@ -32,10 +33,14 @@ export class ImageDrawer {
     config: Partial<Konva.ImageConfig> = {}
   ): Promise<ImageModel> {
     const url = file instanceof File ? await imageToDataUrl(file) : file
-    const image = await createImageFromUrl(url)
+    let image: Konva.Image
 
+    if (config.image) {
+      image = new Konva.Image(config as ImageConfig)
+    } else {
+      image = await createImageFromUrl(url)
+    }
     const ratio = image.width() / image.height()
-
     const defaultHeight = this.board.stage.height() / 2
     const defaultWidth = defaultHeight * ratio
 
