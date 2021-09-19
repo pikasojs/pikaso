@@ -1,5 +1,4 @@
 import Konva from 'konva'
-import { ImageConfig } from 'konva/lib/shapes/Image'
 
 import { imageToDataUrl } from '../../../utils/image-to-url'
 import { createImageFromUrl } from '../../../utils/create-image-from-url'
@@ -25,26 +24,27 @@ export class ImageDrawer {
   /**
    * Inserts a new image into the board
    *
-   * @param file The image [[File]]
+   * @param image The image [[File]]
    * @param config The image node configuration
    */
   public async insert(
-    file: File | string,
+    image: File | Konva.Image | string,
     config: Partial<Konva.ImageConfig> = {}
   ): Promise<ImageModel> {
-    const url = file instanceof File ? await imageToDataUrl(file) : file
-    let image: Konva.Image
+    let imageInstance: Konva.Image
 
-    if (config.image) {
-      image = new Konva.Image(config as ImageConfig)
+    if (image instanceof Konva.Image) {
+      imageInstance = image
     } else {
-      image = await createImageFromUrl(url)
+      const url = image instanceof File ? await imageToDataUrl(image) : image
+      imageInstance = await createImageFromUrl(url)
     }
-    const ratio = image.width() / image.height()
+
+    const ratio = imageInstance.width() / imageInstance.height()
     const defaultHeight = this.board.stage.height() / 2
     const defaultWidth = defaultHeight * ratio
 
-    image.setAttrs({
+    imageInstance.setAttrs({
       width: defaultWidth,
       height: defaultHeight,
       x: (this.board.stage.width() - defaultWidth) / 2,
@@ -54,7 +54,7 @@ export class ImageDrawer {
       ...config
     })
 
-    return new ImageModel(this.board, image, {
+    return new ImageModel(this.board, imageInstance, {
       transformer: {
         keepRatio: true
       }
