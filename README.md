@@ -3,6 +3,9 @@
 </div>
 
 # Pikaso
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/55e792fd427c45fab65964102a1d54a0)](https://app.codacy.com/gh/pikasojs/pikaso?utm_source=github.com&utm_medium=referral&utm_content=pikasojs/pikaso&utm_campaign=Badge_Grade_Settings)
+
 Seamless, headless and fully-tested HTML5 canvas library that provides a couple of high level APIs
 
 ![Language](https://badgen.net/badge/icon/typescript?icon=typescript&label=Language)
