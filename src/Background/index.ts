@@ -100,8 +100,6 @@ export class Background {
       width: background.width(),
       height: background.height()
     })
-
-    this.board.draw()
   }
 
   /**
@@ -116,7 +114,5 @@ export class Background {
       height: this.board.stage.height(),
       fill: color
     })
-
-    this.board.draw()
   }
 }
