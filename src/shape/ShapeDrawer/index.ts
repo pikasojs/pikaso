@@ -32,7 +32,8 @@ import { IShape, IDrawableShape, DrawType, Point } from '../../types'
 export abstract class ShapeDrawer<
   T extends Konva.Shape,
   P extends Konva.ShapeConfig
-> implements IShape, IDrawableShape {
+> implements IShape, IDrawableShape
+{
   /**
    * Reperesents the configuration of the shape that is drawing that
    */
