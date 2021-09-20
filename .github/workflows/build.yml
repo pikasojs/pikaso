@@ -25,7 +25,8 @@ jobs:
           umd
           lib
           esm
-    - uses: coverallsapp/github-action@master
+    - uses: codacy/codacy-coverage-reporter-action@v1
       with:
-        name: Coveralls
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        name: Codacy Coverage Reporter
+        coverage-reports: coverage/lcov.info
+        project-token: ${{ secrets.CODACY_TOKEN }}

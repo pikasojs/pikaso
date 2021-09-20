@@ -9,7 +9,8 @@ Seamless, headless and fully-tested HTML5 canvas library that provides a couple 
 ![Test, Build and Publish](https://github.com/pikasojs/pikaso/workflows/Test/Build/Publish/badge.svg)
 ![npm](https://badgen.net/npm/v/pikaso)
 ![bundle](https://badgen.net/bundlephobia/minzip/pikaso)
-![coverage](https://img.shields.io/coveralls/github/pikasojs/pikaso)
+[![quality](https://app.codacy.com/project/badge/Grade/f16b7c57dbbd4cdfa02b05f5ca04750a)](https://www.codacy.com/gh/pikasojs/pikaso/dashboard)
+[![coverage](https://app.codacy.com/project/badge/Coverage/f16b7c57dbbd4cdfa02b05f5ca04750a)](https://www.codacy.com/gh/pikasojs/pikaso/dashboard)
 
 
 ### Pikaso vs. Konva
