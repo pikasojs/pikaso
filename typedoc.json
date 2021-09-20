@@ -1,14 +1,13 @@
 {
   "name": "Pikaso",
-  "inputFiles": [
-    "./src"
+  "entryPoints": [
+    "./src/index.ts"
   ],
-  "mode": "file",
   "out": "api",
   "excludeProtected": true,
   "excludePrivate": true,
-  "stripInternal": true,
   "disableSources": true,
-  "theme": "minimal",
-  "hideGenerator": true
+  "theme": "default",
+  "hideGenerator": true,
+  "readme": "none"
 }
