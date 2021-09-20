@@ -9,5 +9,8 @@
   "disableSources": true,
   "theme": "default",
   "hideGenerator": true,
-  "readme": "none"
+  "readme": "none",
+  "validation": {
+    "notExported": false
+  }
 }
