@@ -79,6 +79,10 @@ https://github.com/pikasojs/pikaso-react-hook
 - Import/Export JSON
 - Filters
 
+  
+## API references
+[API references](https://pikaso-docs.surge.sh/)
+  
 ## Demos
 [React Setup](https://codesandbox.io/s/pikaso-react-hook-example-i0uwg)   
 [Vue 3 Setup](https://codesandbox.io/s/vue3-example-o3cig)   
