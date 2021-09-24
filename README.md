@@ -93,3 +93,8 @@ TBD
 
 ## Documentation
 TBD
+  
+
+## Contributors
+[![](https://opencollective.com/pikaso/contributors.svg?width=890&button=false)](https://github.com/pikasojs/pikaso/graphs/contributors)
+
