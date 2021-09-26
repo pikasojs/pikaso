@@ -1,6 +1,7 @@
 import Konva from 'konva'
 
 import { Board } from '../../Board'
+import { defaultSettings } from '../../defaultSettings'
 
 import type {
   CircularCropperOptions,
@@ -180,13 +181,15 @@ export abstract class BaseCropper {
 
     const { width, height } = this.options
 
+    const guidesCount = guides.count || defaultSettings.cropper?.guides?.count!
+
     return Array.from({
-      length: guides.count
+      length: guidesCount
     }).flatMap((_, index) => {
-      const wx = width / (guides.count + 1)
+      const wx = width / (guidesCount + 1)
       const x = wx + index * wx
 
-      const wy = height / (guides.count + 1)
+      const wy = height / (guidesCount + 1)
       const y = wy + index * wy
 
       return [

@@ -29,7 +29,6 @@ export abstract class FixedCropper extends BaseCropper {
     this.setupCropzone()
 
     this.board.stage.add(this.layer)
-    this.layer.batchDraw()
   }
 
   /**

@@ -19,7 +19,6 @@ export class FlexibleRectangleCropper extends FlexibleCropper {
     super(board, options)
 
     this.setupOverlay()
-    this.layer.batchDraw()
   }
 
   /**

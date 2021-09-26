@@ -16,17 +16,17 @@ export interface BaseCropperOptions {
   marginRatio: number
   minWidth: number
   minHeight: number
-  overlay: {
+  overlay: Partial<{
     color: string
     opacity: number
-  }
-  guides: {
+  }>
+  guides: Partial<{
     show: boolean
     count: number
     color: string
     width: number
     dash: number[]
-  }
+  }>
   transformer: Partial<Konva.TransformerConfig>
 }
 

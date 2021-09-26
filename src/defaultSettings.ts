@@ -2,7 +2,7 @@ import Konva from 'konva'
 
 import { Settings } from './types'
 
-const defaultTransformerSettings: Partial<Konva.TransformerConfig> = {
+export const defaultTransformerSettings: Partial<Konva.TransformerConfig> = {
   borderDash: [15, 10],
   borderStroke: '#fff',
   borderStrokeWidth: 3,

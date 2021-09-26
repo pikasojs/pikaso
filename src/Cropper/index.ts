@@ -1,3 +1,5 @@
+import merge from 'deepmerge'
+
 import { Board } from '../Board'
 
 import { createImageFromUrl } from '../utils/create-image-from-url'
@@ -10,6 +12,7 @@ import { FlexibleCircularCropper } from './FlexibleCircularCropper'
 import { FlexibleRectangleCropper } from './FlexibleRectangleCropper'
 
 import type { CropOptions, CropperOptions, Dimensions, Point } from '../types'
+import { defaultSettings } from '../defaultSettings'
 
 type FixedCropper = FixedCircularCropper | FixedRectangleCropper
 type FlexibleCropper = FlexibleCircularCropper | FlexibleRectangleCropper
@@ -60,12 +63,14 @@ export class Cropper {
   /**
    * Starts the cropper
    *
-   * @param options [[CropperOptions]]
+   * @param cropperOptions [[CropperOptions]]
    */
-  public start(options: Partial<CropperOptions>) {
+  public start(cropperOptions: Partial<CropperOptions>) {
     if (this.active) {
       return
     }
+
+    const options = merge(defaultSettings.cropper!, cropperOptions)
 
     this.active = true
 

@@ -23,7 +23,6 @@ export class FlexibleCircularCropper extends FlexibleCropper {
     })
 
     this.setupOverlay()
-    this.layer.batchDraw()
   }
 
   /**

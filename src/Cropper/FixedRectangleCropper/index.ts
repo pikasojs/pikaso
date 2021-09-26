@@ -13,7 +13,6 @@ export class FixedRectangleCropper extends FixedCropper {
     super(board, options)
 
     this.setupOverlay()
-    this.layer.batchDraw()
   }
 
   /**

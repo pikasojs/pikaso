@@ -16,7 +16,6 @@ export class FixedCircularCropper extends FixedCropper {
     })
 
     this.setupOverlay()
-    this.layer.batchDraw()
   }
 
   /**
