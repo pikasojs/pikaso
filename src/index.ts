@@ -51,7 +51,7 @@ export default class Pikaso {
   public import: Import
 
   /**
-   * Represents the [[Shapes]]
+   * Represents the [[ShapeModel | Shapes]]
    */
   public shapes: Shapes
 

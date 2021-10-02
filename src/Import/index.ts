@@ -17,7 +17,7 @@ export class Import {
   private readonly board: Board
 
   /**
-   * Represents the [[Shapes]]
+   * Represents the [[ShapeModel | Shapes]]
    */
   private readonly shapes: Shapes
 

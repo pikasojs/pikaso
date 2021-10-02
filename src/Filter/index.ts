@@ -55,7 +55,7 @@ export class Filter {
   /**
    * Applies a filter to the given shapes
    *
-   * @param shapes List of the [[Shape | Shapes]]
+   * @param shapes List of the [[ShapeModel | Shapes]]
    * @param filter The [[Filters | Filter]]
    */
   public apply(shapes: ShapeModel[], filter: Filters) {
@@ -92,7 +92,7 @@ export class Filter {
   /**
    * Remove filters of the given shapes
    *
-   * @param shapes List of the [[Shape | Shapes]]
+   * @param shapes List of the [[ShapeModel | Shapes]]
    * @param name The [[Filters | filter]] name
    */
   public remove(shapes: ShapeModel[], name: Filters['name']) {
