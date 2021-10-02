@@ -1,3 +1,5 @@
+import Konva from 'konva'
+
 import { Board } from '../Board'
 import { ShapeModel } from '../shape/ShapeModel'
 
@@ -37,7 +39,7 @@ export class Flip {
   /**
    * Flips the given shapes horizontally
    *
-   * @param shapes List of the [[Shape | Shapes]]
+   * @param shapes List of the [[ShapeModel | Shapes]]
    */
   public horizontal(shapes?: ShapeModel[]) {
     const list = shapes ?? [
@@ -55,9 +57,11 @@ export class Flip {
 
       node.scaleX(node.scaleX() * -1)
 
-      node.x(
-        node.scaleX() < 0 ? node.width() + node.x() : node.x() - node.width()
-      )
+      if (this.isRepositioningRequired(shape)) {
+        node.x(
+          node.scaleX() < 0 ? node.width() + node.x() : node.x() - node.width()
+        )
+      }
     })
 
     this.board.events.emit('flip:x', {
@@ -68,7 +72,7 @@ export class Flip {
   /**
    * Flips the given shapes vertically
    *
-   * @param shapes List of the [[Shape | Shapes]]
+   * @param shapes List of the [[ShapeModel | Shapes]]
    */
   public vertical(shapes?: ShapeModel[]) {
     const list = shapes ?? [
@@ -86,9 +90,13 @@ export class Flip {
 
       node.scaleY(node.scaleY() * -1)
 
-      node.y(
-        node.scaleY() < 0 ? node.height() + node.y() : node.y() - node.height()
-      )
+      if (this.isRepositioningRequired(shape)) {
+        node.y(
+          node.scaleY() < 0
+            ? node.height() + node.y()
+            : node.y() - node.height()
+        )
+      }
     })
 
     this.board.draw()
@@ -96,5 +104,17 @@ export class Flip {
     this.board.events.emit('flip:y', {
       shapes: list
     })
+  }
+
+  /**
+   * Checks whether a repositioning needed after flipping the shape
+   *
+   * @param shape the given [[ShapeModel | Shapes]]
+   * @returns boolean
+   */
+  private isRepositioningRequired(shape: ShapeModel): boolean {
+    return (
+      shape.node instanceof Konva.Image || shape.node instanceof Konva.Label
+    )
   }
 }
