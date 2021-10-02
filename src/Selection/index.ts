@@ -81,6 +81,17 @@ export class Selection {
   }
 
   /**
+   * Determines whether the selection has been locked by another component
+   *
+   * @returns the lock status which is true or false
+   */
+  public get isLocked(): boolean {
+    return this.board.activeShapes.some(
+      shape => shape instanceof LabelModel && shape.isEditing
+    )
+  }
+
+  /**
    * Finds and selects multiple shapes
    * @param selector The selector function
    *
@@ -350,17 +361,6 @@ export class Selection {
   public removeFilter(name: Filters['name']) {
     this.filter.remove(this.list, name)
     this.reselect()
-  }
-
-  /**
-   * Determines whether the selection has been locked by another component
-   *
-   * @returns the lock status which is true or false
-   */
-  public get isLocked(): boolean {
-    return this.board.activeShapes.some(
-      shape => shape instanceof LabelModel && shape.isEditing
-    )
   }
 
   /**
