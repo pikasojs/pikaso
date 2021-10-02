@@ -159,7 +159,7 @@ export abstract class ShapeModel<
   /**
    * Deletes the shape.
    *
-   * This action can undo with [[Shape.undelete]] method
+   * This action can undo with [[ShapeModel.undelete]] method
    */
   public delete() {
     if (this.deleted) {

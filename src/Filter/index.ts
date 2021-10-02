@@ -15,8 +15,8 @@ export class Filter {
    * Creates a filter instance that lets apply various filters
    * on every shape that extends the class.
    *
-   * Basically every [[ShapeModel]] has exposed [[Shape.addFilter]] and
-   * [[Shape.removeFilter]] to work with filters
+   * Basically every [[ShapeModel]] has exposed [[ShapeModel.addFilter]] and
+   * [[ShapeModel.removeFilter]] to work with filters
    *
    * @param board The [[Board]]
    *

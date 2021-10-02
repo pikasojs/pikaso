@@ -183,7 +183,7 @@ export class Board {
   /**
    * Returns all nodes in the main layer including background nodes
    *
-   * @returns array of [[Shape.node]]
+   * @returns array of [[ShapeModel.node]]
    */
   public getNodes() {
     return [
