@@ -12,12 +12,12 @@ export declare interface OptionalSettings {
   containerClassName: string
   transformer: Konva.TransformerConfig
   cropper: Partial<CropperOptions>
-  drawing: {
+  drawing: Partial<{
     keyboard: {
       cancelOnEscape: boolean
     }
-  }
-  selection: {
+  }>
+  selection: Partial<{
     interactive: boolean
     keyboard: {
       enabled: boolean
@@ -33,12 +33,12 @@ export declare interface OptionalSettings {
     }
     transformer: Konva.TransformerConfig
     zone: Konva.RectConfig
-  }
-  history: {
+  }>
+  history: Partial<{
     keyboard: {
       enabled: boolean
     }
-  }
+  }>
 }
 
 export declare type Settings = Partial<OptionalSettings> & RequiredSettings
