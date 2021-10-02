@@ -5,6 +5,7 @@ import { convertHtmlToText } from '../../../utils/html-to-text'
 import { Board } from '../../../Board'
 import { ShapeModel } from '../../ShapeModel'
 
+import { rotateAroundCenter } from '../../../utils/rotate-around-center'
 import { DrawType, ShapeConfig, Shapes } from '../../../types'
 
 export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
@@ -46,6 +47,18 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    */
   public get tagNode() {
     return this.node.getTag() as Konva.Tag
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  public rotate(theta: number) {
+    rotateAroundCenter(this.node, theta)
+
+    this.board.events.emit('shape:rotate', {
+      shapes: [this]
+    })
   }
 
   /**

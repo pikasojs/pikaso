@@ -216,8 +216,7 @@ export abstract class ShapeModel<
    * @param theta The rotation angle
    */
   public rotate(theta: number) {
-    rotateAroundCenter(this.node, theta)
-    this.board.draw()
+    this.node.rotation(theta)
 
     this.board.events.emit('shape:rotate', {
       shapes: [this]
