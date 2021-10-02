@@ -25,7 +25,7 @@ export class JsonExport {
     const stage = this.nodeToObject(this.board.stage, ['container', 'children'])
     const layer = this.nodeToObject(this.board.layer, ['children'])
 
-    const shapes = this.board.shapes.map(shape => {
+    const shapes = this.board.activeShapes.map(shape => {
       return this.nodeToObject(shape.node)
     })
 

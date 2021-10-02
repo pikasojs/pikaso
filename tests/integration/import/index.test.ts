@@ -7,6 +7,6 @@ describe('Import', () => {
 
     await editor.load(fixture as any)
 
-    expect(editor.board.shapes.length).toBe(12)
+    expect(editor.board.activeShapes.length).toBe(12)
   })
 })

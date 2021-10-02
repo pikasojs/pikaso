@@ -13,7 +13,7 @@ describe('Selection', () => {
     const circle = editor.shapes.circle.insert(shapeConfig)
 
     circle.select()
-    expect(editor.board.shapes.length).toBe(1)
+    expect(editor.board.activeShapes.length).toBe(1)
   })
 
   it('should deselect the shape', () => {

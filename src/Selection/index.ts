@@ -1,4 +1,5 @@
 import Konva from 'konva'
+import merge from 'deepmerge'
 
 import { Board } from '../Board'
 import { Filter } from '../Filter'
@@ -94,7 +95,7 @@ export class Selection {
    * ```
    */
   public find(selector: (shape: ShapeModel) => boolean) {
-    const list = this.board.shapes.filter(shape => {
+    const list = this.board.activeShapes.filter(shape => {
       return selector(shape)
     })
 
@@ -110,7 +111,7 @@ export class Selection {
    * ```
    */
   public selectAll() {
-    this.multi(this.board.shapes)
+    this.multi(this.board.activeShapes)
   }
 
   /**
@@ -148,6 +149,26 @@ export class Selection {
   public multi(shapes: ShapeModel[]) {
     this.list = shapes
 
+    const settings = {
+      visible: true,
+      centeredScaling: true,
+      rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
+      keepRatio: shapes.length > 1,
+      rotateEnabled: true,
+      enabledAnchors: [
+        'top-left',
+        'top-right',
+        'bottom-left',
+        'bottom-right',
+        'top-center',
+        'bottom-center',
+        'middle-left',
+        'middle-right'
+      ],
+      ...this.board.settings.transformer,
+      ...this.board.settings.selection?.transformer
+    } as Konva.TransformerConfig
+
     const attrs: Partial<Konva.TransformerConfig> = shapes.reduce(
       (acc, item) => {
         const enabledAnchors = item.node.isCached()
@@ -160,25 +181,7 @@ export class Selection {
           enabledAnchors
         }
       },
-      {
-        visible: true,
-        centeredScaling: true,
-        rotationSnaps: [0, 45, 90, 135, 180, 225, 270, 315],
-        keepRatio: shapes.length > 1,
-        rotateEnabled: true,
-        enabledAnchors: [
-          'top-left',
-          'top-right',
-          'bottom-left',
-          'bottom-right',
-          'top-center',
-          'bottom-center',
-          'middle-left',
-          'middle-right'
-        ],
-        ...this.board.settings.transformer,
-        ...this.board.settings.selection?.transformer
-      } as Konva.TransformerConfig
+      settings
     )
 
     this.transformer.show()
@@ -355,7 +358,7 @@ export class Selection {
    * @returns the lock status which is true or false
    */
   public get isLocked(): boolean {
-    return this.board.shapes.some(
+    return this.board.activeShapes.some(
       shape => shape instanceof LabelModel && shape.isEditing
     )
   }
@@ -466,7 +469,7 @@ export class Selection {
       return
     }
 
-    const shape = this.board.shapes.find(
+    const shape = this.board.activeShapes.find(
       shape => shape.node === this.getParentNode(e.target)
     )
 
@@ -542,7 +545,7 @@ export class Selection {
 
     const box = this.zone.getClientRect()
 
-    const shapes = this.board.shapes.filter(shape =>
+    const shapes = this.board.activeShapes.filter(shape =>
       Konva.Util.haveIntersection(box, shape.node.getClientRect())
     )
 

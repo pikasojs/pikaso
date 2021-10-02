@@ -8,7 +8,7 @@ describe('Shapes -> Line', () => {
 
   it('should insert an line', () => {
     cy.getEditor().then(editor => {
-      expect(editor.board.shapes.length).equal(0)
+      expect(editor.board.activeShapes.length).equal(0)
 
       editor.shapes.line.insert({
         stroke: 'red',
@@ -16,7 +16,7 @@ describe('Shapes -> Line', () => {
         strokeWidth: 15
       })
 
-      expect(editor.board.shapes.length).equal(1)
+      expect(editor.board.activeShapes.length).equal(1)
     })
   })
 
@@ -27,7 +27,7 @@ describe('Shapes -> Line', () => {
       })
 
       cy.draw([300, 300], [400, 400]).then(() => {
-        expect(editor.board.shapes.length).equal(1)
+        expect(editor.board.activeShapes.length).equal(1)
       })
     })
   })

@@ -198,7 +198,16 @@ export class Board {
    * @see [[ShapeModel]]
    */
   public get shapes() {
-    return this.shapesList.filter(shape => !shape.isDeleted)
+    return this.shapesList
+  }
+
+  /**
+   * Returns all created shapes except deleted and hidden shpaes
+   *
+   * @see [[ShapeModel]]
+   */
+  public get activeShapes() {
+    return this.shapesList.filter(shape => shape.isActive)
   }
 
   /**

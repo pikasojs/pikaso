@@ -12,7 +12,7 @@ describe('Shape -> Label', () => {
 
     editor.shapes.triangle.insert(config)
 
-    expect(editor.board.shapes.length).toBe(1)
-    expect(editor.board.shapes[0].type).toBe('triangle')
+    expect(editor.board.activeShapes.length).toBe(1)
+    expect(editor.board.activeShapes[0].type).toBe('triangle')
   })
 })

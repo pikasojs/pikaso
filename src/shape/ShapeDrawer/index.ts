@@ -11,7 +11,7 @@ import { IShape, IDrawableShape, DrawType, Point } from '../../types'
  *
  * @example
  * ```ts
- * editor.board.shapes.circle.insert({
+ * editor.board.activeShapes.circle.insert({
  *  x: 100,
  *  y: 100,
  *  radius: 10,
@@ -21,12 +21,12 @@ import { IShape, IDrawableShape, DrawType, Point } from '../../types'
  *
  * @example
  * ```ts
- * editor.board.shapes.circle.draw()
+ * editor.board.activeShapes.circle.draw()
  * ```
  *
  * @example
  * ```
- * editor.board.shapes.circle.stopDrawing()
+ * editor.board.activeShapes.circle.stopDrawing()
  * ```
  */
 export abstract class ShapeDrawer<

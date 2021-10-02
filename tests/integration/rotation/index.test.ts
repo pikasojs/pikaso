@@ -24,7 +24,7 @@ describe('Rotation', () => {
 
     editor.rotation.transform(30)
 
-    editor.board.shapes.forEach(shape => {
+    editor.board.activeShapes.forEach(shape => {
       expect(shape.node.rotation()).toBe(30)
       expect(shape.node.x()).not.toBe(shapeConfig.x)
       expect(shape.node.y()).not.toBe(shapeConfig.y)
@@ -43,7 +43,7 @@ describe('Rotation', () => {
 
     editor.rotation.straighten(30)
 
-    editor.board.shapes.forEach(shape => {
+    editor.board.activeShapes.forEach(shape => {
       expect(shape.node.rotation()).toBe(30)
       expect(shape.node.x()).not.toBe(shapeConfig.x)
       expect(shape.node.y()).not.toBe(shapeConfig.y)

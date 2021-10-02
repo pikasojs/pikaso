@@ -16,7 +16,7 @@ describe('Shapes -> Polygon', () => {
         fill: '#ccc'
       })
 
-      expect(editor.board.shapes.length).equal(1)
+      expect(editor.board.activeShapes.length).equal(1)
     })
   })
 
@@ -27,7 +27,7 @@ describe('Shapes -> Polygon', () => {
       })
 
       cy.draw([300, 300], [400, 400]).then(() => {
-        expect(editor.board.shapes.length).equal(1)
+        expect(editor.board.activeShapes.length).equal(1)
       })
     })
   })

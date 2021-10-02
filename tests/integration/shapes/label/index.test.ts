@@ -18,7 +18,7 @@ describe('Shape -> Label', () => {
 
     editor.shapes.label.insert(baseConfig)
 
-    expect(editor.board.shapes.length).toBe(1)
+    expect(editor.board.activeShapes.length).toBe(1)
   })
 
   it('should transition to inline editing stage', () => {

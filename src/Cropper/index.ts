@@ -228,7 +228,7 @@ export class Cropper {
 
     isTransformerVisible && this.board.selection.transformer.hide()
 
-    this.board.shapes.forEach(shape => {
+    this.board.activeShapes.forEach(shape => {
       shape.node.hide()
     })
 
@@ -257,7 +257,7 @@ export class Cropper {
       image: snapshot.image()
     })
 
-    this.board.shapes.forEach(shape => {
+    this.board.activeShapes.forEach(shape => {
       const node = shape.node
 
       const center = getRotatedPoint(

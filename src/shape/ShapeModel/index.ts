@@ -83,10 +83,31 @@ export abstract class ShapeModel<
   }
 
   /**
+   * Returns whether the shape is active or not
+   */
+  public get isActive() {
+    return !this.isDeleted && !this.isInvisible
+  }
+
+  /**
    * Returns whether the shape is deleted or not
    */
   public get isDeleted() {
     return this.deleted
+  }
+
+  /**
+   * Returns whether the shape is visible or not
+   */
+  public get isVisible() {
+    return this.node.isVisible()
+  }
+
+  /**
+   * Returns whether the shape is invisible or not
+   */
+  public get isInvisible() {
+    return this.isVisible === false
   }
 
   /**
@@ -178,7 +199,9 @@ export abstract class ShapeModel<
   public destroy() {
     this.node.destroy()
 
-    const shapes = this.board.shapes.filter(shape => shape.node !== this.node)
+    const shapes = this.board.activeShapes.filter(
+      shape => shape.node !== this.node
+    )
 
     this.board.setShapes(shapes)
 
