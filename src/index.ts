@@ -11,6 +11,7 @@ import { Cropper } from './Cropper'
 import { Rotation } from './Rotation'
 import { Selection } from './Selection'
 
+import { TextDrawer } from './shape/drawers/TextDrawer'
 import { LineDrawer } from './shape/drawers/LineDrawer'
 import { RectDrawer } from './shape/drawers/RectDrawer'
 import { ArrowDrawer } from './shape/drawers/ArrowDrawer'
@@ -243,7 +244,8 @@ export default class Pikaso {
       pencil: new PencilDrawer(board),
       polygon: new PolygonDrawer(board),
       rect: new RectDrawer(board),
-      triangle: new TriangleDrawer(board)
+      triangle: new TriangleDrawer(board),
+      text: new TextDrawer(board)
     }
 
     this.import = new Import(board, this.shapes)

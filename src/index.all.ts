@@ -26,6 +26,7 @@ export { CircleDrawer } from './shape/drawers/CircleDrawer'
 export { EllipseDrawer } from './shape/drawers/EllipseDrawer'
 export { PolygonDrawer } from './shape/drawers/PolygonDrawer'
 export { TriangleDrawer } from './shape/drawers/TriangleDrawer'
+export { TextDrawer } from './shape/drawers/TextDrawer'
 
 export { ShapeModel } from './shape/ShapeModel'
 export { ShapeDrawer } from './shape/ShapeDrawer'
@@ -39,6 +40,7 @@ export { LineModel } from './shape/models/LineModel'
 export { PolygonModel } from './shape/models/PolygonModel'
 export { RectModel } from './shape/models/RectModel'
 export { TriangleModel } from './shape/models/TriangleModel'
+export { TextModel } from './shape/models/TextModel'
 
 export { Konva }
 export { Pikaso }

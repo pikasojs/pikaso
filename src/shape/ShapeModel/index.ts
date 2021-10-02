@@ -291,7 +291,12 @@ export abstract class ShapeModel<
    * @param attributes The list of attributes
    * @param options The options of updading attributes
    */
-  public to(attributes: Partial<P>) {
+  public to(
+    attributes: Partial<P> & { duration: number } & Partial<{
+        onUpdate: () => void
+        onFinish: () => void
+      }>
+  ) {
     this.board.history.create(this.board.layer, this.node)
     this.node.to(attributes)
 

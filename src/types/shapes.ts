@@ -9,6 +9,7 @@ import type { CircleDrawer } from '../shape/drawers/CircleDrawer'
 import type { EllipseDrawer } from '../shape/drawers/EllipseDrawer'
 import type { PolygonDrawer } from '../shape/drawers/PolygonDrawer'
 import type { TriangleDrawer } from '../shape/drawers/TriangleDrawer'
+import type { TextDrawer } from '../shape/drawers/TextDrawer'
 import type { PencilDrawer } from '../shape/drawers/PencilDrawer'
 
 export declare interface Shapes {
@@ -21,6 +22,7 @@ export declare interface Shapes {
   ellipse: EllipseDrawer
   triangle: TriangleDrawer
   polygon: PolygonDrawer
+  text: TextDrawer
   pencil: PencilDrawer
 }
 
