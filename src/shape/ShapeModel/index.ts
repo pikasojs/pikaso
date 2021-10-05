@@ -340,8 +340,8 @@ export abstract class ShapeModel<
      */
     this.node.on('transformend', node =>
       node.currentTarget.setAttrs({
-        scaleX: undefined,
-        scaleY: undefined
+        originalScaleX: undefined,
+        originalScaleY: undefined
       })
     )
   }
