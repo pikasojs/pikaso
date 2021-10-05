@@ -99,8 +99,6 @@ export class Flip {
       }
     })
 
-    this.board.draw()
-
     this.board.events.emit('flip:y', {
       shapes: list
     })
@@ -114,7 +112,9 @@ export class Flip {
    */
   private isRepositioningRequired(shape: ShapeModel): boolean {
     return (
-      shape.node instanceof Konva.Image || shape.node instanceof Konva.Label
+      shape.node instanceof Konva.Image ||
+      shape.node instanceof Konva.Label ||
+      shape.node instanceof Konva.Text
     )
   }
 }
