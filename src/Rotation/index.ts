@@ -140,7 +140,7 @@ export class Rotation {
     })
 
     this.board.activeShapes.forEach(shape => {
-      rotateAroundCenter(shape.node, theta)
+      shape.rotate(theta)
     })
 
     this.board.events.emit('rotation:straighten')
