@@ -141,7 +141,7 @@ export abstract class BaseCropper {
       )
     }
 
-    if (this.options.guides) {
+    if (this.options.guides?.show) {
       group.add(...this.createGuideLines())
     }
 
