@@ -57,9 +57,11 @@ export class Flip {
 
       node.scaleX(node.scaleX() * -1)
 
-      if (this.isRepositioningRequired(shape)) {
+      if (this.shouldRecalculatePosition(shape)) {
         node.x(
-          node.scaleX() < 0 ? node.width() + node.x() : node.x() - node.width()
+          node.scaleX() < 0
+            ? node.width() * Math.abs(node.scaleX()) + node.x()
+            : node.x() - node.width() * Math.abs(node.scaleX())
         )
       }
     })
@@ -90,11 +92,11 @@ export class Flip {
 
       node.scaleY(node.scaleY() * -1)
 
-      if (this.isRepositioningRequired(shape)) {
+      if (this.shouldRecalculatePosition(shape)) {
         node.y(
           node.scaleY() < 0
-            ? node.height() + node.y()
-            : node.y() - node.height()
+            ? node.height() * Math.abs(node.scaleY()) + node.y()
+            : node.y() - node.height() * Math.abs(node.scaleY())
         )
       }
     })
@@ -105,16 +107,14 @@ export class Flip {
   }
 
   /**
-   * Checks whether a repositioning needed after flipping the shape
+   * checks whether after flipping the shape repositioning is required or not
    *
    * @param shape the given [[ShapeModel | Shapes]]
    * @returns boolean
    */
-  private isRepositioningRequired(shape: ShapeModel): boolean {
-    return (
-      shape.node instanceof Konva.Image ||
-      shape.node instanceof Konva.Label ||
-      shape.node instanceof Konva.Text
+  private shouldRecalculatePosition(shape: ShapeModel): boolean {
+    return [Konva.Image, Konva.Label, Konva.Text, Konva.Rect].some(
+      component => shape.node instanceof component
     )
   }
 }
