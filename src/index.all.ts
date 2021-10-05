@@ -42,6 +42,8 @@ export { RectModel } from './shape/models/RectModel'
 export { TriangleModel } from './shape/models/TriangleModel'
 export { TextModel } from './shape/models/TextModel'
 
+export { defaultSettings, defaultTransformerSettings } from './defaultSettings'
+
 export { Konva }
 export { Pikaso }
 

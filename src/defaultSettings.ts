@@ -7,9 +7,9 @@ export const defaultTransformerSettings: Partial<Konva.TransformerConfig> = {
   borderStroke: '#fff',
   borderStrokeWidth: 3,
   anchorSize: 15,
-  anchorColor: '#fff',
+  anchorFill: '#fff',
   anchorStroke: '#fff',
-  anchorBorderWidth: 1,
+  anchorStrokeWidth: 1,
   anchorCornerRadius: 30
 }
 
