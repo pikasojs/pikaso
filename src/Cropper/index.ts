@@ -257,7 +257,11 @@ export class Cropper {
       image: snapshot.image()
     })
 
-    this.board.activeShapes.forEach(shape => {
+    this.board.shapes.forEach(shape => {
+      if (shape.isDeleted) {
+        return
+      }
+
       const node = shape.node
 
       const center = getRotatedPoint(
