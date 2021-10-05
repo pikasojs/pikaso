@@ -56,14 +56,18 @@ export abstract class ShapeModel<
 
     this.config = {
       transformer: {},
-      selectable: this.board.settings.selection?.interactive,
+      history: config.history ?? true,
+      selectable:
+        config.selectable ?? this.board.settings.selection?.interactive ?? true,
       ...config
     }
 
-    this.board.history.create(this.board.layer, [], {
-      undo: () => this.delete(),
-      redo: () => this.undelete()
-    })
+    if (this.config.history) {
+      this.board.history.create(this.board.layer, [], {
+        undo: () => this.delete(),
+        redo: () => this.undelete()
+      })
+    }
 
     this.board.events.emit('shape:create', {
       shapes: [this]

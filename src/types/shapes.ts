@@ -33,4 +33,5 @@ export declare interface IShape {
 export declare interface ShapeConfig {
   transformer?: Konva.TransformerConfig
   selectable?: boolean
+  history?: boolean
 }

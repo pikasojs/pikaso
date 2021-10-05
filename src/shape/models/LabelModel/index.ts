@@ -70,8 +70,6 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
   public updateTag(attributes: Partial<Konva.TagConfig>) {
     this.board.history.create(this.board.layer, this.tagNode)
     this.tagNode.setAttrs(attributes)
-
-    this.board.draw()
   }
 
   /**
@@ -84,11 +82,7 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
     this.board.history.create(this.board.layer, this.textNode)
     this.textNode.setAttrs(attributes)
 
-    if (this.board.selection.isVisible) {
-      this.board.selection.transformer.forceUpdate()
-    }
-
-    this.board.draw()
+    this.updateTransformer()
   }
 
   /**
@@ -133,8 +127,6 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
 
     // deselect all selected nodes
     this.board.selection.deselectAll()
-
-    this.board.draw()
 
     const input = document.createElement('span')
     this.board.container
@@ -200,8 +192,6 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
 
       // select node
       this.board.selection.add(this)
-
-      this.board.draw()
     })
   }
 
@@ -211,9 +201,11 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    * @param value The text value
    */
   private changeText(value: string) {
-    this.updateText({
+    this.textNode.setAttrs({
       text: value
     })
+
+    this.updateTransformer()
 
     this.board.events.emit('label:update-text', {
       shapes: [this],
@@ -221,6 +213,15 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
         text: value
       }
     })
+  }
+
+  /**
+   * updates transformer after changing text
+   */
+  private updateTransformer() {
+    if (this.board.selection.isVisible) {
+      this.board.selection.transformer.forceUpdate()
+    }
   }
 
   /**
