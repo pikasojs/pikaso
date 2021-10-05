@@ -11,8 +11,11 @@ import type { Point } from '../../types'
  * @param angle The angle value
  */
 export function getRotatedPoint(point: Point, angle: number) {
+  const x = point.x * Math.cos(angle) + -point.y * Math.sin(angle)
+  const y = point.x * Math.sin(angle) - -point.y * Math.cos(angle)
+
   return {
-    x: point.x * Math.cos(angle) + -point.y * Math.sin(angle),
-    y: point.x * Math.sin(angle) - -point.y * Math.cos(angle)
+    x: Number(x.toFixed(8)),
+    y: Number(y.toFixed(8))
   }
 }

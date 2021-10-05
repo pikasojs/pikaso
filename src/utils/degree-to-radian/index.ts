@@ -5,5 +5,5 @@
  * @param degree The angle in degree unit
  */
 export function convertDegreeToRadian(degree: number) {
-  return (degree * Math.PI) / 180
+  return (Number(degree) * Math.PI) / 180
 }

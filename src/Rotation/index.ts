@@ -48,7 +48,7 @@ export class Rotation {
       ...this.board.getNodes()
     ])
 
-    const radian = convertDegreeToRadian(theta)
+    const radian = convertDegreeToRadian(Number(theta))
 
     const { width, height } = this.board.getDimensions()
 
@@ -83,34 +83,39 @@ export class Rotation {
           x: stageScale,
           y: stageScale
         })
-        .rotation(theta)
+        .rotation(Number(theta))
         .x(stageWidth / 2 - center.x)
         .y(stageHeight / 2 - center.y)
     })
 
     this.board.activeShapes.forEach(shape => {
-      if (shape.node.rotation() === theta) {
-        return
-      }
+      const scaleX = shape.node.attrs.originalScaleX ?? shape.node.scaleX()
+      const scaleY = shape.node.attrs.originalScaleY ?? shape.node.scaleY()
+      const x = shape.node.attrs.originalX ?? shape.node.x()
+      const y = shape.node.attrs.originalY ?? shape.node.y()
+
+      console.log(shape.node.attrs.originalX)
 
       const center = getRotatedPoint(
         {
-          x: shape.node.x(),
-          y: shape.node.y()
+          x,
+          y
         },
         convertDegreeToRadian(theta)
       )
 
       shape.node.setAttrs({
-        rotation: shape.node.rotation() + theta,
+        originalX: x,
+        originalY: y,
+        originalScaleX: scaleX,
+        originalScaleY: scaleY,
+        rotation: Number(theta),
         x: center.x * stageScale + this.board.background.getPosition().x,
         y: center.y * stageScale + this.board.background.getPosition().y,
-        scaleX: shape.node.scaleX() * stageScale,
-        scaleY: shape.node.scaleY() * stageScale
+        scaleX: scaleX * stageScale,
+        scaleY: scaleY * stageScale
       })
     })
-
-    this.board.draw()
 
     this.board.events.emit('rotation:transform')
   }
@@ -137,8 +142,6 @@ export class Rotation {
     this.board.activeShapes.forEach(shape => {
       rotateAroundCenter(shape.node, theta)
     })
-
-    this.board.draw()
 
     this.board.events.emit('rotation:straighten')
   }

@@ -1,7 +1,5 @@
 import Konva from 'konva'
 
-import { rotateAroundCenter } from '../../utils/rotate-around-center'
-
 import { Board } from '../../Board'
 import { Filter } from '../../Filter'
 import { Flip } from '../../Flip'
@@ -79,7 +77,6 @@ export abstract class ShapeModel<
     }
 
     this.board.layer.add(this.node)
-    this.board.layer.draw()
   }
 
   /**
@@ -327,6 +324,26 @@ export abstract class ShapeModel<
     this.node.addEventListener('dragstart', () => {
       this.board.selection.isLocked && this.node.stopDrag()
     })
+
+    /**
+     * resets originalX and originalY that has been set by [[Rotation]]
+     */
+    this.node.on('dragend', node =>
+      node.currentTarget.setAttrs({
+        originalX: undefined,
+        originalY: undefined
+      })
+    )
+
+    /**
+     * resets scaleX and scaleX that has been set by [[Rotation]]
+     */
+    this.node.on('transformend', node =>
+      node.currentTarget.setAttrs({
+        scaleX: undefined,
+        scaleY: undefined
+      })
+    )
   }
 
   /**
