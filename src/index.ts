@@ -215,9 +215,9 @@ export default class Pikaso {
    *
    * @param data The JSON object
    */
-  public async load(data: JsonData) {
+  public async load(data: string) {
     this.reset()
-    await this.import.json(data)
+    await this.import.json(JSON.parse(data))
   }
 
   /**

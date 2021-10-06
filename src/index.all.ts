@@ -42,6 +42,17 @@ export { RectModel } from './shape/models/RectModel'
 export { TriangleModel } from './shape/models/TriangleModel'
 export { TextModel } from './shape/models/TextModel'
 
+export { createImageFromUrl } from './utils/create-image-from-url'
+export { convertDegreeToRadian } from './utils/degree-to-radian'
+export { getRotateCenterPoint } from './utils/get-center-point'
+export { getPointsDistance } from './utils/get-points-distance'
+export { getRotatedPoint } from './utils/get-rotated-point'
+export { convertHtmlToText } from './utils/html-to-text'
+export { imageToDataUrl } from './utils/image-to-url'
+export { mergeSettings } from './utils/merge-settings'
+export { rotateAroundCenter } from './utils/rotate-around-center'
+export { omit } from './utils/omit'
+
 export { defaultSettings, defaultTransformerSettings } from './defaultSettings'
 
 export { Konva }
