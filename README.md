@@ -30,24 +30,28 @@ Pikaso is built on top of Konva to provide a couple of advanced features that Ko
 
 Pikaso provides both ES module and CommonJS bundles, which is easy to use with the popular bundlers
 
-`npm install pikaso --save` 
+```js
+npm install pikaso --save
+```
 
 #### Yarn
-`yarn add pikaso`
+```js
+yarn add pikaso
+```
 
 
 #### <script> tag
 
 Pikaso also supports UMD loading
 
-```
+```js
 <srcipt src="https://unpkg.com/pikaso@latest/umd/pikaso.min.js" type="text/javascript" />
 ```
 
 
 ## Getting Started
 
-```
+```js
 import Pikaso from 'pikaso'
 
 const editor = new Pikaso({
