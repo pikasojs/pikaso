@@ -5,7 +5,7 @@ describe('Import', () => {
   it('should import json file', async () => {
     const editor = createEditor()
 
-    await editor.load(fixture as any)
+    await editor.load(JSON.stringify(fixture) as any)
 
     expect(editor.board.activeShapes.length).toBe(12)
   })
