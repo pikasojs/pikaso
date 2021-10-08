@@ -1,14 +1,13 @@
 import Konva from 'konva'
 
-import { ShapeModel } from '../../ShapeModel'
-import type { Shapes } from '../../../types'
 import { rotateAroundCenter } from '../../../utils/rotate-around-center'
+import { ShapeModel } from '../../ShapeModel'
 
 export class RectModel extends ShapeModel<Konva.Rect, Konva.RectConfig> {
   /**
    * @inheritdoc
    */
-  public get type(): keyof Shapes {
+  public get type(): string {
     return 'rect'
   }
 

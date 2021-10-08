@@ -1,7 +1,6 @@
 import Konva from 'konva'
 
 import { ShapeModel } from '../../ShapeModel'
-import type { Shapes } from '../../../types'
 
 export class PolygonModel extends ShapeModel<
   Konva.RegularPolygon,
@@ -10,7 +9,7 @@ export class PolygonModel extends ShapeModel<
   /**
    * @inheritdoc
    */
-  public get type(): keyof Shapes {
+  public get type(): string {
     return 'polygon'
   }
 }

@@ -5,7 +5,7 @@ import { omit } from '../utils/omit'
 import { Board } from '../Board'
 import { ShapeModel } from '../shape/ShapeModel'
 
-import type { JsonData, Shapes } from '../types'
+import type { JsonData, BaseShapes } from '../types'
 
 /**
  * @internal
@@ -19,9 +19,9 @@ export class Import {
   /**
    * Represents the [[ShapeModel | Shapes]]
    */
-  private readonly shapes: Shapes
+  private readonly shapes: BaseShapes
 
-  constructor(board: Board, shapes: Shapes) {
+  constructor(board: Board, shapes: BaseShapes) {
     this.board = board
     this.shapes = shapes
   }

@@ -8,7 +8,7 @@ import { Background } from '../Background'
 
 import { ShapeModel } from '../shape/ShapeModel'
 
-import type { Settings, DrawType } from '../types'
+import type { Settings } from '../types'
 
 /**
  * Board class create and controls the main canvas
@@ -85,11 +85,11 @@ export class Board {
   public readonly selection: Selection
 
   /**
-   * Demonstrates the current active drawing. it can be one of [[DrawType]] values or `null`.
+   * Demonstrates the current active drawing. it's a string value or `null`.
    *
    * This property is managing by [[ShapeDrawer]] directly
    */
-  public activeDrawing: DrawType | null = null
+  public activeDrawing: string | null = null
 
   /**
    * @see [[Events]]
@@ -245,22 +245,24 @@ export class Board {
 
   /**
    * Changes the active drawing mode
+   *
+   * @param drawType The drawing type string
    */
-  public setActiveDrawing(mode: DrawType | null) {
-    if (mode) {
+  public setActiveDrawing(drawType: string | null) {
+    if (drawType) {
       this.selection.transformer.hide()
       this.draw()
     }
 
-    if (mode !== this.activeDrawing) {
+    if (drawType !== this.activeDrawing) {
       this.events.emit('board:change-active-drawing', {
         data: {
-          type: mode
+          type: drawType
         }
       })
     }
 
-    this.activeDrawing = mode
+    this.activeDrawing = drawType
   }
 
   /**

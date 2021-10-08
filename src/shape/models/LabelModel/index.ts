@@ -6,7 +6,7 @@ import { Board } from '../../../Board'
 import { ShapeModel } from '../../ShapeModel'
 
 import { rotateAroundCenter } from '../../../utils/rotate-around-center'
-import { DrawType, ShapeConfig, Shapes } from '../../../types'
+import { DrawType, ShapeConfig } from '../../../types'
 
 export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
   /**
@@ -24,7 +24,7 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
   /**
    * @inheritdoc
    */
-  public get type(): keyof Shapes {
+  public get type(): string {
     return 'label'
   }
 

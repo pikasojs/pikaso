@@ -3,13 +3,12 @@ import Konva from 'konva'
 import { rotateAroundCenter } from '../../../utils/rotate-around-center'
 
 import { ShapeModel } from '../../ShapeModel'
-import type { Shapes } from '../../../types'
 
 export class ImageModel extends ShapeModel<Konva.Image, Konva.ImageConfig> {
   /**
    * @inheritdoc
    */
-  public get type(): keyof Shapes {
+  public get type(): string {
     return 'image'
   }
 

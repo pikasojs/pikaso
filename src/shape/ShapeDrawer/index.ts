@@ -3,7 +3,7 @@ import Konva from 'konva'
 import { Board } from '../../Board'
 import { ShapeModel } from '../../shape/ShapeModel'
 
-import { IShape, IDrawableShape, DrawType, Point } from '../../types'
+import { IShape, IDrawableShape, Point } from '../../types'
 
 /**
  * This is an abstract class that Shapes have to extend that to insert or
@@ -50,9 +50,9 @@ export abstract class ShapeDrawer<
   protected readonly board: Board
 
   /***
-   * Reperesents [[DrawType | Draw Types]]
+   * Reperesents [[string | Draw Types]]
    */
-  private drawType: DrawType
+  private drawType: string
 
   /**
    * Reperesents the node which is drawing or has been drawn
@@ -63,9 +63,9 @@ export abstract class ShapeDrawer<
    * Creates a Shape Drawer instance to build and draw different shapes
    *
    * @param board The [[Board]]
-   * @param drawType The type of [[DrawType | Drawing]]
+   * @param drawType The type of [[string | Drawing]]
    */
-  constructor(board: Board, drawType: DrawType) {
+  constructor(board: Board, drawType: string) {
     this.board = board
     this.drawType = drawType
 

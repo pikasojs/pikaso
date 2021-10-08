@@ -4,7 +4,7 @@ import { Board } from '../../Board'
 import { Filter } from '../../Filter'
 import { Flip } from '../../Flip'
 
-import type { Filters, ShapeConfig, Shapes } from '../../types'
+import type { Filters, ShapeConfig, BaseShapes } from '../../types'
 
 export abstract class ShapeModel<
   T extends Konva.Group | Konva.Shape = Konva.Group | Konva.Shape,
@@ -353,5 +353,5 @@ export abstract class ShapeModel<
   /**
    * Returns type of the shape
    */
-  public abstract get type(): keyof Shapes
+  public abstract get type(): string
 }

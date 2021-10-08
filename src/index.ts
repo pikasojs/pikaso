@@ -27,15 +27,15 @@ import type {
   Settings,
   EventListenerNames,
   ListenerCallback,
-  Shapes,
-  JsonData
+  BaseShapes,
+  RegisterShapesFn
 } from './types'
 
 /**
  * This is the main class and entry point that creates a new editor instance
  * @see [[constructor]]
  */
-export default class Pikaso {
+export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
   /**
    * Represents the [[Board]]
    */
@@ -52,7 +52,7 @@ export default class Pikaso {
   public import: Import
 
   /**
-   * Represents the [[ShapeModel | Shapes]]
+   * Represents the [[ShapeModel | Shapes]] creators
    */
   public shapes: Shapes
 
@@ -98,6 +98,11 @@ export default class Pikaso {
   private settings: Settings
 
   /**
+   *
+   */
+  private registerShapes?: RegisterShapesFn<Shapes>
+
+  /**
    * Creates a new editor instance
    *
    * @param settings The editor settings
@@ -110,12 +115,13 @@ export default class Pikaso {
    * ```
    * @public
    */
-  constructor(settings: Settings) {
+  constructor(settings: Settings, registerShapes?: RegisterShapesFn<Shapes>) {
     if (!settings.container) {
       throw new Error('It needs to have a container element')
     }
 
     this.settings = mergeSettings(settings)
+    this.registerShapes = registerShapes
 
     this.init()
   }
@@ -245,8 +251,9 @@ export default class Pikaso {
       polygon: new PolygonDrawer(board),
       rect: new RectDrawer(board),
       triangle: new TriangleDrawer(board),
-      text: new TextDrawer(board)
-    }
+      text: new TextDrawer(board),
+      ...this.registerShapes?.(board)
+    } as Shapes
 
     this.import = new Import(board, this.shapes)
     this.export = new Export(board, this.cropper)
@@ -254,7 +261,5 @@ export default class Pikaso {
     this.board = board
     this.events = events
     this.history = history
-
-    this.board.draw()
   }
 }

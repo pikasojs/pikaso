@@ -11,8 +11,9 @@ import type { PolygonDrawer } from '../shape/drawers/PolygonDrawer'
 import type { TriangleDrawer } from '../shape/drawers/TriangleDrawer'
 import type { TextDrawer } from '../shape/drawers/TextDrawer'
 import type { PencilDrawer } from '../shape/drawers/PencilDrawer'
+import { Board } from '../Board'
 
-export declare interface Shapes {
+export declare interface BaseShapes {
   line: LineDrawer
   rect: RectDrawer
   arrow: ArrowDrawer
@@ -35,3 +36,5 @@ export declare interface ShapeConfig {
   selectable?: boolean
   history?: boolean
 }
+
+export type RegisterShapesFn<T> = (board: Board) => Omit<T, keyof BaseShapes>

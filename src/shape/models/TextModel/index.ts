@@ -1,15 +1,13 @@
 import Konva from 'konva'
 
 import { rotateAroundCenter } from '../../../utils/rotate-around-center'
-
 import { ShapeModel } from '../../ShapeModel'
-import type { Shapes } from '../../../types'
 
 export class TextModel extends ShapeModel<Konva.Text, Konva.TextConfig> {
   /**
    * @inheritdoc
    */
-  public get type(): keyof Shapes {
+  public get type(): string {
     return 'text'
   }
 
