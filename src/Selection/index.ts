@@ -6,7 +6,7 @@ import { Filter } from '../Filter'
 import { LabelModel } from '../shape/models/LabelModel'
 import { ShapeModel } from '../shape/ShapeModel'
 
-import type { Point, Filters } from '../types'
+import type { Point, Filters, FilterFunctions } from '../types'
 
 export class Selection {
   /**
@@ -344,22 +344,22 @@ export class Selection {
   }
 
   /**
-   * Adds a filter to the selected shapes
+   * Adds filter or filters to the selected shapes
    *
-   * @param filter The [[Filters | Filter]]
+   * @param filters The [[Filters]]
    */
-  public addFilter(filter: Filters) {
-    this.filter.apply(this.list, filter)
+  public addFilter(filters: Filters | Filters[]) {
+    this.filter.apply(this.list, filters)
     this.reselect()
   }
 
   /**
-   * Removes a filter from the selected shapes
+   * Removes a filter or list of filters from the selected shapes
    *
-   * @param name The filter name
+   * @param filters The filter names
    */
-  public removeFilter(name: Filters['name']) {
-    this.filter.remove(this.list, name)
+  public removeFilter(filters: FilterFunctions | FilterFunctions[]) {
+    this.filter.remove(this.list, filters)
     this.reselect()
   }
 

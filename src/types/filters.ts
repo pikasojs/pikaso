@@ -118,3 +118,8 @@ export declare type Filters =
       name: 'Sepia'
       options?: {}
     }
+  | {
+      customFn: (imageData: ImageData) => void
+    }
+
+export declare type FilterFunctions = Exclude<Filters, 'options'>

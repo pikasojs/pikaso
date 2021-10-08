@@ -7,6 +7,7 @@ import { Export } from './Export'
 import { Import } from './Import'
 
 import { Flip } from './Flip'
+import { Filter } from './Filter'
 import { Cropper } from './Cropper'
 import { Rotation } from './Rotation'
 import { Selection } from './Selection'
@@ -91,6 +92,11 @@ export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
    * Represents the [[History | actions history]]
    */
   public history: History
+
+  /**
+   * Represents the [[Filter]]
+   */
+  public filters: Filter
 
   /**
    * Represents [[Settings]]
@@ -236,9 +242,10 @@ export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
 
     this.selection = board.selection
 
-    this.rotation = new Rotation(board)
-    this.cropper = new Cropper(board)
     this.flip = new Flip(board)
+    this.filters = new Filter(board)
+    this.cropper = new Cropper(board)
+    this.rotation = new Rotation(board)
 
     this.shapes = {
       arrow: new ArrowDrawer(board),

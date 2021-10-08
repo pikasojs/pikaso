@@ -4,7 +4,7 @@ import { Board } from '../../Board'
 import { Filter } from '../../Filter'
 import { Flip } from '../../Flip'
 
-import type { Filters, ShapeConfig, BaseShapes } from '../../types'
+import type { Filters, ShapeConfig, FilterFunctions } from '../../types'
 
 export abstract class ShapeModel<
   T extends Konva.Group | Konva.Shape = Konva.Group | Konva.Shape,
@@ -140,21 +140,21 @@ export abstract class ShapeModel<
   }
 
   /**
-   * Adds a filter to the shape
+   * Adds filter or filters to the selected shapes
    *
-   * @param filter The [[Filters | Filter]]
+   * @param filter The [[Filters]]
    */
-  public addFilter(filter: Filters) {
+  public addFilter(filter: Filters | Filters[]) {
     this.filter.apply([this], filter)
   }
 
   /**
-   * Removes filter from the shape
+   * Removes a filter or list of filters from the selected shapes
    *
-   * @param name The filter name
+   * @param filters The filter function or functions
    */
-  public removeFilter(name: Filters['name']) {
-    this.filter.remove([this], name)
+  public removeFilter(filters: FilterFunctions | FilterFunctions[]) {
+    this.filter.remove([this], filters)
   }
 
   /**
