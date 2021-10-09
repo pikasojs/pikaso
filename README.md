@@ -14,7 +14,7 @@ Seamless, headless and fully-tested HTML5 canvas library that provides a couple 
 
 
 ### Pikaso vs. Konva
-[Konva](https://konvajs.org/docs/index.html) is a great HTML5 Canvas JavaScript framework that extends the 2d context by enabling canvas interactivity for desktop and mobile applications.  
+[Konva](https://konvajs.org/docs/index.html) is a great HTML5 Canvas TypeScript framework that extends the 2d context by enabling canvas interactivity for desktop and mobile applications.  
 
 Pikaso is built on top of Konva to provide a couple of advanced features that Konva doesn't support out of the box.
 
@@ -66,38 +66,36 @@ https://github.com/pikasojs/pikaso-react-hook
 
 ## Features
 
-- Global Configurations
-- Fully Customizable Cropping
-- Rotation and Transformation
-- Shape Drawing and Free Pencil Drawing
-- Simple Geometric Shapes
-- Interactive Text Editing
-- Customizable Shapes
-- Image and SVG
-- Background Image
-- Event Management
-- State Management (Undo/Redo)
-- Flipping  
-- Interactive Selection Management
-- Export to PNG and JPEG
-- Import/Export JSON
-- Filters
+- [Fully Typed](https://github.com/pikasojs/pikaso/tree/master/src/types)
+- [Global Configurations](https://pikaso.app/#/getting-started/configuration)
+- [Fully Customizable Cropping](https://pikaso.app/#/core/cropper)
+- [Rotation and Transformation](https://pikaso.app/#/core/rotation)
+- [Shape and FreeStyle Drawing](https://pikaso.app/#/core/drawing)
+- [Built-in Shapes](https://pikaso.app/#/core/shapes)
+- [Interactive Text Editing](https://pikaso.app/#/core/label)
+- [Customizable Shapes](https://pikaso.app/#/customization/create-custom-shapes)
+- [Image and SVG](https://pikaso.app/#/core/image)
+- [Background Image](https://pikaso.app/#/core/background)
+- [Event Management](https://pikaso.app/#/core/events)
+- [State Management (Undo/Redo)](https://pikaso.app/#/core/history)
+- [Flipping  ](https://pikaso.app/#/core/flip)
+- [Interactive Selection Management](https://pikaso.app/#/core/selection)
+- [Export to PNG and JPEG](https://pikaso.app/#/core/import-export)
+- [Import/Export JSON](https://pikaso.app/#/core/import-export)
+- [Filters](https://pikaso.app/#/core/filters)
+- [Custom Filters](https://pikaso.app/#/customization/create-custom-filters)
 
   
+## Documentation
+[Full Documentation](https://pikaso.app)
+  
 ## API references
-[API references](https://pikaso-docs.surge.sh/)
+[Full API references](https://pikaso.app/api)
   
 ## Demos
 [React Setup](https://codesandbox.io/s/pikaso-react-hook-example-i0uwg)   
 [Vue 3 Setup](https://codesandbox.io/s/vue3-example-o3cig)   
-
-
-TBD
-
-
-## Documentation
-TBD
-  
+[All Demos](https://pikaso.app)
 
 ## Contributors
 [![](https://opencollective.com/pikaso/contributors.svg?width=890&button=false)](https://github.com/pikasojs/pikaso/graphs/contributors)
