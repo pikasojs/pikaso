@@ -70,7 +70,7 @@ describe('Filter', () => {
 
     expect(editor.board.activeShapes[0].node.attrs.filters.length).toBe(1)
 
-    shape.removeFilter('Blur')
+    shape.removeFilter({ name: 'Blur' })
 
     expect(editor.board.activeShapes[0].node.attrs.filters.length).toBe(0)
   })
@@ -93,8 +93,7 @@ describe('Filter', () => {
 
     expect(editor.board.activeShapes[0].node.attrs.filters.length).toBe(2)
 
-    shape.removeFilter('Blur')
-    shape.removeFilter('Invert')
+    shape.removeFilter([{ name: 'Blur' }, { name: 'Invert' }])
 
     expect(editor.board.activeShapes[0].node.attrs.filters.length).toBe(0)
   })
@@ -138,7 +137,7 @@ describe('Filter', () => {
       }
     })
 
-    shape.removeFilter('Blur')
+    shape.removeFilter({ name: 'Blur' })
     expect(editor.board.activeShapes[0].node.attrs.filters.length).toBe(0)
 
     editor.undo()
@@ -157,7 +156,7 @@ describe('Filter', () => {
       undefined
     )
 
-    shape.removeFilter('Blur')
+    shape.removeFilter({ name: 'Blur' })
 
     expect(editor.board.activeShapes[0].node.attrs.filters?.length).toBe(
       undefined

@@ -151,7 +151,7 @@ describe('Selection', () => {
     })
     expect(circle.node.filters().length).toBe(1)
 
-    editor.board.selection.removeFilter('Invert')
+    editor.board.selection.removeFilter({ name: 'Invert' })
     expect(circle.node.filters().length).toBe(0)
   })
 
