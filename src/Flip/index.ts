@@ -1,5 +1,3 @@
-import Konva from 'konva'
-
 import { Board } from '../Board'
 import { ShapeModel } from '../shape/ShapeModel'
 
@@ -55,15 +53,11 @@ export class Flip {
     list.forEach(shape => {
       const node = shape.node
 
-      node.scaleX(node.scaleX() * -1)
+      const xPos = node.x()
+      const { x: xClient } = node.getClientRect()
 
-      if (this.shouldRecalculatePosition(shape)) {
-        node.x(
-          node.scaleX() < 0
-            ? node.width() * Math.abs(node.scaleX()) + node.x()
-            : node.x() - node.width() * Math.abs(node.scaleX())
-        )
-      }
+      node.scaleX(node.scaleX() * -1)
+      node.x(xClient - node.getClientRect().x + xPos)
     })
 
     this.board.events.emit('flip:x', {
@@ -90,31 +84,15 @@ export class Flip {
     list.forEach(shape => {
       const node = shape.node
 
-      node.scaleY(node.scaleY() * -1)
+      const yPos = node.y()
+      const { y: yClient } = node.getClientRect()
 
-      if (this.shouldRecalculatePosition(shape)) {
-        node.y(
-          node.scaleY() < 0
-            ? node.height() * Math.abs(node.scaleY()) + node.y()
-            : node.y() - node.height() * Math.abs(node.scaleY())
-        )
-      }
+      node.scaleY(node.scaleY() * -1)
+      node.y(yClient - node.getClientRect().y + yPos)
     })
 
     this.board.events.emit('flip:y', {
       shapes: list
     })
-  }
-
-  /**
-   * checks whether after flipping the shape repositioning is required or not
-   *
-   * @param shape the given [[ShapeModel | Shapes]]
-   * @returns boolean
-   */
-  private shouldRecalculatePosition(shape: ShapeModel): boolean {
-    return [Konva.Image, Konva.Label, Konva.Text, Konva.Rect].some(
-      component => shape.node instanceof component
-    )
   }
 }
