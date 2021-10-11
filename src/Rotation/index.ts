@@ -94,8 +94,6 @@ export class Rotation {
       const x = shape.node.attrs.originalX ?? shape.node.x()
       const y = shape.node.attrs.originalY ?? shape.node.y()
 
-      console.log(shape.node.attrs.originalX)
-
       const center = getRotatedPoint(
         {
           x,
