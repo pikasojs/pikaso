@@ -15,6 +15,6 @@ describe('Utils -> rotateAroundCenter', () => {
 
     expect(node.rotation()).toBe(45)
     expect(node.x()).toBe(164.64466094067262)
-    expect(node.y()).toBe(43.93398282201788)
+    expect(node.y()).toBe(43.93398282201787)
   })
 })

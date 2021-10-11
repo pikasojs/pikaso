@@ -1,12 +1,9 @@
 import Konva from 'konva'
 
-import { convertDegreeToRadian } from '../degree-to-radian'
-import { getRotateCenterPoint } from '../get-center-point'
-
 /**
  * Rotates a node around its center
  *
- * @returns The roated node around the center based on the given angle
+ * @returns The rotated node around the center based on the given angle
  * @param node The node
  * @param theta The angle value
  */
@@ -14,22 +11,25 @@ export function rotateAroundCenter(
   node: Konva.Group | Konva.Shape | Konva.Layer | Konva.Stage,
   theta: number
 ) {
-  const base = {
-    x: (node.width() / 2) * -1,
-    y: (node.height() / 2) * -1
+  const rect = node.getClientRect()
+
+  const center = {
+    x: rect.x + rect.width / 2,
+    y: rect.y + rect.height / 2
   }
 
-  const current = getRotateCenterPoint(
-    base,
-    convertDegreeToRadian(node.rotation())
-  )
-  const rotated = getRotateCenterPoint(base, convertDegreeToRadian(theta))
+  node.rotation(theta)
 
-  const dx = rotated.x - current.x
-  const dy = rotated.y - current.y
+  const newRect = node.getClientRect()
 
-  node.x(node.x() + dx)
-  node.y(node.y() + dy)
+  // x = newCenter.x - center.x and y = newCenter.y - center.y
+  const distance = {
+    x: center.x - (newRect.x + newRect.width / 2),
+    y: center.y - (newRect.y + newRect.height / 2)
+  }
 
-  node.rotation(Number(theta))
+  node.setAttrs({
+    x: node.x() + distance.x,
+    y: node.y() + distance.y
+  })
 }
