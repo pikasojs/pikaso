@@ -53,11 +53,16 @@ export class Flip {
     list.forEach(shape => {
       const node = shape.node
 
-      const xPos = node.x()
-      const { x: xClient } = node.getClientRect()
+      const rect = node.getClientRect()
 
       node.scaleX(node.scaleX() * -1)
-      node.x(xClient - node.getClientRect().x + xPos)
+
+      const newRect = node.getClientRect()
+
+      node.setAttrs({
+        x: node.x() + (rect.x - newRect.x),
+        y: node.y() + (rect.y - newRect.y)
+      })
     })
 
     this.board.events.emit('flip:x', {
@@ -84,11 +89,16 @@ export class Flip {
     list.forEach(shape => {
       const node = shape.node
 
-      const yPos = node.y()
-      const { y: yClient } = node.getClientRect()
+      const rect = node.getClientRect()
 
       node.scaleY(node.scaleY() * -1)
-      node.y(yClient - node.getClientRect().y + yPos)
+
+      const newRect = node.getClientRect()
+
+      node.setAttrs({
+        x: node.x() + (rect.x - newRect.x),
+        y: node.y() + (rect.y - newRect.y)
+      })
     })
 
     this.board.events.emit('flip:y', {
