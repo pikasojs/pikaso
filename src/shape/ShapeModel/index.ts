@@ -239,6 +239,20 @@ export abstract class ShapeModel<
   }
 
   /**
+   * Returns `width` of the shape
+   */
+  public width() {
+    return this.node.width()
+  }
+
+  /**
+   * Returns `height`  of the shape
+   */
+  public height() {
+    return this.node.height()
+  }
+
+  /**
    * Returns `scale` value of the shape
    */
   public scale() {

@@ -11,8 +11,9 @@ import type { PolygonDrawer } from '../shape/drawers/PolygonDrawer'
 import type { TriangleDrawer } from '../shape/drawers/TriangleDrawer'
 import type { TextDrawer } from '../shape/drawers/TextDrawer'
 import type { PencilDrawer } from '../shape/drawers/PencilDrawer'
-import { Board } from '../Board'
+import { SvgDrawer } from '../shape/drawers/SvgDrawer'
 
+import { Board } from '../Board'
 export declare interface BaseShapes {
   line: LineDrawer
   rect: RectDrawer
@@ -25,6 +26,7 @@ export declare interface BaseShapes {
   polygon: PolygonDrawer
   text: TextDrawer
   pencil: PencilDrawer
+  svg: SvgDrawer
 }
 
 export declare interface IShape {

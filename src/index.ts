@@ -12,6 +12,7 @@ import { Cropper } from './Cropper'
 import { Rotation } from './Rotation'
 import { Selection } from './Selection'
 
+import { SvgDrawer } from './shape/drawers/SvgDrawer'
 import { TextDrawer } from './shape/drawers/TextDrawer'
 import { LineDrawer } from './shape/drawers/LineDrawer'
 import { RectDrawer } from './shape/drawers/RectDrawer'
@@ -259,6 +260,7 @@ export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
       rect: new RectDrawer(board),
       triangle: new TriangleDrawer(board),
       text: new TextDrawer(board),
+      svg: new SvgDrawer(board),
       ...this.registerShapes?.(board)
     } as Shapes
 

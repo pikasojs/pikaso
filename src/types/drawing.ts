@@ -1,6 +1,7 @@
 import Konva from 'konva'
 
 export enum DrawType {
+  Svg = 'Svg',
   Text = 'Text',
   Pencil = 'Pencil',
   Line = 'Line',
