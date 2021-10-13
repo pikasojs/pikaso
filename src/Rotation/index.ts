@@ -4,6 +4,8 @@ import { convertDegreeToRadian } from '../utils/degree-to-radian'
 import { rotateAroundCenter } from '../utils/rotate-around-center'
 import { getRotatedPoint } from '../utils/get-rotated-point'
 
+import { RectModel } from '../shape/models/RectModel'
+import { ImageModel } from '../shape/models/ImageModel'
 import { Board } from '../Board'
 
 export class Rotation {
@@ -43,15 +45,6 @@ export class Rotation {
    * ```
    */
   public transform(theta: number) {
-    /*
-     * fallback to straighten method when background image
-     * is selectable, movable and transformable
-     */
-    if (this.board.background.image.isSelectable) {
-      this.straighten(theta)
-      return
-    }
-
     this.board.history.create(this.board.stage, [
       this.board.stage,
       ...this.board.getNodes()
@@ -86,15 +79,21 @@ export class Rotation {
       height: stageHeight
     })
 
-    this.board.background.nodes.forEach((node: Konva.Shape) => {
-      node
-        .scale({
-          x: stageScale,
-          y: stageScale
-        })
-        .rotation(Number(theta))
-        .x(stageWidth / 2 - center.x)
-        .y(stageHeight / 2 - center.y)
+    const backgroundShapes = [
+      this.board.background.image,
+      this.board.background.overlay
+    ].filter(shape => shape.isSelectable === false)
+
+    backgroundShapes.forEach((shape: ImageModel | RectModel) => {
+      const node = shape.node
+
+      node.scale({
+        x: stageScale,
+        y: stageScale
+      })
+      node.rotation(Number(theta))
+      node.x(stageWidth / 2 - center.x)
+      node.y(stageHeight / 2 - center.y)
     })
 
     this.board.activeShapes.forEach(shape => {
