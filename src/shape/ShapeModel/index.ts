@@ -354,7 +354,7 @@ export abstract class ShapeModel<
      * mouseorver event
      */
     this.node.addEventListener('mouseover', () => {
-      if (this.isSelectable) {
+      if (this.selectable) {
         this.board.stage.getContent().style.cursor = 'move'
       }
     })
@@ -370,7 +370,7 @@ export abstract class ShapeModel<
      * dragging start event
      */
     this.node.addEventListener('dragstart', () => {
-      if (this.isSelectable === false || this.board.selection.isLocked) {
+      if (this.selectable === false || this.board.selection.isLocked) {
         this.node.stopDrag()
       }
     })
