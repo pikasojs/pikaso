@@ -137,6 +137,13 @@ export abstract class ShapeModel<
       this.deselect()
       this.board.removeShape(this)
     }
+
+    this.board.events.emit('shape:selectable', {
+      shapes: [this],
+      data: {
+        selectable
+      }
+    })
   }
 
   /**
