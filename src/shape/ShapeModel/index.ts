@@ -64,12 +64,10 @@ export abstract class ShapeModel<
 
     this.config = {
       transformer: {},
-      history: config.history ?? true,
-      selectable: this.selectable,
       ...config
     }
 
-    if (this.config.history) {
+    if (config.history ?? true) {
       this.board.history.create(this.board.layer, [], {
         undo: () => this.delete(),
         redo: () => this.undelete()
@@ -80,7 +78,7 @@ export abstract class ShapeModel<
       shapes: [this]
     })
 
-    if (this.config.selectable) {
+    if (this.selectable) {
       this.node.draggable(true)
       this.board.addShape(this)
     }
