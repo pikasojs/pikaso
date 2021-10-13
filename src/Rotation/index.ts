@@ -43,6 +43,15 @@ export class Rotation {
    * ```
    */
   public transform(theta: number) {
+    /*
+     * fallback to straighten method when background image
+     * is selectable, movable and transformable
+     */
+    if (this.board.background.image.isSelectable) {
+      this.straighten(theta)
+      return
+    }
+
     this.board.history.create(this.board.stage, [
       this.board.stage,
       ...this.board.getNodes()

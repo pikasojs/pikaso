@@ -203,8 +203,6 @@ export class Selection {
       this.transformer.hide()
     }
 
-    this.board.draw()
-
     this.board.events.emit('selection:change', {
       shapes
     })
@@ -274,8 +272,6 @@ export class Selection {
 
     shapes.forEach(shape => shape.delete())
 
-    this.board.draw()
-
     this.board.events.emit('selection:delete', {
       shapes
     })
@@ -299,8 +295,6 @@ export class Selection {
           onFinish: resolve
         })
       })
-
-      this.board.draw()
 
       this.board.events.emit('selection:move', {
         shapes: this.list,
@@ -330,8 +324,6 @@ export class Selection {
           onFinish: resolve
         })
       })
-
-      this.board.draw()
 
       this.board.events.emit('selection:move', {
         shapes: this.list,
@@ -373,7 +365,6 @@ export class Selection {
     })
 
     this.board.layer.add(this.zone)
-    this.board.draw()
   }
 
   /**
@@ -456,7 +447,6 @@ export class Selection {
     })
 
     this.board.layer.add(this.transformer)
-    this.board.draw()
   }
 
   /**
@@ -506,8 +496,6 @@ export class Selection {
         visible: true
       })
       .moveToTop()
-
-    this.board.draw()
   }
 
   /**
@@ -526,8 +514,6 @@ export class Selection {
       width: Math.abs(x - this.startPointerPosition.x),
       height: Math.abs(y - this.startPointerPosition.y)
     })
-
-    this.board.draw()
   }
 
   /**
@@ -540,7 +526,6 @@ export class Selection {
 
     setTimeout(() => {
       this.zone.visible(false)
-      this.board.draw()
     }, 10)
 
     const box = this.zone.getClientRect()
@@ -593,32 +578,26 @@ export class Selection {
 
     if (keyboard?.map.delete.includes(e.key)) {
       this.delete()
-      this.board.draw()
     }
 
     if (keyboard?.map.moveLeft.includes(e.key)) {
       this.moveX(-movingSpaces)
-      this.board.draw()
     }
 
     if (keyboard?.map.moveRight.includes(e.key)) {
       this.moveX(movingSpaces)
-      this.board.draw()
     }
 
     if (keyboard?.map.moveUp.includes(e.key)) {
       this.moveY(-movingSpaces)
-      this.board.draw()
     }
 
     if (keyboard?.map.moveDown.includes(e.key)) {
       this.moveY(movingSpaces)
-      this.board.draw()
     }
 
     if (keyboard?.map.deselect.includes(e.key)) {
       this.deselectAll()
-      this.board.draw()
     }
   }
 

@@ -211,10 +211,17 @@ export class Board {
   }
 
   /**
-   * Add a new shape to the list of the shapes
+   * Adds a new shape to the list of the shapes
    */
   public addShape(shape: ShapeModel) {
     this.shapesList.push(shape)
+  }
+
+  /**
+   * Removes a shape from the list of the shapes
+   */
+  public removeShape(shape: ShapeModel) {
+    this.shapesList = this.shapesList.filter(item => item.node !== shape.node)
   }
 
   /**
