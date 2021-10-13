@@ -41,6 +41,11 @@ export abstract class ShapeModel<
   private deleted: boolean = false
 
   /**
+   * Represents whether the shape is selectable or not
+   */
+  private selectable: boolean = false
+
+  /**
    * Creates a new shape
    *
    * @param board The [[Board]]
@@ -54,15 +59,15 @@ export abstract class ShapeModel<
     this.flip = new Flip(board)
     this.filter = new Filter(board)
 
+    this.selectable =
+      config.selectable ?? this.board.settings.selection?.interactive ?? true
+
     this.config = {
       transformer: {},
-      history: config.history ?? true,
-      selectable:
-        config.selectable ?? this.board.settings.selection?.interactive ?? true,
       ...config
     }
 
-    if (this.config.history) {
+    if (config.history ?? true) {
       this.board.history.create(this.board.layer, [], {
         undo: () => this.delete(),
         redo: () => this.undelete()
@@ -73,14 +78,15 @@ export abstract class ShapeModel<
       shapes: [this]
     })
 
-    if (this.config.selectable) {
+    if (this.selectable) {
       this.node.draggable(true)
-      this.registerEvents()
-
       this.board.addShape(this)
     }
 
     this.board.layer.add(this.node)
+
+    // register shape events
+    this.registerEvents()
   }
 
   /**
@@ -109,6 +115,35 @@ export abstract class ShapeModel<
    */
   public get isInvisible() {
     return this.isVisible === false
+  }
+
+  /**
+   * Returns whether the shape is selectable or not
+   */
+  public get isSelectable() {
+    return this.selectable
+  }
+
+  /**
+   * Updates the selectable behavior of the shape
+   */
+  public set isSelectable(selectable: boolean) {
+    this.selectable = selectable
+    this.node.draggable(selectable)
+
+    if (selectable) {
+      this.board.addShape(this)
+    } else {
+      this.deselect()
+      this.board.removeShape(this)
+    }
+
+    this.board.events.emit('shape:selectable', {
+      shapes: [this],
+      data: {
+        selectable
+      }
+    })
   }
 
   /**
@@ -326,7 +361,9 @@ export abstract class ShapeModel<
      * mouseorver event
      */
     this.node.addEventListener('mouseover', () => {
-      this.board.stage.getContent().style.cursor = 'move'
+      if (this.selectable) {
+        this.board.stage.getContent().style.cursor = 'move'
+      }
     })
 
     /**
@@ -340,7 +377,9 @@ export abstract class ShapeModel<
      * dragging start event
      */
     this.node.addEventListener('dragstart', () => {
-      this.board.selection.isLocked && this.node.stopDrag()
+      if (this.selectable === false || this.board.selection.isLocked) {
+        this.node.stopDrag()
+      }
     })
 
     /**

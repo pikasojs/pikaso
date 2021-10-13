@@ -15,6 +15,7 @@ export declare type EventListenerNames =
   | 'shape:destroy'
   | 'shape:delete'
   | 'shape:undelete'
+  | 'shape:selectable'
   | 'label:update-text'
   | 'flip:x'
   | 'flip:y'
