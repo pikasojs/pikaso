@@ -101,7 +101,7 @@ export class Import {
             break
         }
 
-        if (Array.isArray(shape.filters)) {
+        if (Array.isArray(shape.filters) && shape.filters.length > 0) {
           shape.filters.forEach((name: keyof typeof Konva.Filters) => {
             instance!.node.filters([
               ...(instance?.node.filters() || []),
