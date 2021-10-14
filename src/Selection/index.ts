@@ -1,5 +1,4 @@
 import Konva from 'konva'
-import merge from 'deepmerge'
 
 import { Board } from '../Board'
 import { Filter } from '../Filter'
