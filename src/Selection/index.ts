@@ -73,13 +73,6 @@ export class Selection {
   }
 
   /**
-   * Returns selection transformer object
-   */
-  public getTransformer() {
-    return this.transformer
-  }
-
-  /**
    * Determines whether the selection has been locked by another component
    *
    * @returns the lock status which is true or false
@@ -88,6 +81,13 @@ export class Selection {
     return this.board.activeShapes.some(
       shape => shape instanceof LabelModel && shape.isEditing
     )
+  }
+
+  /**
+   * Returns selection transformer object
+   */
+  public getTransformer() {
+    return this.transformer
   }
 
   /**

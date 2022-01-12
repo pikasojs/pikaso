@@ -161,6 +161,24 @@ export class Board {
   }
 
   /**
+   * Returns all created shapes
+   *
+   * @see [[ShapeModel]]
+   */
+  public get shapes() {
+    return this.shapesList
+  }
+
+  /**
+   * Returns all created shapes except deleted and hidden shpaes
+   *
+   * @see [[ShapeModel]]
+   */
+  public get activeShapes() {
+    return this.shapesList.filter(shape => shape.isActive)
+  }
+
+  /**
    * Calculates the board dimensions based on different components
    *
    * @returns [[Dimension]]
@@ -190,24 +208,6 @@ export class Board {
       ...this.background.nodes,
       ...this.shapesList.map(shape => shape.node)
     ]
-  }
-
-  /**
-   * Returns all created shapes
-   *
-   * @see [[ShapeModel]]
-   */
-  public get shapes() {
-    return this.shapesList
-  }
-
-  /**
-   * Returns all created shapes except deleted and hidden shpaes
-   *
-   * @see [[ShapeModel]]
-   */
-  public get activeShapes() {
-    return this.shapesList.filter(shape => shape.isActive)
   }
 
   /**
