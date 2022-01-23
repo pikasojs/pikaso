@@ -69,7 +69,5 @@ export class PencilDrawer extends ShapeDrawer<Konva.Line, Konva.LineConfig> {
 
     const point = this.board.stage.getPointerPosition()!
     this.node.points(this.node.points().concat([point.x, point.y]))
-
-    this.board.draw()
   }
 }

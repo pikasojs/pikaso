@@ -86,7 +86,5 @@ export class RectDrawer extends ShapeDrawer<Konva.Rect, Konva.RectConfig> {
       width,
       height: e.evt.shiftKey ? width : height
     })
-
-    this.board.draw()
   }
 }

@@ -87,7 +87,5 @@ export class PolygonDrawer extends ShapeDrawer<
     this.node.setAttrs({
       radius: getPointsDistance(point, this.getShapePosition())
     })
-
-    this.board.draw()
   }
 }

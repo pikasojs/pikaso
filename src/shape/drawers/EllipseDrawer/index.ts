@@ -89,7 +89,5 @@ export class EllipseDrawer extends ShapeDrawer<
       radiusX,
       radiusY: e.evt.shiftKey ? radiusX : radiusY
     })
-
-    this.board.draw()
   }
 }

@@ -78,7 +78,5 @@ export class ArrowDrawer extends ShapeDrawer<Konva.Arrow, Konva.ArrowConfig> {
 
     const point = this.board.stage.getPointerPosition()!
     this.node.points([...this.node.points().slice(0, 2), point.x, point.y])
-
-    this.board.draw()
   }
 }
