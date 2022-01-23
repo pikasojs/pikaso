@@ -40,6 +40,7 @@ export const defaultSettings: Omit<Settings, 'container' | 'width' | 'height'> =
       }
     },
     drawing: {
+      autoSelect: false,
       keyboard: {
         cancelOnEscape: true
       }

@@ -125,6 +125,11 @@ export abstract class ShapeModel<
   }
 
   /**
+   * Returns type of the shape
+   */
+  public abstract get type(): string
+
+  /**
    * Updates the selectable behavior of the shape
    */
   public set isSelectable(selectable: boolean) {
@@ -361,7 +366,7 @@ export abstract class ShapeModel<
      * mouseorver event
      */
     this.node.addEventListener('mouseover', () => {
-      if (this.selectable) {
+      if (this.selectable && !this.board.activeDrawing) {
         this.board.stage.getContent().style.cursor = 'move'
       }
     })
@@ -377,7 +382,7 @@ export abstract class ShapeModel<
      * dragging start event
      */
     this.node.addEventListener('dragstart', () => {
-      if (this.selectable === false || this.board.selection.isLocked) {
+      if (this.selectable === false || this.board.selection.isDisabled) {
         this.node.stopDrag()
       }
     })
@@ -402,9 +407,4 @@ export abstract class ShapeModel<
       })
     )
   }
-
-  /**
-   * Returns type of the shape
-   */
-  public abstract get type(): string
 }

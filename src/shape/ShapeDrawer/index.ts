@@ -174,8 +174,15 @@ export abstract class ShapeDrawer<
    * Triggers on mouse up and finalizes the drawing
    */
   protected onFinishDrawing() {
-    this.node = null
     this.board.stage.container().style.cursor = 'inherit'
+
+    // auto select the created shape when drawing finishes
+    if (this.node && this.board.settings.drawing?.autoSelect) {
+      this.board.selection.find(shape => shape.node === this.node)
+    }
+
+    this.board.setActiveDrawing(null)
+    this.node = null
   }
 
   /**
@@ -188,7 +195,10 @@ export abstract class ShapeDrawer<
   ) {
     switch (e.key) {
       case 'Escape':
-        this.stopDrawing()
+        if (this.board.settings.drawing?.keyboard?.cancelOnEscape) {
+          this.stopDrawing()
+        }
+
         break
     }
   }

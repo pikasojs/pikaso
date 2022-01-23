@@ -13,6 +13,7 @@ export declare interface OptionalSettings {
   transformer: Konva.TransformerConfig
   cropper: Partial<CropperOptions>
   drawing: Partial<{
+    autoSelect: boolean
     keyboard: {
       cancelOnEscape: boolean
     }

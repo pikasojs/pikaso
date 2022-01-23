@@ -73,13 +73,16 @@ export class Selection {
   }
 
   /**
-   * Determines whether the selection has been locked by another component
+   * Determines whether the selection has been disabled by another component
    *
-   * @returns the lock status which is true or false
+   * @returns the disabled status which is true or false
    */
-  public get isLocked(): boolean {
-    return this.board.activeShapes.some(
-      shape => shape instanceof LabelModel && shape.isEditing
+  public get isDisabled(): boolean {
+    return (
+      !!this.board.activeDrawing ||
+      this.board.activeShapes.some(
+        shape => shape instanceof LabelModel && shape.isEditing
+      )
     )
   }
 
@@ -454,7 +457,10 @@ export class Selection {
    * @param e The trigger event
    */
   private onDragZoneStart(e: Konva.KonvaEventObject<MouseEvent>) {
-    if (this.board.settings.selection?.interactive === false || this.isLocked) {
+    if (
+      this.board.settings.selection?.interactive === false ||
+      this.isDisabled
+    ) {
       return
     }
 
