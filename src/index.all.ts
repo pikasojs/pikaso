@@ -15,6 +15,7 @@ export { Cropper } from './Cropper'
 export { Rotation } from './Rotation'
 export { Selection } from './Selection'
 export { Background } from './Background'
+export { SnapGrid } from './SnapGrid'
 
 export { LineDrawer } from './shape/drawers/LineDrawer'
 export { RectDrawer } from './shape/drawers/RectDrawer'

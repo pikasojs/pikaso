@@ -2,6 +2,8 @@ import Konva from 'konva'
 
 import { CropperOptions } from './cropper'
 
+import { Nullable } from '.'
+
 export declare interface RequiredSettings {
   container: HTMLDivElement
 }
@@ -12,6 +14,7 @@ export declare interface OptionalSettings {
   containerClassName: string
   transformer: Konva.TransformerConfig
   cropper: Partial<CropperOptions>
+  snapToGrid: Nullable<Konva.LineConfig>
   drawing: Partial<{
     autoSelect: boolean
     keyboard: {

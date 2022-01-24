@@ -10,6 +10,7 @@ import { Flip } from './Flip'
 import { Filter } from './Filter'
 import { Cropper } from './Cropper'
 import { Rotation } from './Rotation'
+import { SnapGrid } from './SnapGrid'
 import { Selection } from './Selection'
 
 import { SvgDrawer } from './shape/drawers/SvgDrawer'
@@ -98,6 +99,11 @@ export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
    * Represents the [[Filter]]
    */
   public filters: Filter
+
+  /**
+   * Represents the [[SnapGrid]]
+   */
+  public snapGrid: SnapGrid
 
   /**
    * Represents [[Settings]]
@@ -247,6 +253,7 @@ export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
     this.filters = new Filter(board)
     this.cropper = new Cropper(board)
     this.rotation = new Rotation(board)
+    this.snapGrid = new SnapGrid(board)
 
     this.shapes = {
       arrow: new ArrowDrawer(board),

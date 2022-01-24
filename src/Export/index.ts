@@ -38,8 +38,8 @@ export class Export {
   /**
    * Exports the current workspace to image
    *
-   * @returns The exported image data url
    * @param config The export options
+   * @returns The exported image data url
    */
   public toImage(config?: Partial<ExportImageConfig>) {
     this.cropper.stop()

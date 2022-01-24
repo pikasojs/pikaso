@@ -18,6 +18,7 @@ export const defaultSettings: Omit<Settings, 'container' | 'width' | 'height'> =
     disableCanvasContextMenu: true,
     containerClassName: 'pikaso',
     transformer: defaultTransformerSettings,
+    snapToGrid: null,
     cropper: {
       transformer: defaultTransformerSettings,
       circular: false,

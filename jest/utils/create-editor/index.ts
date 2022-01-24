@@ -1,6 +1,7 @@
 import Pikaso from '../../../src'
+import { Settings } from '../../../src/types'
 
-export function createEditor() {
+export function createEditor(options?: Partial<Settings>) {
   const width = 1280
   const height = 720
 
@@ -14,6 +15,7 @@ export function createEditor() {
   return new Pikaso({
     container: element,
     width,
-    height
+    height,
+    ...options
   })
 }
