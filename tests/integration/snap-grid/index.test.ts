@@ -1,8 +1,6 @@
 import { createEditor } from '../../../jest/utils/create-editor'
 import { SnapGrid } from '../../../src/SnapGrid'
 
-// jest.mock('../../../src/SnapGrid')
-
 describe('Snap Grid', () => {
   const shapeConfig = {
     x: 100,
