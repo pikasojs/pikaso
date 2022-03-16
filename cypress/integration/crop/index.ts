@@ -14,16 +14,13 @@ describe('Crop', () => {
         radius: 150,
         fill: 'red'
       })
-
       editor.cropper.start({
         x: 0,
         y: 0,
         width: 300,
         height: 300
       })
-
       editor.cropper.crop()
-
       expect(editor.board.stage.attrs.width).equal(500)
       expect(editor.board.stage.attrs.height).equal(500)
     })

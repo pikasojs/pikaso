@@ -233,8 +233,6 @@ export abstract class BaseCropper {
       ...options
     }
 
-    // console.log(this.board.settings.cropper?.transformer)
-
     if (options.circular) {
       return {
         circular: true,

@@ -48,72 +48,88 @@ export class Import {
     // update stage attributes
     this.board.stage.setAttrs(stage.attrs)
 
+    // create groups instances
+    shapes.forEach(json => {
+      if (json.className === 'Group') {
+        this.board.groups.create(json.attrs.name, json.attrs)
+      }
+    })
+
+    // create shape instances
     await Promise.all(
-      shapes.map(async shape => {
+      shapes.map(async json => {
         let instance: ShapeModel | undefined
 
-        switch (shape.className) {
+        switch (json.className) {
           case 'Image':
             instance = await this.shapes.image.insert(
-              shape.attrs.url as string,
-              omit(shape.attrs, ['url'])
+              json.attrs.url as string,
+              omit(json.attrs, ['url'])
             )
             break
 
           case 'Label':
             instance = this.shapes.label.insert({
-              container: shape.attrs as Konva.LabelConfig,
-              tag: shape.children![0].attrs as Konva.TagConfig,
-              text: shape.children![1].attrs as Konva.TextConfig
+              container: json.attrs as Konva.LabelConfig,
+              tag: json.children![0].attrs as Konva.TagConfig,
+              text: json.children![1].attrs as Konva.TextConfig
             })
             break
 
           case 'Line':
-            instance = this.shapes.line.insert(shape.attrs as Konva.LineConfig)
+            instance = this.shapes.line.insert(json.attrs as Konva.LineConfig)
             break
 
           case 'Arrow':
-            instance = this.shapes.arrow.insert(
-              shape.attrs as Konva.ArrowConfig
-            )
+            instance = this.shapes.arrow.insert(json.attrs as Konva.ArrowConfig)
             break
 
           case 'Circle':
             instance = this.shapes.circle.insert(
-              shape.attrs as Konva.CircleConfig
+              json.attrs as Konva.CircleConfig
             )
             break
 
           case 'Ellipse':
             instance = this.shapes.ellipse.insert(
-              shape.attrs as Konva.EllipseConfig
+              json.attrs as Konva.EllipseConfig
             )
             break
 
           case 'RegularPolygon':
             instance = this.shapes.polygon.insert(
-              shape.attrs as Konva.RegularPolygonConfig
+              json.attrs as Konva.RegularPolygonConfig
             )
             break
 
           case 'Rect':
-            instance = this.shapes.rect.insert(shape.attrs as Konva.RectConfig)
+            instance = this.shapes.rect.insert(json.attrs as Konva.RectConfig)
+            break
+
+          case 'Group':
+            instance = this.board.groups.find(json.attrs.name)?.container
             break
         }
 
-        if (Array.isArray(shape.filters) && shape.filters.length > 0) {
-          shape.filters.forEach((name: keyof typeof Konva.Filters) => {
+        if (instance) {
+          instance.group = json.group
+        }
+
+        if (
+          instance &&
+          Array.isArray(json.filters) &&
+          json.filters?.length > 0
+        ) {
+          json.filters.forEach((name: keyof typeof Konva.Filters) => {
             instance!.node.filters([
               ...(instance?.node.filters() || []),
               Konva.Filters[name]
             ])
           })
 
-          instance!.node.cache()
+          instance.node.cache()
         }
       })
     )
-
-    this.board.stage.draw()
   }
 }

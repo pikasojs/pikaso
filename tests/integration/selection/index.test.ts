@@ -174,4 +174,26 @@ describe('Selection', () => {
     editor.selection.find(item => item === circle)
     expect(editor.selection.list.length).toBe(1)
   })
+
+  it('should group selection', () => {
+    const editor = createEditor()
+
+    const circles = [
+      editor.shapes.circle.insert(shapeConfig),
+      editor.shapes.circle.insert({
+        ...shapeConfig,
+        x: 200,
+        y: 200,
+        radius: 10
+      })
+    ]
+
+    editor.selection.find(item => item.node.className === 'Circle')
+
+    editor.selection.group('g1')
+
+    expect(circles[0].group).toBe('g1')
+    expect(circles[1].group).toBe('g1')
+    expect(editor.board.groups.find('g1')).not.toBe(undefined)
+  })
 })

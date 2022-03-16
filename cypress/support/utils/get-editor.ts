@@ -1,9 +1,8 @@
 /// <reference types="cypress" />
-
-import Pikaso from '../../../src'
+import { Pikaso } from '../../../src/index.all'
 
 export function getEditor() {
-  return cy.document().then(doc => {
+  return cy.document().then(async doc => {
     Object.assign(doc.body.style, {
       margin: 0,
       padding: 0,

@@ -2,6 +2,7 @@ import Konva from 'konva'
 
 import { Board } from '../../Board'
 import { omit } from '../../utils/omit'
+import { NODE_GROUP_ATTRIBUTE } from '../../constants'
 
 import type { JsonData } from '../../types'
 
@@ -26,12 +27,21 @@ export class JsonExport {
     const layer = this.nodeToObject(this.board.layer, ['children'])
 
     const shapes = this.board.activeShapes.map(shape => {
-      return this.nodeToObject(shape.node)
+      return {
+        ...this.nodeToObject(shape.node, []),
+        group: shape.group
+      }
     })
 
     const background = {
-      image: this.nodeToObject(this.board.background.image.node),
-      overlay: this.nodeToObject(this.board.background.overlay.node)
+      image: {
+        ...this.nodeToObject(this.board.background.image.node),
+        group: this.board.background.image.group
+      },
+      overlay: {
+        ...this.nodeToObject(this.board.background.overlay.node),
+        group: this.board.background.overlay.group
+      }
     }
 
     return {
@@ -62,20 +72,30 @@ export class JsonExport {
       )
     }) as string[]
 
+    const attrs = omit(
+      {
+        ...data.attrs,
+        ...Object.entries({
+          x: node.x() ?? undefined,
+          y: node.y() ?? undefined,
+          width: node.width() || undefined,
+          height: node.height() || undefined
+        }).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [key]: value ? Number(value?.toFixed(2)) : value
+          }),
+          {}
+        )
+      },
+      ['draggable', 'filters', NODE_GROUP_ATTRIBUTE, ...exclude]
+    )
+
     return {
       className: data.className,
       filters,
       children: ['Label'].includes(data.className) ? data.children : undefined,
-      attrs: omit(
-        {
-          ...data.attrs,
-          x: node.x(),
-          y: node.y(),
-          width: node.width(),
-          height: node.height()
-        },
-        ['draggable', 'filters', ...exclude]
-      )
+      attrs
     }
   }
 }

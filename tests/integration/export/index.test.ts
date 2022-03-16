@@ -45,6 +45,7 @@ describe('Export', () => {
           className: 'Image',
           filters: [],
           children: undefined,
+          group: undefined,
           attrs: {
             url: `http://localhost/${image[0]}x${image[1]}`,
             x: 0,
@@ -57,6 +58,7 @@ describe('Export', () => {
           className: 'Rect',
           filters: [],
           children: undefined,
+          group: undefined,
           attrs: { width: image[0], height: image[1], x: 0, y: 0 }
         }
       },
@@ -64,6 +66,7 @@ describe('Export', () => {
         {
           className: 'Label',
           filters: [],
+          group: undefined,
           children: [
             {
               attrs: {

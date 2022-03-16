@@ -358,6 +358,15 @@ export class Selection {
   }
 
   /**
+   * Creates a group of the selected shapes
+   *
+   * @param groupName The group name
+   */
+  public group(groupName: string) {
+    this.board.groups.attach(this.list, groupName)
+  }
+
+  /**
    * Creates the rectangle zone instance
    */
   private createZone() {

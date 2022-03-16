@@ -17,6 +17,9 @@ export { Selection } from './Selection'
 export { Background } from './Background'
 export { SnapGrid } from './SnapGrid'
 
+export { Groups } from './grouping/Groups'
+export { GroupsManager } from './grouping/GroupsManager'
+
 export { LineDrawer } from './shape/drawers/LineDrawer'
 export { RectDrawer } from './shape/drawers/RectDrawer'
 export { ArrowDrawer } from './shape/drawers/ArrowDrawer'
@@ -53,6 +56,8 @@ export { imageToDataUrl } from './utils/image-to-url'
 export { mergeSettings } from './utils/merge-settings'
 export { rotateAroundCenter } from './utils/rotate-around-center'
 export { omit } from './utils/omit'
+
+export { NODE_GROUP_ATTRIBUTE } from './constants'
 
 export { defaultSettings, defaultTransformerSettings } from './defaultSettings'
 

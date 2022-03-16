@@ -38,7 +38,11 @@ describe('Crop', () => {
 
     await editor.cropper.crop()
 
-    expect(editor.board.stage.attrs).toMatchObject({
+    expect({
+      ...editor.board.stage.attrs,
+      width: parseInt(editor.board.stage.attrs.width),
+      height: parseInt(editor.board.stage.attrs.height)
+    }).toMatchObject({
       width: 720,
       height: 720,
       scaleX: 1,
@@ -88,7 +92,11 @@ describe('Crop', () => {
     })
     await editor.cropper.crop()
 
-    expect(editor.board.stage.attrs).toMatchObject({
+    expect({
+      ...editor.board.stage.attrs,
+      width: parseInt(editor.board.stage.attrs.width),
+      height: parseInt(editor.board.stage.attrs.height)
+    }).toMatchObject({
       width: 720,
       height: 720,
       scaleX: 1,
@@ -186,19 +194,19 @@ describe('Crop', () => {
     editor.cropper.start({})
 
     expect(editor.cropper.getRect()).toStrictEqual({
-      x: 294,
-      y: 14,
-      width: 692,
-      height: 692
+      x: 294.5,
+      y: 14.5,
+      width: 691,
+      height: 691
     })
 
     editor.cropper.setPosition({ x: 0, y: 0 })
 
     expect(editor.cropper.getRect()).toStrictEqual({
-      x: 2,
-      y: 2,
-      width: 692,
-      height: 692
+      x: 2.5,
+      y: 2.5,
+      width: 691,
+      height: 691
     })
   })
 
@@ -272,10 +280,10 @@ describe('Crop', () => {
     await editor.cropper.crop()
 
     expect(shape.node.attrs).toMatchObject({
-      x: -201.84971098265896,
-      y: 89.47976878612715,
-      scaleX: 1.0404624277456647,
-      scaleY: 1.0404624277456647
+      scaleX: 1.0419681620839363,
+      scaleY: 1.0419681620839363,
+      x: -202.6628075253256,
+      y: 89.08827785817655
     })
   })
 })

@@ -40,10 +40,9 @@ export class Flip {
    * @param shapes List of the [[ShapeModel | Shapes]]
    */
   public horizontal(shapes?: ShapeModel[]) {
-    const list = shapes ?? [
-      ...this.board.activeShapes,
-      this.board.background.image
-    ]
+    const list = (
+      shapes ?? [...this.board.activeShapes, this.board.background.image]
+    ).filter(shape => !shape.hasGroup())
 
     this.board.history.create(
       this.board.layer,
@@ -76,10 +75,9 @@ export class Flip {
    * @param shapes List of the [[ShapeModel | Shapes]]
    */
   public vertical(shapes?: ShapeModel[]) {
-    const list = shapes ?? [
-      ...this.board.activeShapes,
-      this.board.background.image
-    ]
+    const list = (
+      shapes ?? [...this.board.activeShapes, this.board.background.image]
+    ).filter(shape => !shape.hasGroup())
 
     this.board.history.create(
       this.board.layer,

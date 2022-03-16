@@ -2,6 +2,7 @@ import Konva from 'konva'
 
 import { History } from '../History'
 import { Events } from '../Events'
+import { Groups } from '../grouping/Groups'
 
 import { Selection } from '../Selection'
 import { Background } from '../Background'
@@ -102,6 +103,11 @@ export class Board {
   public readonly history: History
 
   /**
+   * @see [[Groups]]
+   */
+  public readonly groups: Groups
+
+  /**
    * The array that contains all created shapes including active and deleted items. this property is managing by [[ShapeDrawer]] and [[Selection]]
    *
    * @see [[Board.addShape]] and [[Board.setShapes]]
@@ -156,6 +162,7 @@ export class Board {
 
     this.background = new Background(this)
     this.selection = new Selection(this)
+    this.groups = new Groups(this)
 
     this.container = this.settings.container
   }
@@ -305,5 +312,19 @@ export class Board {
    */
   public draw() {
     this.layer.batchDraw()
+  }
+
+  /**
+   * Deletes all removed shapes in order to free up memory
+   */
+  public gc() {
+    this.shapesList = this.shapesList.filter(shape => {
+      if (shape.isDeleted) {
+        shape.node.destroy()
+        return false
+      }
+
+      return true
+    })
   }
 }

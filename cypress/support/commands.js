@@ -1,8 +1,8 @@
 import { draw } from './utils/draw'
-import { getEditor } from './utils/get-editor'
 import { loadAsset } from './utils/load-asset'
 import { loadImage } from './utils/load-image'
 import { mouseTrigger } from './utils/mouse-trigger'
+import { getEditor } from './utils/get-editor'
 
 Cypress.Commands.add('draw', draw)
 Cypress.Commands.add('getEditor', getEditor)

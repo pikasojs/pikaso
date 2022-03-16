@@ -97,6 +97,10 @@ export class Rotation {
     })
 
     this.board.activeShapes.forEach(shape => {
+      if (shape.hasGroup()) {
+        return
+      }
+
       const scaleX = shape.node.attrs.originalScaleX ?? shape.node.scaleX()
       const scaleY = shape.node.attrs.originalScaleY ?? shape.node.scaleY()
       const x = shape.node.attrs.originalX ?? shape.node.x()
@@ -146,6 +150,10 @@ export class Rotation {
     })
 
     this.board.activeShapes.forEach(shape => {
+      if (shape.hasGroup()) {
+        return
+      }
+
       shape.rotate(theta)
     })
 

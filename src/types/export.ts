@@ -1,6 +1,6 @@
 import Konva from 'konva'
 
-import { UnknownObject } from './common'
+import { Nullable, UnknownObject } from '.'
 
 export declare interface JsonData {
   stage: {
@@ -22,10 +22,11 @@ export declare interface JsonData {
     }
   }
   shapes: {
-    attrs: UnknownObject
+    attrs: Record<string, any>
     filters?: string[]
     children?: Omit<JsonData['shapes'], 'filters'>
     className: string
+    group: Nullable<string>
   }[]
 }
 

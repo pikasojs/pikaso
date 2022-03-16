@@ -229,6 +229,10 @@ export class Cropper {
     isTransformerVisible && this.board.selection.transformer.hide()
 
     this.board.activeShapes.forEach(shape => {
+      if (shape.hasGroup()) {
+        return
+      }
+
       shape.node.hide()
     })
 
@@ -258,7 +262,7 @@ export class Cropper {
     })
 
     this.board.shapes.forEach(shape => {
-      if (shape.isDeleted) {
+      if (shape.isDeleted || shape.hasGroup()) {
         return
       }
 

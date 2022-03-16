@@ -3,8 +3,14 @@ import Konva from 'konva'
 import { Board } from '../../Board'
 import { Filter } from '../../Filter'
 import { Flip } from '../../Flip'
+import { NODE_GROUP_ATTRIBUTE } from '../../constants'
 
-import type { Filters, ShapeConfig, FilterFunctions } from '../../types'
+import type {
+  Filters,
+  ShapeConfig,
+  FilterFunctions,
+  Nullable
+} from '../../types'
 
 export abstract class ShapeModel<
   T extends Konva.Group | Konva.Shape = Konva.Group | Konva.Shape,
@@ -44,6 +50,11 @@ export abstract class ShapeModel<
    * Represents whether the shape is selectable or not
    */
   private selectable: boolean = false
+
+  /**
+   * Represents list of the shape's filters
+   */
+  private filtersList: Filters[] = []
 
   /**
    * Creates a new shape
@@ -125,6 +136,27 @@ export abstract class ShapeModel<
   }
 
   /**
+   * Returns group id of the shape
+   */
+  public get group(): Nullable<string> {
+    return this.node.getAttr(NODE_GROUP_ATTRIBUTE)
+  }
+
+  /**
+   * Returns name of the shape
+   */
+  public get name(): string {
+    return this.node.name()
+  }
+
+  /**
+   * Returns a list of the shape's filters
+   */
+  public get filters(): Filters[] {
+    return this.filtersList
+  }
+
+  /**
    * Returns type of the shape
    */
   public abstract get type(): string
@@ -149,6 +181,26 @@ export abstract class ShapeModel<
         selectable
       }
     })
+  }
+
+  /**
+   * Adds the shape to the given group name
+   */
+  public set group(name: Nullable<string>) {
+    if (this.group && name !== this.group) {
+      this.board.groups.detach([this], this.group)
+    }
+
+    if (name && name.length > 0) {
+      this.board.groups.attach([this], name)
+    }
+  }
+
+  /**
+   * Returns whether the shape belongs to a group
+   */
+  public hasGroup(): boolean {
+    return !!this.group
   }
 
   /**
@@ -186,15 +238,22 @@ export abstract class ShapeModel<
    */
   public addFilter(filter: Filters | Filters[]) {
     this.filter.apply([this], filter)
+
+    this.filtersList = [
+      ...this.getFiltersDiff(filter),
+      ...(Array.isArray(filter) ? filter : [filter])
+    ]
   }
 
   /**
    * Removes a filter or list of filters from the selected shapes
    *
-   * @param filters The filter function or functions
+   * @param filter The filter function or functions
    */
-  public removeFilter(filters: FilterFunctions | FilterFunctions[]) {
-    this.filter.remove([this], filters)
+  public removeFilter(filter: FilterFunctions | FilterFunctions[]) {
+    this.filter.remove([this], filter)
+
+    this.filtersList = this.getFiltersDiff(filter)
   }
 
   /**
@@ -209,7 +268,11 @@ export abstract class ShapeModel<
 
     this.deselect()
     this.node.hide()
-    this.node.cache()
+
+    if (!this.node.isCached && this.node.width() && this.node.height()) {
+      this.node.cache()
+    }
+
     this.deleted = true
 
     this.board.events.emit('shape:delete', {
@@ -226,7 +289,11 @@ export abstract class ShapeModel<
     }
 
     this.node.show()
-    this.node.clearCache()
+
+    if (this.node.isCached()) {
+      this.node.clearCache()
+    }
+
     this.deleted = false
 
     this.board.events.emit('shape:undelete', {
@@ -405,6 +472,31 @@ export abstract class ShapeModel<
         originalScaleX: undefined,
         originalScaleY: undefined
       })
+    )
+  }
+
+  /**
+   * Calculates the list of filters based on the previous filters and the new filters
+   *
+   * @param filter The list of filters
+   * @returns The new list of filters
+   */
+  private getFiltersDiff(filter: FilterFunctions | FilterFunctions[]) {
+    const filters = Array.isArray(filter) ? filter : [filter]
+
+    return this.filters.filter(
+      search =>
+        !filters.find(item => {
+          if ('name' in search && 'name' in item) {
+            return item.name === search.name
+          }
+
+          if ('customFn' in search && 'customFn' in item) {
+            return search.customFn === item.customFn
+          }
+
+          return false
+        })
     )
   }
 }

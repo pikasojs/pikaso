@@ -149,7 +149,7 @@ export class SnapGrid {
     }
 
     this.board.activeShapes.forEach(shape => {
-      if (shape.node === node) {
+      if (shape.node === node || shape.hasGroup()) {
         return
       }
 
