@@ -22,7 +22,7 @@ Pikaso is built on top of Konva to provide a couple of advanced features that Ko
 | - | - |
 | HTML5 Canvas | Provides low level APIs to draw graphics |
 | Konva | Provides Shapes, Dragging, Styling, Events, Transformation and Filters features to HTML5 canvas  |
-| Pikaso | Adds a lot of Simplicity and provides Free and Shape Drawing, State Management (Undo/Redo/Reset), JSON Import/Export, Text Editing, Cropping, Rotation, Transformation, Event Manager, Advanced Transformation and Selection, Flipping, Background Image and Background Overlay management, Filter Management to Konva |
+| Pikaso | Adds a lot of Simplicity and provides Free style and Shape Drawing, Advanced Shapes and Groups, State Management (Undo/Redo/Reset), JSON Import/Export, Text Editing, Cropping, Rotation, Transformation, Event Manager, Snap to Grid, Advanced Transformation and Selection, Flipping, Background Image and Background Overlay management, Filter Management to Konva |
 
 ## Install   
 
@@ -72,6 +72,7 @@ https://github.com/pikasojs/pikaso-react-hook
 - [Rotation and Transformation](https://pikaso.app/#/core/rotation)
 - [Shape and FreeStyle Drawing](https://pikaso.app/#/core/drawing)
 - [Built-in Shapes](https://pikaso.app/#/core/shapes)
+- [Groups](https://pikaso.app/#/core/groups)
 - [Interactive Text Editing](https://pikaso.app/#/core/label)
 - [Customizable Shapes](https://pikaso.app/#/customization/create-custom-shapes)
 - [Image and SVG](https://pikaso.app/#/core/image)
@@ -80,6 +81,7 @@ https://github.com/pikasojs/pikaso-react-hook
 - [State Management (Undo/Redo)](https://pikaso.app/#/core/history)
 - [Flipping  ](https://pikaso.app/#/core/flip)
 - [Interactive Selection Management](https://pikaso.app/#/core/selection)
+- [Snap to Grid](https://pikaso.app/#/core/snap-grid)
 - [Export to PNG and JPEG](https://pikaso.app/#/core/import-export)
 - [Import/Export JSON](https://pikaso.app/#/core/import-export)
 - [Filters](https://pikaso.app/#/core/filters)
