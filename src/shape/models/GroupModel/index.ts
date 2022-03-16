@@ -1,6 +1,6 @@
 import Konva from 'konva'
 
-import { rotateAroundCenter } from '../../../index.all'
+import { rotateAroundCenter } from '../../../utils/rotate-around-center'
 
 import { ShapeModel } from '../../ShapeModel'
 
