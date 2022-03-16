@@ -4,7 +4,7 @@ import { Board } from '../../Board'
 import { ShapeModel } from '../../shape/ShapeModel'
 import { GroupModel } from '../../shape/models/GroupModel'
 import { NODE_GROUP_ATTRIBUTE } from '../../constants'
-import type { Group, HistoryState } from '../../types'
+import type { Group } from '../../types'
 
 /**
  * Shapes can be arranged into multiple groups using the Groups Manager
