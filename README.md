@@ -1,9 +1,3 @@
-<div align="center">
-  <img src="assets/logo.svg" width="150" />
-</div>
-
-# Pikaso
-Seamless, headless and fully-tested HTML5 canvas library that provides a couple of high level APIs
 
 ![Language](https://badgen.net/badge/icon/typescript?icon=typescript&label=Language)
 ![Test, Build and Publish](https://github.com/pikasojs/pikaso/workflows/Test/Build/Publish/badge.svg)
@@ -12,6 +6,14 @@ Seamless, headless and fully-tested HTML5 canvas library that provides a couple 
 [![quality](https://app.codacy.com/project/badge/Grade/f16b7c57dbbd4cdfa02b05f5ca04750a)](https://www.codacy.com/gh/pikasojs/pikaso/dashboard)
 [![coverage](https://app.codacy.com/project/badge/Coverage/f16b7c57dbbd4cdfa02b05f5ca04750a)](https://www.codacy.com/gh/pikasojs/pikaso/dashboard)
 
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/334716/158897748-f5cd569b-64b6-4551-be30-2d020b9efbde.svg" />
+</div>
+
+# Pikaso
+Seamless, headless and fully-tested HTML5 canvas library that provides a couple of high level APIs
+
+![2](https://user-images.githubusercontent.com/334716/158895397-e23b5d01-fd63-4db4-8f5d-174d9ddcac33.gif)
 
 ### Pikaso vs. Konva
 [Konva](https://konvajs.org/docs/index.html) is a great HTML5 Canvas TypeScript framework that extends the 2d context by enabling canvas interactivity for desktop and mobile applications.  
