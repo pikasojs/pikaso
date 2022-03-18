@@ -1,17 +1,33 @@
 
-![Language](https://badgen.net/badge/icon/typescript?icon=typescript&label=Language)
-![Test, Build and Publish](https://github.com/pikasojs/pikaso/workflows/Test/Build/Publish/badge.svg)
-![npm](https://badgen.net/npm/v/pikaso)
-![bundle](https://badgen.net/bundlephobia/minzip/pikaso)
-[![quality](https://app.codacy.com/project/badge/Grade/f16b7c57dbbd4cdfa02b05f5ca04750a)](https://www.codacy.com/gh/pikasojs/pikaso/dashboard)
-[![coverage](https://app.codacy.com/project/badge/Coverage/f16b7c57dbbd4cdfa02b05f5ca04750a)](https://www.codacy.com/gh/pikasojs/pikaso/dashboard)
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/334716/158897748-f5cd569b-64b6-4551-be30-2d020b9efbde.svg" />
+  
+  <h3>Pikaso</h3>
+  <p>Seamless, Fully-typed and Fully-tested HTML5 Canvas Library</p>
+  <a href="https://pikaso.app"><strong>Learn more »</strong></a>
+  <br />
+  <br />
+  
+  <a href="https://pikaso.app">Website</a> ·
+  <a href="https://pikaso.app/api/classes/Pikaso.html">API Documentation</a> ·
+  <a href="https://github.com/pikasojs/pikaso/issues">Issues</a> . 
+  <a href="https://github.com/pikasojs/pikaso/discussions">Discussion</a>
+  
+  <br />
+  <br />
+  
+  ![Language](https://badgen.net/badge/icon/typescript?icon=typescript&label=Language)
+  ![Test, Build and Publish](https://github.com/pikasojs/pikaso/workflows/Test/Build/Publish/badge.svg)
+  ![npm](https://badgen.net/npm/v/pikaso)
+  ![bundle](https://badgen.net/bundlephobia/minzip/pikaso)
+  [![quality](https://app.codacy.com/project/badge/Grade/f16b7c57dbbd4cdfa02b05f5ca04750a)](https://www.codacy.com/gh/pikasojs/pikaso/dashboard)
+  [![coverage](https://app.codacy.com/project/badge/Coverage/f16b7c57dbbd4cdfa02b05f5ca04750a)](https://www.codacy.com/gh/pikasojs/pikaso/dashboard) 
+  <br />
+  <br />
 </div>
 
-# Pikaso
-Seamless, headless and fully-tested HTML5 canvas library that provides a couple of high level APIs
+
 
 ![2](https://user-images.githubusercontent.com/334716/158895397-e23b5d01-fd63-4db4-8f5d-174d9ddcac33.gif)
 
