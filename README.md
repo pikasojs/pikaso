@@ -31,17 +31,6 @@
 
 ![2](https://user-images.githubusercontent.com/334716/158895397-e23b5d01-fd63-4db4-8f5d-174d9ddcac33.gif)
 
-### Pikaso vs. Konva
-[Konva](https://konvajs.org/docs/index.html) is a great HTML5 Canvas TypeScript framework that extends the 2d context by enabling canvas interactivity for desktop and mobile applications.  
-
-Pikaso is built on top of Konva to provide a couple of advanced features that Konva doesn't support out of the box.
-
-| Library |  |
-| - | - |
-| HTML5 Canvas | Provides low level APIs to draw graphics |
-| Konva | Provides Shapes, Dragging, Styling, Events, Transformation and Filters features to HTML5 canvas  |
-| Pikaso | Adds a lot of Simplicity and provides Free style and Shape Drawing, Advanced Shapes and Groups, State Management (Undo/Redo/Reset), JSON Import/Export, Text Editing, Cropping, Rotation, Transformation, Event Manager, Snap to Grid, Advanced Transformation and Selection, Flipping, Background Image and Background Overlay management, Filter Management to Konva |
-
 ## Install   
 
 #### NPM
@@ -117,6 +106,18 @@ https://github.com/pikasojs/pikaso-react-hook
 [Vue 3 Setup](https://codesandbox.io/s/vue3-example-o3cig)   
 [All Demos](https://pikaso.app)
 
+  
+### Pikaso vs. Konva
+[Konva](https://konvajs.org/docs/index.html) is a great HTML5 Canvas TypeScript framework that extends the 2d context by enabling canvas interactivity for desktop and mobile applications.  
+
+Pikaso is built on top of Konva to provide a couple of advanced features that Konva doesn't support out of the box.
+
+| Library |  |
+| - | - |
+| HTML5 Canvas | Provides low level APIs to draw graphics |
+| Konva | Provides Shapes, Dragging, Styling, Events, Transformation and Filters features to HTML5 canvas  |
+| Pikaso | Adds a lot of Simplicity and provides Free style and Shape Drawing, Advanced Shapes and Groups, State Management (Undo/Redo/Reset), JSON Import/Export, Text Editing, Cropping, Rotation, Transformation, Event Manager, Snap to Grid, Advanced Transformation and Selection, Flipping, Background Image and Background Overlay management, Filter Management to Konva |
+  
 ## Contributors
 [![](https://opencollective.com/pikaso/contributors.svg?width=890&button=false)](https://github.com/pikasojs/pikaso/graphs/contributors)
 
