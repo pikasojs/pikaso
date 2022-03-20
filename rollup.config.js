@@ -83,7 +83,7 @@ export default [
       file: pkg.unpkg,
       format: 'iife',
       freeze: false,
-      sourceMap: true
+      sourcemap: true
     }
   }
 ]
