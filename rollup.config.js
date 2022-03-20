@@ -1,10 +1,17 @@
+import path from 'path'
+
 import typescript from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { terser } from 'rollup-plugin-terser'
 import ignore from 'rollup-plugin-ignore'
+import inject from '@rollup/plugin-inject'
 
 import pkg from './package.json'
+
+const banner = `/* Pikaso v${pkg.version} by [${
+  pkg.author
+}] * ${new Date().toDateString()} */`
 
 export default [
   {
@@ -18,11 +25,16 @@ export default [
         declaration: true,
         outDir: 'esm',
         declarationDir: 'esm'
-      })
+      }),
+      inject({
+        global: path.resolve('./build/global')
+      }),
+      terser()
     ],
     input: 'src/index.all.ts',
     preserveModules: false,
     output: {
+      banner,
       dir: 'esm',
       format: 'esm'
     }
@@ -38,10 +50,15 @@ export default [
         declaration: true,
         outDir: 'lib',
         declarationDir: 'lib'
-      })
+      }),
+      inject({
+        global: path.resolve('./build/global')
+      }),
+      terser()
     ],
     input: 'src/index.all.ts',
     output: {
+      banner,
       dir: 'lib',
       format: 'cjs',
       exports: 'named'
@@ -55,6 +72,9 @@ export default [
         exclude: '/node_modules/'
       }),
       typescript(),
+      inject({
+        global: path.resolve('./build/global')
+      }),
       terser()
     ],
     input: 'src/index.ts',
@@ -62,8 +82,8 @@ export default [
       name: 'Pikaso',
       file: pkg.unpkg,
       format: 'iife',
-      sourcemap: false,
-      freeze: false
+      freeze: false,
+      sourceMap: true
     }
   }
 ]
