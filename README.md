@@ -104,6 +104,7 @@ https://github.com/pikasojs/pikaso-react-hook
 ## Demos
 [React Setup](https://codesandbox.io/s/pikaso-react-hook-example-i0uwg)   
 [Vue 3 Setup](https://codesandbox.io/s/vue3-example-o3cig)   
+[Svelte Setup](https://svelte.dev/repl/b3e372de4b404f67b70ce047623f0efc?version=3.46.4)    
 [All Demos](https://pikaso.app)
 
   
