@@ -4,7 +4,7 @@ import { Board } from '../../Board'
 import { Tag } from '../../Tag'
 import { ShapeModel } from '../../shape/ShapeModel'
 
-import { IShape, IDrawableShape, Point } from '../../types'
+import { IShape, IDrawableShape, Point, DrawType } from '../../types'
 
 /**
  * This is an abstract class that Shapes have to extend that to insert or
@@ -71,11 +71,14 @@ export abstract class ShapeDrawer<
    * @param board The [[Board]]
    * @param drawType The type of [[string | Drawing]]
    */
-  constructor(board: Board, drawType: string) {
+  constructor(board: Board, drawType: DrawType) {
     this.board = board
     this.drawType = drawType
 
-    if (this.board.settings.measurement) {
+    if (
+      [DrawType.Pencil].includes(drawType) === false &&
+      this.board.settings.measurement
+    ) {
       this.dimensionsTag = new Tag(this.board)
     }
 

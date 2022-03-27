@@ -60,9 +60,6 @@ export class SvgDrawer extends ShapeDrawer<Konva.Path, Konva.PathConfig> {
       return
     }
 
-    // When drawing a svg shape, hide the dimensions tag
-    this.dimensionsTag?.hide()
-
     this.createShape({
       x: this.startPoint.x,
       y: this.startPoint.y,
@@ -85,11 +82,12 @@ export class SvgDrawer extends ShapeDrawer<Konva.Path, Konva.PathConfig> {
 
     const point = this.board.stage.getPointerPosition()!
     const distance = getPointsDistance(point, this.getShapePosition())
+    const shrink = 50
 
     this.node.setAttrs({
       x: point.x - this.node.width(),
-      scaleX: distance / 10,
-      scaleY: distance / 10
+      scaleX: distance / shrink,
+      scaleY: distance / shrink
     })
   }
 }

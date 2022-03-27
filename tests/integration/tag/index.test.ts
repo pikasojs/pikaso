@@ -17,7 +17,7 @@ describe('Tag Measure', () => {
       node => node.className === 'Label'
     )
 
-    expect(labels.length).toBe(11)
+    expect(labels.length).toBe(10)
   })
 
   it('should show measure tag when select a shape', () => {
@@ -40,8 +40,8 @@ describe('Tag Measure', () => {
 
     shape.select()
     expect(label.attrs).toMatchObject({
-      x: 142.5,
-      y: 168
+      x: 143,
+      y: 160
     })
 
     shape.deselect()

@@ -78,6 +78,10 @@ export class Tag {
    * Displays the tag node
    */
   public show(): void {
+    if (this.node.isVisible()) {
+      return
+    }
+
     this.node.clearCache()
     this.node.show()
   }
@@ -86,6 +90,10 @@ export class Tag {
    * Hides the tag node
    */
   public hide(): void {
+    if (this.node.isVisible() === false) {
+      return
+    }
+
     this.node.hide()
     this.node.cache()
   }
@@ -103,8 +111,17 @@ export class Tag {
       return
     }
 
-    const rect = node.getClientRect()
     const margin = this.board.settings.measurement.margin!
+    const clientRect = node.getClientRect({
+      skipShadow: true
+    })
+
+    const rect = {
+      x: node.x(),
+      y: node.y(),
+      width: node.width() || clientRect.width,
+      height: node.height() || clientRect.height
+    }
 
     this.text = `${rect.width.toFixed(0)} × ${rect.height.toFixed(0)}`
 
