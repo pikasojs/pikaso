@@ -73,5 +73,17 @@ export const defaultSettings: Omit<Settings, 'container' | 'width' | 'height'> =
       keyboard: {
         enabled: true
       }
+    },
+    measurement: {
+      margin: 10,
+      background: {
+        fill: '#87ceeb',
+        cornerRadius: 5
+      },
+      text: {
+        padding: 3,
+        fill: '#fff',
+        fontSize: 13
+      }
     }
   }

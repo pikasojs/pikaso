@@ -43,6 +43,13 @@ export declare interface OptionalSettings {
       enabled: boolean
     }
   }>
+  measurement: Partial<
+    Nullable<{
+      margin: number
+      background: Konva.TagConfig
+      text: Konva.TextConfig
+    }>
+  >
 }
 
 export declare type Settings = Partial<OptionalSettings> & RequiredSettings

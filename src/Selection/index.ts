@@ -2,6 +2,7 @@ import Konva from 'konva'
 
 import { Board } from '../Board'
 import { Filter } from '../Filter'
+import { Tag } from '../Tag'
 import { LabelModel } from '../shape/models/LabelModel'
 import { ShapeModel } from '../shape/ShapeModel'
 
@@ -34,6 +35,11 @@ export class Selection {
   private zone: Konva.Rect
 
   /**
+   * Represents the selection dimensions
+   */
+  private dimensionsTag: Tag | undefined
+
+  /**
    * Represents the start point of selection zone rectangle
    */
   private startPointerPosition: Point
@@ -45,6 +51,10 @@ export class Selection {
 
     this.createZone()
     this.createTransformer()
+
+    if (this.board.settings.measurement) {
+      this.dimensionsTag = new Tag(this.board)
+    }
 
     this.board.stage.on('mousedown touchstart', this.onDragZoneStart.bind(this))
     this.board.stage.on('mousemove touchmove', this.onDragZoneMove.bind(this))
@@ -197,12 +207,15 @@ export class Selection {
       settings
     )
 
+    this.transformer.setAttrs(attrs).nodes(shapes.map(shape => shape.node))
+    this.dimensionsTag?.measure(this.transformer)
+
     this.transformer.show()
     this.transformer.moveToTop()
-    this.transformer.setAttrs(attrs).nodes(shapes.map(shape => shape.node))
 
     if (shapes.length === 0) {
       this.transformer.hide()
+      this.dimensionsTag?.hide()
     }
 
     this.board.events.emit('selection:change', {
@@ -389,6 +402,9 @@ export class Selection {
      * Triggers when the client starts dragging the transformer
      */
     this.transformer.on('dragstart', () => {
+      this.transformer.hide()
+      this.dimensionsTag?.hide()
+
       this.board.history.create(
         this.board.layer,
         this.list.map(shape => shape.node)
@@ -414,6 +430,9 @@ export class Selection {
      * Triggers when dragging finishes
      */
     this.transformer.on('dragend', () => {
+      this.transformer.show()
+      this.dimensionsTag?.measure(this.transformer)
+
       this.board.events.emit('selection:dragend', {
         shapes: this.list
       })
@@ -442,6 +461,8 @@ export class Selection {
      * Triggers when the client transforming the transformer
      */
     this.transformer.on('transform', () => {
+      this.dimensionsTag?.measure(this.transformer)
+
       this.board.events.emit('selection:transform', {
         shapes: this.list
       })

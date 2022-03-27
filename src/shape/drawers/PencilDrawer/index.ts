@@ -50,6 +50,9 @@ export class PencilDrawer extends ShapeDrawer<Konva.Line, Konva.LineConfig> {
       return
     }
 
+    // Hide the dimensions tag on freestyle drawings
+    this.dimensionsTag?.hide()
+
     this.createShape({
       globalCompositeOperation: 'source-over',
       points: [this.startPoint.x, this.startPoint.y],

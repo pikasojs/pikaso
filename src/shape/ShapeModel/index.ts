@@ -398,20 +398,16 @@ export abstract class ShapeModel<
    * Updates attributes of the shape
    *
    * @param attributes The list of attributes
-   * @param options The options of updading attributes
    */
   public update(attributes: Partial<P>) {
     this.board.history.create(this.board.layer, this.node)
     this.node.setAttrs(attributes)
-
-    this.board.draw()
   }
 
   /**
    * Updates attributes of the shape with animation effect
    *
    * @param attributes The list of attributes
-   * @param options The options of updading attributes
    */
   public to(
     attributes: Partial<P> & { duration: number } & Partial<{
@@ -421,8 +417,6 @@ export abstract class ShapeModel<
   ) {
     this.board.history.create(this.board.layer, this.node)
     this.node.to(attributes)
-
-    this.board.draw()
   }
 
   /**

@@ -1,6 +1,7 @@
 import Konva from 'konva'
 
 import { Board } from '../../Board'
+import { Tag } from '../../Tag'
 import { ShapeModel } from '../../shape/ShapeModel'
 
 import { IShape, IDrawableShape, Point } from '../../types'
@@ -49,6 +50,11 @@ export abstract class ShapeDrawer<
    */
   protected readonly board: Board
 
+  /**
+   * Represents the drawing shape dimensions
+   */
+  protected dimensionsTag: Tag | undefined
+
   /***
    * Reperesents [[string | Draw Types]]
    */
@@ -68,6 +74,10 @@ export abstract class ShapeDrawer<
   constructor(board: Board, drawType: string) {
     this.board = board
     this.drawType = drawType
+
+    if (this.board.settings.measurement) {
+      this.dimensionsTag = new Tag(this.board)
+    }
 
     this.onStartDrawing = this.onStartDrawing.bind(this)
     this.onFinishDrawing = this.onFinishDrawing.bind(this)
@@ -129,6 +139,7 @@ export abstract class ShapeDrawer<
 
     this.board.setActiveDrawing(null)
     this.board.stage.container().style.cursor = 'inherit'
+    this.dimensionsTag?.hide()
 
     this.board.stage.off('mousedown touchstart', this.onStartDrawing)
     this.board.stage.off('mousemove touchmove', this.onDrawing)
@@ -158,6 +169,7 @@ export abstract class ShapeDrawer<
    */
   protected onStartDrawing() {
     const { x, y } = this.board.stage.getPointerPosition()!
+
     this.startPoint = { x, y }
   }
 
@@ -167,6 +179,7 @@ export abstract class ShapeDrawer<
   protected onDrawing(e: Konva.KonvaEventObject<MouseEvent>) {
     if (this.isDrawing) {
       this.board.stage.container().style.cursor = 'crosshair'
+      this.dimensionsTag?.measure(this.node)
     }
   }
 
@@ -181,8 +194,7 @@ export abstract class ShapeDrawer<
       this.board.selection.find(shape => shape.node === this.node)
     }
 
-    this.board.setActiveDrawing(null)
-    this.node = null
+    this.stopDrawing()
   }
 
   /**
