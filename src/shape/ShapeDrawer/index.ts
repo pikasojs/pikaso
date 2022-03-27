@@ -4,7 +4,13 @@ import { Board } from '../../Board'
 import { Tag } from '../../Tag'
 import { ShapeModel } from '../../shape/ShapeModel'
 
-import { IShape, IDrawableShape, Point, DrawType } from '../../types'
+import {
+  IShape,
+  IDrawableShape,
+  Point,
+  DrawType,
+  DrawingOptions
+} from '../../types'
 
 /**
  * This is an abstract class that Shapes have to extend that to insert or
@@ -70,15 +76,13 @@ export abstract class ShapeDrawer<
    *
    * @param board The [[Board]]
    * @param drawType The type of [[string | Drawing]]
+   * @param options The drawing possible options
    */
-  constructor(board: Board, drawType: DrawType) {
+  constructor(board: Board, drawType: string, options?: DrawingOptions) {
     this.board = board
     this.drawType = drawType
 
-    if (
-      [DrawType.Pencil].includes(drawType) === false &&
-      this.board.settings.measurement
-    ) {
+    if (this.board.settings.measurement && options?.measurement !== false) {
       this.dimensionsTag = new Tag(this.board)
     }
 
@@ -182,7 +186,10 @@ export abstract class ShapeDrawer<
   protected onDrawing(e: Konva.KonvaEventObject<MouseEvent>) {
     if (this.isDrawing) {
       this.board.stage.container().style.cursor = 'crosshair'
-      this.dimensionsTag?.measure(this.node)
+
+      if (this.node && this.dimensionsTag) {
+        this.dimensionsTag.measure(this.node, this.node.getClientRect())
+      }
     }
   }
 

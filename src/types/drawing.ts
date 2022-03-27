@@ -13,6 +13,10 @@ export enum DrawType {
   Triangle = 'Triangle'
 }
 
+export interface DrawingOptions {
+  measurement?: boolean
+}
+
 export declare interface IDrawableShape {
   draw: (config: Partial<Konva.ShapeConfig>) => void
   stopDrawing: () => void

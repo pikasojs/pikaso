@@ -19,7 +19,9 @@ export class PencilDrawer extends ShapeDrawer<Konva.Line, Konva.LineConfig> {
    * @param board The [[Board]]
    */
   constructor(board: Board) {
-    super(board, DrawType.Pencil)
+    super(board, DrawType.Pencil, {
+      measurement: false
+    })
   }
 
   /**
@@ -69,5 +71,16 @@ export class PencilDrawer extends ShapeDrawer<Konva.Line, Konva.LineConfig> {
 
     const point = this.board.stage.getPointerPosition()!
     this.node.points(this.node.points().concat([point.x, point.y]))
+  }
+
+  /**
+   * @override
+   * @inheritdoc
+   */
+  protected onFinishDrawing(): void {
+    super.onFinishDrawing()
+
+    // start another pencil drawing once the current one is finished
+    this.draw(this.config)
   }
 }

@@ -1,7 +1,7 @@
 import Konva from 'konva'
 
 import { Board } from '../Board'
-import { Nullable, Point } from '../types'
+import { Dimensions, Nullable, Point } from '../types'
 
 /**
  * This is a light implementation of [[LabelModel]] for internal use
@@ -105,31 +105,32 @@ export class Tag {
    * @param node The target node
    */
   public measure(
-    node: Nullable<Konva.Shape | Konva.Group | Konva.Transformer>
+    node: Nullable<Konva.Shape | Konva.Group | Konva.Transformer>,
+    rect?: Dimensions & Point
   ): void {
     if (!node || !this.board.settings.measurement) {
       return
     }
 
-    const margin = this.board.settings.measurement.margin!
-    const clientRect = node.getClientRect({
-      skipShadow: true
-    })
+    const margin = this.board.settings.measurement.margin as number
 
-    const rect = {
+    const containerRect = rect ?? {
       x: node.x(),
       y: node.y(),
-      width: node.width() || clientRect.width,
-      height: node.height() || clientRect.height
+      width: node.width(),
+      height: node.height()
     }
 
-    this.text = `${rect.width.toFixed(0)} × ${rect.height.toFixed(0)}`
+    this.text = `${containerRect.width.toFixed(
+      0
+    )} × ${containerRect.height.toFixed(0)}`
 
-    let x = rect.x + rect.width / 2 - this.node.width() / 2
-    let y = rect.y + rect.height + margin
+    let x = containerRect.x + containerRect.width / 2 - this.node.width() / 2
+    let y = containerRect.y + containerRect.height + margin
 
     if (y + this.node.height() > this.board.getDimensions().height) {
-      y = rect.y + rect.height - this.node.height() * 2 - margin
+      y =
+        containerRect.y + containerRect.height - this.node.height() * 2 - margin
     }
 
     this.position = {
