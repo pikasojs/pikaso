@@ -1,8 +1,8 @@
 {
   "name": "pikaso",
   "version": "2.4.1",
-  "description": "Seamless, headless and fully-tested library for Canvas",
-  "author": "Ramin Mousavi <ramin.mousavy@gmail.com> (http://github.com/raminious)",
+  "description": "Seamless, Fully-typed and Fully-tested HTML5 Canvas Library",
+  "author": "Ramin Mousavi <ramin@pikaso.app> (http://github.com/raminious)",
   "license": "MIT",
   "scripts": {
     "typecheck": "tsc",
@@ -85,7 +85,7 @@
   "bugs": {
     "url": "https://github.com/pikasojs/pikaso/issues"
   },
-  "homepage": "https://github.com/pikasojs/pikaso",
+  "homepage": "https://pikaso.app",
   "readmeFilename": "README.md",
   "repository": {
     "type": "git",
