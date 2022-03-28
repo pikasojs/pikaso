@@ -89,6 +89,7 @@ https://github.com/pikasojs/pikaso-react-hook
 - [Flipping  ](https://pikaso.app/#/core/flip)
 - [Interactive Selection Management](https://pikaso.app/#/core/selection)
 - [Snap to Grid](https://pikaso.app/#/core/snap-grid)
+- [Measurement Tag](https://pikaso.app/#/core/measurement-tag)
 - [Export to PNG and JPEG](https://pikaso.app/#/core/import-export)
 - [Import/Export JSON](https://pikaso.app/#/core/import-export)
 - [Filters](https://pikaso.app/#/core/filters)
