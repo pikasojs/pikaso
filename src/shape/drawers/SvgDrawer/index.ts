@@ -7,13 +7,18 @@ import { Board } from '../../../Board'
 import { ShapeDrawer } from '../../ShapeDrawer'
 import { SvgModel } from '../../models/SvgModel'
 
-import { DrawType } from '../../../types'
+import { DrawType, Point, Dimensions } from '../../../types'
 
 export class SvgDrawer extends ShapeDrawer<Konva.Path, Konva.PathConfig> {
   /**
    * Demonstrates the svg node that is being created
    */
   public node: Konva.Path
+
+  /**
+   * The initial dimensions of the SVG path
+   */
+  private initialDimensions: Dimensions | undefined
 
   /**
    * Creates a new svg builder component
@@ -60,17 +65,19 @@ export class SvgDrawer extends ShapeDrawer<Konva.Path, Konva.PathConfig> {
       return
     }
 
-    // When drawing a svg shape, hide the dimensions tag
-    this.dimensionsTag?.hide()
-
     this.createShape({
       x: this.startPoint.x,
       y: this.startPoint.y,
-      radius: 0,
-      scaleX: 0,
-      scaleY: 0,
+      scaleX: 0.001,
+      scaleY: 0.001,
       ...this.config
     })
+
+    /**
+     * Keep track of the initial size based on 0.001 scale to be able
+     * to calculate the current scale based on the mouse distance
+     */
+    this.initialDimensions = this.node.getClientRect()
   }
 
   /**
@@ -83,13 +90,28 @@ export class SvgDrawer extends ShapeDrawer<Konva.Path, Konva.PathConfig> {
       return
     }
 
-    const point = this.board.stage.getPointerPosition()!
+    const initialDimensions = this.initialDimensions as Dimensions
+    const point = this.board.stage.getPointerPosition() as Point
     const distance = getPointsDistance(point, this.getShapePosition())
 
+    if (!distance) {
+      return
+    }
+
     this.node.setAttrs({
-      x: point.x - this.node.width(),
-      scaleX: distance / 10,
-      scaleY: distance / 10
+      x: point.x,
+      scaleX: (distance / initialDimensions.width) * 0.001,
+      scaleY: (distance / initialDimensions.height) * 0.001
     })
+  }
+
+  /**
+   * @override
+   * @inheritdoc
+   */
+  protected onFinishDrawing(): void {
+    super.onFinishDrawing()
+
+    this.initialDimensions = undefined
   }
 }

@@ -106,6 +106,10 @@ export class Import {
             instance = this.shapes.rect.insert(json.attrs as Konva.RectConfig)
             break
 
+          case 'Path':
+            instance = this.shapes.svg.insert(json.attrs as Konva.PathConfig)
+            break
+
           case 'Group':
             instance = this.board.groups.find(json.attrs.name)?.container
             break

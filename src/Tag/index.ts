@@ -1,7 +1,8 @@
 import Konva from 'konva'
 
 import { Board } from '../Board'
-import { Nullable, Point } from '../types'
+import { defaultTransformerSettings } from '../defaultSettings'
+import { Dimensions, Nullable, Point } from '../types'
 
 /**
  * This is a light implementation of [[LabelModel]] for internal use
@@ -78,6 +79,10 @@ export class Tag {
    * Displays the tag node
    */
   public show(): void {
+    if (this.node.isVisible()) {
+      return
+    }
+
     this.node.clearCache()
     this.node.show()
   }
@@ -86,6 +91,10 @@ export class Tag {
    * Hides the tag node
    */
   public hide(): void {
+    if (this.node.isVisible() === false) {
+      return
+    }
+
     this.node.hide()
     this.node.cache()
   }
@@ -97,22 +106,36 @@ export class Tag {
    * @param node The target node
    */
   public measure(
-    node: Nullable<Konva.Shape | Konva.Group | Konva.Transformer>
+    node: Nullable<Konva.Shape | Konva.Group | Konva.Transformer>,
+    rect?: Dimensions & Point
   ): void {
     if (!node || !this.board.settings.measurement) {
       return
     }
 
-    const rect = node.getClientRect()
-    const margin = this.board.settings.measurement.margin!
+    const margin = Math.max(
+      this.board.settings.measurement.margin ?? 0,
+      this.board.settings.transformer?.anchorSize ?? 0,
+      defaultTransformerSettings.anchorSize ?? 0
+    )
 
-    this.text = `${rect.width.toFixed(0)} × ${rect.height.toFixed(0)}`
+    const containerRect = rect ?? {
+      x: node.x(),
+      y: node.y(),
+      width: node.width(),
+      height: node.height()
+    }
 
-    let x = rect.x + rect.width / 2 - this.node.width() / 2
-    let y = rect.y + rect.height + margin
+    this.text = `${containerRect.width.toFixed(
+      0
+    )} × ${containerRect.height.toFixed(0)}`
+
+    let x = containerRect.x + containerRect.width / 2 - this.node.width() / 2
+    let y = containerRect.y + containerRect.height + margin
 
     if (y + this.node.height() > this.board.getDimensions().height) {
-      y = rect.y + rect.height - this.node.height() * 2 - margin
+      y =
+        containerRect.y + containerRect.height - this.node.height() * 2 - margin
     }
 
     this.position = {

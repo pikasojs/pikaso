@@ -38,7 +38,7 @@ describe('Shapes -> Pencil', () => {
     })
   })
 
-  it('should select the free drawn line', () => {
+  it('should continue free drawing after finishing the previous drawing', () => {
     cy.getEditor().then(editor => {
       editor.shapes.pencil.draw({
         stroke: 'red',
@@ -49,7 +49,7 @@ describe('Shapes -> Pencil', () => {
         cy.mouseTrigger('mousedown', [200, 200], {
           delay: 1000
         }).then(() => {
-          expect(editor.selection.transformer.attrs.visible).equal(true)
+          expect(editor.selection.transformer.attrs.visible).equal(false)
         })
       })
     })
