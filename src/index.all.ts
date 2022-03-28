@@ -16,6 +16,7 @@ export { Rotation } from './Rotation'
 export { Selection } from './Selection'
 export { Background } from './Background'
 export { SnapGrid } from './SnapGrid'
+export { Tag } from './Tag'
 
 export { Groups } from './grouping/Groups'
 export { GroupsManager } from './grouping/GroupsManager'
