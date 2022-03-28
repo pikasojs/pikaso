@@ -1,6 +1,7 @@
 import Konva from 'konva'
 
 import { Board } from '../Board'
+import { defaultTransformerSettings } from '../defaultSettings'
 import { Dimensions, Nullable, Point } from '../types'
 
 /**
@@ -112,7 +113,11 @@ export class Tag {
       return
     }
 
-    const margin = this.board.settings.measurement.margin as number
+    const margin = Math.max(
+      this.board.settings.measurement.margin ?? 0,
+      this.board.settings.transformer?.anchorSize ?? 0,
+      defaultTransformerSettings.anchorSize ?? 0
+    )
 
     const containerRect = rect ?? {
       x: node.x(),

@@ -11,7 +11,9 @@ describe('Tag Measure', () => {
   }
 
   it('should create labels for selection and drawers', () => {
-    const editor = createEditor()
+    const editor = createEditor({
+      measurement: {}
+    })
 
     const labels = editor.board.layer.children!.filter(
       node => node.className === 'Label'
@@ -21,7 +23,9 @@ describe('Tag Measure', () => {
   })
 
   it('should show measure tag when select a shape', () => {
-    const editor = createEditor()
+    const editor = createEditor({
+      measurement: {}
+    })
 
     const shape = editor.shapes.rect.insert(shapeConfig)
 
@@ -32,16 +36,18 @@ describe('Tag Measure', () => {
     expect(label.isVisible()).toBe(true)
   })
 
-  it('should re position tag when there is no space at bottom', () => {
-    const editor = createEditor()
+  it('should reposition tag when there is no space at bottom', () => {
+    const editor = createEditor({
+      measurement: {}
+    })
 
     const shape = editor.shapes.rect.insert(shapeConfig)
     const label = editor.board.layer.children![4] as Konva.Label
 
     shape.select()
     expect(label.attrs).toMatchObject({
-      x: 143,
-      y: 160
+      x: 146,
+      y: 165
     })
 
     shape.deselect()
@@ -56,9 +62,7 @@ describe('Tag Measure', () => {
   })
 
   it('should not display tag when it is disabled', () => {
-    const editor = createEditor({
-      measurement: null
-    })
+    const editor = createEditor()
 
     const shape = editor.shapes.rect.insert(shapeConfig)
     shape.select()
