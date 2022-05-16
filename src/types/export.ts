@@ -27,6 +27,7 @@ export declare interface JsonData {
     children?: Omit<JsonData['shapes'], 'filters'>
     className: string
     group: Nullable<string>
+    zIndex?: number
   }[]
 }
 

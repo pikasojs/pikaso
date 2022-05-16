@@ -23,8 +23,12 @@ export class JsonExport {
    * Exports the current workspace to JSON format
    */
   export(): JsonData {
-    const stage = this.nodeToObject(this.board.stage, ['container', 'children'])
-    const layer = this.nodeToObject(this.board.layer, ['children'])
+    const stage = this.nodeToObject(this.board.stage, [
+      'container',
+      'children',
+      'zIndex'
+    ])
+    const layer = this.nodeToObject(this.board.layer, ['children', 'zIndex'])
 
     const shapes = this.board.activeShapes.map(shape => {
       return {
@@ -92,10 +96,11 @@ export class JsonExport {
     )
 
     return {
-      className: data.className,
+      attrs,
       filters,
-      children: ['Label'].includes(data.className) ? data.children : undefined,
-      attrs
+      className: data.className,
+      ...(!exclude.includes('zIndex') && { zIndex: node.zIndex() }),
+      ...(['Label'].includes(data.className) && { children: data.children })
     }
   }
 }

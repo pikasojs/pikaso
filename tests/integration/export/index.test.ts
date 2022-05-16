@@ -31,20 +31,17 @@ describe('Export', () => {
       stage: {
         className: 'Stage',
         filters: [],
-        children: undefined,
         attrs: { width: image[0], height: image[1], x: 0, y: 0 }
       },
       layer: {
         className: 'Layer',
         filters: [],
-        children: undefined,
         attrs: { x: 0, y: 0, width: image[0], height: image[1] }
       },
       background: {
         image: {
           className: 'Image',
           filters: [],
-          children: undefined,
           group: undefined,
           attrs: {
             url: `http://localhost/${image[0]}x${image[1]}`,
@@ -52,14 +49,15 @@ describe('Export', () => {
             y: 0,
             width: image[0],
             height: image[1]
-          }
+          },
+          zIndex: 0
         },
         overlay: {
           className: 'Rect',
           filters: [],
-          children: undefined,
           group: undefined,
-          attrs: { width: image[0], height: image[1], x: 0, y: 0 }
+          attrs: { width: image[0], height: image[1], x: 0, y: 0 },
+          zIndex: 1
         }
       },
       shapes: [
@@ -88,7 +86,8 @@ describe('Export', () => {
             width: labelConfig.text.width,
             height: 100,
             ...labelConfig.container
-          }
+          },
+          zIndex: 4
         }
       ]
     })

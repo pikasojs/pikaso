@@ -117,6 +117,7 @@ export class Import {
 
         if (instance) {
           instance.group = json.group
+          instance.node.zIndex(json.zIndex ?? 0)
         }
 
         if (
