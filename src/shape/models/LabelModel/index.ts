@@ -6,16 +6,23 @@ import { Board } from '../../../Board'
 import { ShapeModel } from '../../ShapeModel'
 
 import { rotateAroundCenter } from '../../../utils/rotate-around-center'
-import { DrawType, ShapeConfig } from '../../../types'
+import { DrawType, LabelConfig } from '../../../types'
 
 export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
+  /**
+   * The configurations of the label
+   */
+  public config: LabelConfig
+
   /**
    * Represents whether the label is editing (inline edit) or not
    */
   private isEditingEnabled = false
 
-  constructor(board: Board, node: Konva.Label, config: ShapeConfig = {}) {
+  constructor(board: Board, node: Konva.Label, config: LabelConfig = {}) {
     super(board, node, config)
+
+    this.config = config
 
     node.on('transform', this.transform.bind(this))
     node.on('dblclick', this.inlineEdit.bind(this))
@@ -65,7 +72,6 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    * Updates attributes of the label's tag
    *
    * @param attributes The list of attributes
-   * @param options The options of updading attributes
    */
   public updateTag(attributes: Partial<Konva.TagConfig>) {
     this.board.history.create(this.board.layer, this.tagNode)
@@ -76,7 +82,6 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    * Updates attributes of the label's tag
    *
    * @param attributes The list of attributes
-   * @param options The options of updading attributes
    */
   public updateText(attributes: Partial<Konva.TextConfig>) {
     this.board.history.create(this.board.layer, this.textNode)
@@ -91,7 +96,10 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    * to avoid from stretching that
    */
   private transform() {
-    if (this.board.selection.transformer.getActiveAnchor() === 'rotater') {
+    if (
+      this.config.keepScale === false ||
+      this.board.selection.transformer.getActiveAnchor() === 'rotater'
+    ) {
       return
     }
 

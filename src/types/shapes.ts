@@ -39,4 +39,10 @@ export declare interface ShapeConfig {
   history?: boolean
 }
 
-export type RegisterShapesFn<T> = (board: Board) => Omit<T, keyof BaseShapes>
+export declare interface LabelConfig extends ShapeConfig {
+  keepScale?: boolean
+}
+
+export declare type RegisterShapesFn<T> = (
+  board: Board
+) => Omit<T, keyof BaseShapes>

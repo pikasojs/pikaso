@@ -1,9 +1,9 @@
 import Konva from 'konva'
 
 import { Board } from '../../../Board'
-
 import { LabelModel } from '../../models/LabelModel'
 
+import type { LabelConfig } from '../../../types/shapes'
 export class LabelDrawer {
   /**
    * Represents the [[Board]]
@@ -22,29 +22,36 @@ export class LabelDrawer {
   /**
    * Inserts a new label into the board
    *
-   * @param config The configuration of the label
+   * @param configuration The configuration of the label
    */
-  public insert(config: {
+  public insert({
+    container,
+    text,
+    tag,
+    config
+  }: {
     container: Konva.LabelConfig
     text: Konva.TextConfig
     tag?: Konva.TagConfig
+    config?: LabelConfig
   }): LabelModel {
     const label = new Konva.Label({
-      ...config.container,
+      ...container,
       draggable: this.board.settings.selection?.interactive
     })
 
-    const text = new Konva.Text(config.text)
-    const tag = new Konva.Tag(config.tag)
+    const textNode = new Konva.Text(text)
+    const tagNode = new Konva.Tag(tag)
 
-    text.setAttr('height', 'auto')
-
-    label.add(tag).add(text)
+    textNode.setAttr('height', 'auto')
+    label.add(tagNode).add(textNode)
 
     return new LabelModel(this.board, label, {
+      ...config,
       transformer: {
         centeredScaling: false,
-        enabledAnchors: ['middle-left', 'middle-right']
+        enabledAnchors: ['middle-left', 'middle-right'],
+        ...(config?.transformer ?? {})
       }
     })
   }
