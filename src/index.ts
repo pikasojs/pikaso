@@ -31,7 +31,8 @@ import type {
   EventListenerNames,
   ListenerCallback,
   BaseShapes,
-  RegisterShapesFn
+  RegisterShapesFn,
+  BackgroundOptions
 } from './types'
 
 /**
@@ -144,9 +145,10 @@ export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
    * This method is a shortcut to [[Background.setImageFromFile]]
    *
    * @param file The image file
+   * @param options The background options
    */
-  public async loadFromFile(file: File) {
-    await this.board.background.setImageFromFile(file)
+  public async loadFromFile(file: File, options?: Partial<BackgroundOptions>) {
+    await this.board.background.setImageFromFile(file, options)
   }
 
   /**
@@ -154,9 +156,10 @@ export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
    * This method is a shortcut to [[Background.setImageFromUrl]]
    *
    * @param url The image url
+   * @param options The background options
    */
-  public async loadFromUrl(url: string) {
-    await this.board.background.setImageFromUrl(url)
+  public async loadFromUrl(url: string, options?: Partial<BackgroundOptions>) {
+    await this.board.background.setImageFromUrl(url, options)
   }
 
   /**

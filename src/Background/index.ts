@@ -8,6 +8,8 @@ import { Board } from '../Board'
 import { ImageModel } from '../shape/models/ImageModel'
 import { RectModel } from '../shape/models/RectModel'
 
+import type { BackgroundOptions } from '../types'
+
 export class Background {
   /**
    * Represents the background [[Image | image]]
@@ -49,14 +51,14 @@ export class Background {
   }
 
   /**
-   *
+   * Returns background nodes which includes image and overlay
    */
   public get nodes() {
     return [this.image.node, this.overlay.node]
   }
 
   /**
-   *
+   * Returns current position of background
    */
   public getPosition() {
     return {
@@ -66,19 +68,32 @@ export class Background {
   }
 
   /**
+   * Loads the background image from given file
    *
-   * @param file
+   * @param file The image file
+   * @param options The background options
    */
-  public async setImageFromFile(file: File) {
+  public async setImageFromFile(
+    file: File,
+    options?: Partial<BackgroundOptions>
+  ) {
     const url = await imageToDataUrl(file)
 
-    this.setImageFromUrl(url)
+    this.setImageFromUrl(url, options)
   }
 
   /**
+   * Loads the background image from url
    *
+   * @param url The image url
+   * @param options The background options
    */
-  public async setImageFromUrl(url: string) {
+  public async setImageFromUrl(
+    url: string,
+    options: Partial<BackgroundOptions> = {
+      size: 'resize'
+    }
+  ) {
     this.board.history.create(
       this.board.layer,
       [this.board.stage, this.image.node, this.overlay.node],
@@ -87,26 +102,56 @@ export class Background {
 
     const background = await createImageFromUrl(url)
 
-    this.board.stage.setAttrs({
-      width: background.width(),
-      height: background.height()
-    })
+    let width = background.width()
+    let height = background.height()
+
+    const ratios = {
+      width: this.board.stage.width() / width,
+      height: this.board.stage.height() / height
+    }
+
+    if (options.size === 'cover') {
+      const ratio = Math.max(ratios.width, ratios.height)
+      width *= ratio
+      height *= ratio
+    }
+
+    if (options.size === 'contain') {
+      const ratio = Math.min(ratios.width, ratios.height)
+      width *= ratio
+      height *= ratio
+    }
+
+    if (options.size === 'resize') {
+      this.board.stage.setAttrs({
+        width,
+        height
+      })
+    }
+
+    if (options.size === 'stretch') {
+      width = this.board.stage.width()
+      height = this.board.stage.height()
+    }
 
     this.image.node.setAttrs({
-      width: background.width(),
-      height: background.height(),
-      image: background.image()
+      width,
+      height,
+      image: background.image(),
+      x: options.x ?? background.x(),
+      y: options.y ?? background.y()
     })
 
     this.overlay.node.setAttrs({
-      width: background.width(),
-      height: background.height()
+      width,
+      height
     })
   }
 
   /**
+   * Updates color of overlay
    *
-   * @param color
+   * @param color The given color in Hex or RGB
    */
   public fill(color: string) {
     this.board.history.create(this.board.layer, this.overlay.node)
