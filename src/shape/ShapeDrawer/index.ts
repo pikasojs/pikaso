@@ -4,13 +4,7 @@ import { Board } from '../../Board'
 import { Tag } from '../../Tag'
 import { ShapeModel } from '../../shape/ShapeModel'
 
-import {
-  IShape,
-  IDrawableShape,
-  Point,
-  DrawType,
-  DrawingOptions
-} from '../../types'
+import { IShape, IDrawableShape, Point, DrawingOptions } from '../../types'
 
 /**
  * This is an abstract class that Shapes have to extend that to insert or
