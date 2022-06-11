@@ -94,7 +94,7 @@
   },
   "typings": "esm/index.all.d.ts",
   "module": "esm/index.all.js",
-  "main": "lib/index.all.js",
+  "main": "lib/index.node.all.js",
   "unpkg": "umd/pikaso.min.js",
   "sideEffects": false,
   "files": [

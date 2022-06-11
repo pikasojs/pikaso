@@ -56,7 +56,7 @@ export default [
       }),
       terser()
     ],
-    input: 'src/index.all.ts',
+    input: 'src/index.node.all.ts',
     output: {
       banner,
       dir: 'lib',
