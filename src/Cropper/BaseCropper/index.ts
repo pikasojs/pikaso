@@ -2,6 +2,7 @@ import Konva from 'konva'
 
 import { Board } from '../../Board'
 import { defaultSettings } from '../../defaultSettings'
+import { isBrowser } from '../../utils/detect-environment'
 
 import type {
   CircularCropperOptions,
@@ -73,24 +74,26 @@ export abstract class BaseCropper {
    * Returns the array of mouse events and their relevent cursor names
    */
   protected getCursorEvents() {
-    return [
-      {
-        name: 'mouseout',
-        cursor: 'default'
-      },
-      {
-        name: 'mouseover',
-        cursor: 'grab'
-      },
-      {
-        name: 'dragmove',
-        cursor: 'grabbing'
-      },
-      {
-        name: 'dragend',
-        cursor: 'default'
-      }
-    ]
+    return isBrowser()
+      ? [
+          {
+            name: 'mouseout',
+            cursor: 'default'
+          },
+          {
+            name: 'mouseover',
+            cursor: 'grab'
+          },
+          {
+            name: 'dragmove',
+            cursor: 'grabbing'
+          },
+          {
+            name: 'dragend',
+            cursor: 'default'
+          }
+        ]
+      : []
   }
 
   /**

@@ -9,6 +9,8 @@ import { Background } from '../Background'
 
 import { ShapeModel } from '../shape/ShapeModel'
 
+import { isBrowser } from '../utils/detect-environment'
+
 import type { Settings } from '../types'
 
 /**
@@ -31,7 +33,7 @@ export class Board {
   /**
    * The html container element which the editor renders into that
    */
-  public readonly container: HTMLDivElement
+  public readonly container: HTMLDivElement | undefined
 
   /**
    * The settings
@@ -127,33 +129,40 @@ export class Board {
     this.history = history
     this.events = events
 
-    const width = this.settings.width || this.settings.container.clientWidth
-    const height = this.settings.height || this.settings.container.clientHeight
+    const width =
+      this.settings.width ?? this.settings.container?.clientWidth ?? 0
+    const height =
+      this.settings.height ?? this.settings.container?.clientHeight ?? 0
 
     this.stage = new Konva.Stage({
-      container: this.settings.container,
       width,
-      height
-    })
+      height,
+      container: this.settings.container
+    } as Konva.StageConfig)
 
-    // rename class name
-    this.stage.content.className = this.settings.containerClassName!
+    if (this.stage.content) {
+      // rename class name
+      this.stage.content.className = this.settings.containerClassName!
 
-    // set container position to center-center
-    Object.assign(this.stage.content.style, {
-      position: 'relative',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%,-50%)'
-    })
+      // set container position to center-center
+      Object.assign(this.stage.content.style, {
+        position: 'relative',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%,-50%)'
+      })
+    }
 
-    this.stage.on('widthChange', this.rescale.bind(this))
-    this.stage.on('heightChange', this.rescale.bind(this))
+    if (isBrowser()) {
+      this.stage.on('widthChange', this.rescale.bind(this))
+      this.stage.on('heightChange', this.rescale.bind(this))
+    }
 
     // disable context menu
     if (this.settings.disableCanvasContextMenu) {
-      this.settings.container.addEventListener('contextmenu', (e: MouseEvent) =>
-        e.preventDefault()
+      this.settings.container?.addEventListener(
+        'contextmenu',
+        (e: MouseEvent) => e.preventDefault()
       )
     }
 
@@ -248,7 +257,7 @@ export class Board {
   public rescale() {
     const transform = this.getContainerTransform()
 
-    if (this.stage.content.style.transform === transform) {
+    if (!transform || this.stage.content.style.transform === transform) {
       return
     }
 
@@ -289,6 +298,10 @@ export class Board {
    * @returns transform style of the container
    */
   public getContainerTransform() {
+    if (!this.container) {
+      return
+    }
+
     const size = this.getDimensions()
 
     let scale =

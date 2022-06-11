@@ -25,6 +25,7 @@ import { CircleDrawer } from './shape/drawers/CircleDrawer'
 import { EllipseDrawer } from './shape/drawers/EllipseDrawer'
 import { PolygonDrawer } from './shape/drawers/PolygonDrawer'
 import { TriangleDrawer } from './shape/drawers/TriangleDrawer'
+import { isBrowser } from './utils/detect-environment'
 
 import type {
   Settings,
@@ -130,7 +131,7 @@ export default class Pikaso<Shapes extends BaseShapes = BaseShapes> {
    * @public
    */
   constructor(settings: Settings, registerShapes?: RegisterShapesFn<Shapes>) {
-    if (!settings.container) {
+    if (isBrowser() && !settings.container) {
       throw new Error('It needs to have a container element')
     }
 

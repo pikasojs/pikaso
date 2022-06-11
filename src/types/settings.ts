@@ -4,10 +4,8 @@ import { CropperOptions } from './cropper'
 
 import { Nullable } from '.'
 
-export declare interface RequiredSettings {
-  container: HTMLDivElement
-}
-export declare interface OptionalSettings {
+export declare interface BaseSettings {
+  container?: HTMLDivElement
   width: number
   height: number
   disableCanvasContextMenu: boolean
@@ -52,4 +50,4 @@ export declare interface OptionalSettings {
   >
 }
 
-export declare type Settings = Partial<OptionalSettings> & RequiredSettings
+export declare type Settings = Partial<BaseSettings>

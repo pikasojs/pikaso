@@ -4,7 +4,7 @@ import { convertHtmlToText } from '../../../utils/html-to-text'
 
 import { Board } from '../../../Board'
 import { ShapeModel } from '../../ShapeModel'
-
+import { isBrowser, isNode } from '../../../utils/detect-environment'
 import { rotateAroundCenter } from '../../../utils/rotate-around-center'
 import { DrawType, LabelConfig } from '../../../types'
 
@@ -118,7 +118,7 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
    * @param e The [[MouseEvent | Mouse Event]
    */
   private inlineEdit(e: Konva.KonvaEventObject<MouseEvent>) {
-    if (this.node.isCached()) {
+    if (isNode() || this.node.isCached()) {
       return
     }
 
@@ -138,10 +138,12 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
 
     const input = document.createElement('span')
     this.board.container
-      .getElementsByClassName(this.board.settings.containerClassName!)[0]
-      .append(input)
+      ?.getElementsByClassName(this.board.settings.containerClassName!)[0]
+      ?.append(input)
 
-    this.setInputFocus(input)
+    if (isBrowser()) {
+      this.setInputFocus(input)
+    }
 
     input.setAttribute('contenteditable', '')
     input.setAttribute('role', 'textbox')

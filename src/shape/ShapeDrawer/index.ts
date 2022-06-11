@@ -3,6 +3,7 @@ import Konva from 'konva'
 import { Board } from '../../Board'
 import { Tag } from '../../Tag'
 import { ShapeModel } from '../../shape/ShapeModel'
+import { isBrowser, isNode } from '../../utils/detect-environment'
 
 import { IShape, IDrawableShape, Point, DrawingOptions } from '../../types'
 
@@ -116,6 +117,10 @@ export abstract class ShapeDrawer<
    * @override
    */
   public draw(config: Partial<P>) {
+    if (isNode()) {
+      return
+    }
+
     this.config = config
 
     // stop previous drawing if exists
@@ -127,15 +132,21 @@ export abstract class ShapeDrawer<
     this.board.stage.on('mousemove touchmove', this.onDrawing)
     this.board.stage.on('mouseup touchend', this.onFinishDrawing)
 
-    window.addEventListener('mouseup', this.onFinishDrawing)
-    window.addEventListener('touchend', this.onFinishDrawing)
-    window.addEventListener('keydown', this.onKeyDown)
+    if (isBrowser()) {
+      window.addEventListener('mouseup', this.onFinishDrawing)
+      window.addEventListener('touchend', this.onFinishDrawing)
+      window.addEventListener('keydown', this.onKeyDown)
+    }
   }
 
   /**
    * Stops drawing mode
    */
   public stopDrawing() {
+    if (isNode()) {
+      return
+    }
+
     this.node = null
 
     this.board.setActiveDrawing(null)
@@ -178,6 +189,10 @@ export abstract class ShapeDrawer<
    * Continues drawing the shape based on the mouse move points
    */
   protected onDrawing(e: Konva.KonvaEventObject<MouseEvent>) {
+    if (isNode()) {
+      return
+    }
+
     if (this.isDrawing) {
       this.board.stage.container().style.cursor = 'crosshair'
 
@@ -191,6 +206,10 @@ export abstract class ShapeDrawer<
    * Triggers on mouse up and finalizes the drawing
    */
   protected onFinishDrawing() {
+    if (isNode()) {
+      return
+    }
+
     this.board.stage.container().style.cursor = 'inherit'
 
     // auto select the created shape when drawing finishes

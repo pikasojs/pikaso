@@ -1,9 +1,9 @@
 import Konva from 'konva'
 
 import { omit } from '../utils/omit'
+import { isBrowser } from '../utils/detect-environment'
 
 import type { Events } from '../Events'
-
 import type {
   HistoryNode,
   HistoryNodeWithChildren,
@@ -42,7 +42,9 @@ export class History {
     this.settings = settings
     this.events = events
 
-    window.addEventListener('keydown', this.onKeyDown.bind(this))
+    if (isBrowser()) {
+      window.addEventListener('keydown', this.onKeyDown.bind(this))
+    }
   }
 
   /**

@@ -11,8 +11,10 @@ import { FixedRectangleCropper } from './FixedRectangleCropper'
 import { FlexibleCircularCropper } from './FlexibleCircularCropper'
 import { FlexibleRectangleCropper } from './FlexibleRectangleCropper'
 
-import type { CropOptions, CropperOptions, Dimensions, Point } from '../types'
 import { defaultSettings } from '../defaultSettings'
+import { isBrowser } from '../utils/detect-environment'
+
+import type { CropOptions, CropperOptions, Dimensions, Point } from '../types'
 
 type FixedCropper = FixedCircularCropper | FixedRectangleCropper
 type FlexibleCropper = FlexibleCircularCropper | FlexibleRectangleCropper
@@ -134,8 +136,9 @@ export class Cropper {
       }
     })
 
-    this.board.draw()
-    this.board.stage.container().style.cursor = 'default'
+    if (isBrowser()) {
+      this.board.stage.container().style.cursor = 'default'
+    }
   }
 
   /**
