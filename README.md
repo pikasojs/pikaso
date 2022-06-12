@@ -70,6 +70,13 @@ const editor = new Pikaso({
 This is possible to directly import the library or reuse the official hook   
 https://github.com/pikasojs/pikaso-react-hook
 
+## NodeJs
+Pikaso comes with support for NodeJs out of the box.   
+Using Pikaso in a NodeJs environment is similar to using it in a browser.   
+
+[https://pikaso.app/#/advanced/nodejs](https://pikaso.app/#/advanced/nodejs)
+
+
 
 ## Features
 
@@ -81,7 +88,7 @@ https://github.com/pikasojs/pikaso-react-hook
 - [Built-in Shapes](https://pikaso.app/#/core/shapes)
 - [Groups](https://pikaso.app/#/core/groups)
 - [Interactive Text Editing](https://pikaso.app/#/core/label)
-- [Customizable Shapes](https://pikaso.app/#/customization/create-custom-shapes)
+- [Customizable Shapes](https://pikaso.app/#/advanced/create-custom-shapes)
 - [Image and SVG](https://pikaso.app/#/core/image)
 - [Background Image](https://pikaso.app/#/core/background)
 - [Event Management](https://pikaso.app/#/core/events)
@@ -93,7 +100,8 @@ https://github.com/pikasojs/pikaso-react-hook
 - [Export to PNG and JPEG](https://pikaso.app/#/core/import-export)
 - [Import/Export JSON](https://pikaso.app/#/core/import-export)
 - [Filters](https://pikaso.app/#/core/filters)
-- [Custom Filters](https://pikaso.app/#/customization/create-custom-filters)
+- [Custom Filters](https://pikaso.app/#/advanced/create-custom-filters)
+- [NodeJs](https://pikaso.app/#/advanced/nodejs)
 
   
 ## Documentation
