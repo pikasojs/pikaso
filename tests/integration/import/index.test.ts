@@ -7,6 +7,6 @@ describe('Import', () => {
 
     await editor.load(JSON.stringify(fixture) as any)
 
-    expect(editor.board.activeShapes.length).toBe(13)
+    expect(editor.board.activeShapes.length).toBe(14)
   })
 })

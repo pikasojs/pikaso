@@ -76,6 +76,10 @@ export class Import {
             })
             break
 
+          case 'Text':
+            instance = this.shapes.text.insert(json.attrs as Konva.TextConfig)
+            break
+
           case 'Line':
             instance = this.shapes.line.insert(json.attrs as Konva.LineConfig)
             break

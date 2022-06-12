@@ -81,6 +81,20 @@
           }
       },
       {
+        "attrs": {
+          "x": 100,
+          "y": 100,
+          "text": "Simple Text",
+          "fill": "#000",
+          "fontSize": 100,
+          "width": 228,
+          "height": 100
+        },
+        "filters": [],
+        "className": "Text",
+        "zIndex": 4
+      },
+      {
           "className": "Line",
           "filters": [],
           "attrs": {
