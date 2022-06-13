@@ -119,12 +119,7 @@ export class Tag {
       defaultTransformerSettings.anchorSize ?? 0
     )
 
-    const containerRect = rect ?? {
-      x: node.x(),
-      y: node.y(),
-      width: node.width(),
-      height: node.height()
-    }
+    const containerRect = rect ?? node.getClientRect()
 
     this.text = `${containerRect.width.toFixed(
       0
@@ -134,8 +129,7 @@ export class Tag {
     let y = containerRect.y + containerRect.height + margin
 
     if (y + this.node.height() > this.board.getDimensions().height) {
-      y =
-        containerRect.y + containerRect.height - this.node.height() * 2 - margin
+      y = containerRect.y + node.height() - this.node.height() * 2 - margin
     }
 
     this.position = {

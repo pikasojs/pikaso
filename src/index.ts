@@ -25,6 +25,7 @@ import { CircleDrawer } from './shape/drawers/CircleDrawer'
 import { EllipseDrawer } from './shape/drawers/EllipseDrawer'
 import { PolygonDrawer } from './shape/drawers/PolygonDrawer'
 import { TriangleDrawer } from './shape/drawers/TriangleDrawer'
+
 import { isBrowser } from './utils/detect-environment'
 
 import type {
