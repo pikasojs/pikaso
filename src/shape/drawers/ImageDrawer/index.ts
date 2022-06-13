@@ -2,6 +2,7 @@ import Konva from 'konva'
 
 import { imageToDataUrl } from '../../../utils/image-to-url'
 import { createImageFromUrl } from '../../../utils/create-image-from-url'
+import { isBrowser } from '../../../utils/detect-environment'
 
 import { Board } from '../../../Board'
 import { ImageModel } from '../../models/ImageModel'
@@ -36,8 +37,12 @@ export class ImageDrawer {
     if (image instanceof Konva.Image) {
       imageInstance = image
     } else {
-      const url = image instanceof File ? await imageToDataUrl(image) : image
-      imageInstance = await createImageFromUrl(url)
+      const url =
+        isBrowser() && image instanceof File
+          ? await imageToDataUrl(image)
+          : image
+
+      imageInstance = await createImageFromUrl(url as string)
     }
 
     const ratio = imageInstance.width() / imageInstance.height()
