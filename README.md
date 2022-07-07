@@ -127,10 +127,16 @@ Pikaso is built on top of Konva to provide a couple of advanced features that Ko
 | HTML5 Canvas | Provides low level APIs to draw graphics |
 | Konva | Provides Shapes, Dragging, Styling, Events, Transformation and Filters features to HTML5 canvas  |
 | Pikaso | Adds a lot of Simplicity and provides Free style and Shape Drawing, Advanced Shapes and Groups, State Management (Undo/Redo/Reset), JSON Import/Export, Text Editing, Cropping, Rotation, Transformation, Event Manager, Snap to Grid, Advanced Transformation and Selection, Flipping, Background Image and Background Overlay management, Filter Management to Konva |
-  
+
+
 ## Supporters
 [![Stargazers repo roster for @pikasojs/pikaso](https://reporoster.com/stars/pikasojs/pikaso)](https://github.com/pikasojs/pikaso/stargazers)
-  
-## Contributors
-[![](https://opencollective.com/pikaso/contributors.svg?width=890&button=false)](https://github.com/pikasojs/pikaso/graphs/contributors)
 
+  
+## License
+According to the terms of the [MIT license](LICENSE), Pikaso is freely distributable.
+
+[![FOSSA Status][fossa-large-image]][fossa-large-url]
+  
+[fossa-large-image]: https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpikasojs%2Fpikaso.svg?type=large
+[fossa-large-url]: https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fpikasojs%2Fpikaso?ref=badge_large
