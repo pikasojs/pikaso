@@ -1,5 +1,3 @@
-
-
 <div align="center">
   <img src="https://user-images.githubusercontent.com/334716/158897748-f5cd569b-64b6-4551-be30-2d020b9efbde.svg" />
   
@@ -130,7 +128,12 @@ Pikaso is built on top of Konva to provide a couple of advanced features that Ko
   
 ## Supporters
 [![Stargazers repo roster for @pikasojs/pikaso](https://reporoster.com/stars/pikasojs/pikaso)](https://github.com/pikasojs/pikaso/stargazers)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpikasojs%2Fpikaso.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpikasojs%2Fpikaso?ref=badge_shield)
   
 ## Contributors
 [![](https://opencollective.com/pikaso/contributors.svg?width=890&button=false)](https://github.com/pikasojs/pikaso/graphs/contributors)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpikasojs%2Fpikaso.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpikasojs%2Fpikaso?ref=badge_large)
