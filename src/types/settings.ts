@@ -21,18 +21,22 @@ export declare interface BaseSettings {
   }>
   selection: Partial<{
     interactive: boolean
-    keyboard: {
-      enabled: boolean
-      movingSpaces: number
-      map: {
-        delete: string[]
-        moveLeft: string[]
-        moveRight: string[]
-        moveUp: string[]
-        moveDown: string[]
-        deselect: string[]
-      }
-    }
+    keyboard: Partial<
+      Nullable<{
+        enabled: boolean
+        movingSpaces: number
+        map: Partial<
+          Nullable<{
+            delete?: string[]
+            moveLeft?: string[]
+            moveRight?: string[]
+            moveUp?: string[]
+            moveDown?: string[]
+            deselect?: string[]
+          }>
+        >
+      }>
+    >
     transformer: Konva.TransformerConfig
     zone: Konva.RectConfig
   }>

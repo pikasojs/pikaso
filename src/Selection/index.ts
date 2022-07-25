@@ -613,27 +613,27 @@ export class Selection {
       return
     }
 
-    if (keyboard?.map.delete.includes(e.key)) {
+    if (keyboard?.map?.delete?.includes(e.key)) {
       this.delete()
     }
 
-    if (keyboard?.map.moveLeft.includes(e.key)) {
+    if (keyboard?.map?.moveLeft?.includes(e.key)) {
       this.moveX(-movingSpaces)
     }
 
-    if (keyboard?.map.moveRight.includes(e.key)) {
+    if (keyboard?.map?.moveRight?.includes(e.key)) {
       this.moveX(movingSpaces)
     }
 
-    if (keyboard?.map.moveUp.includes(e.key)) {
+    if (keyboard?.map?.moveUp?.includes(e.key)) {
       this.moveY(-movingSpaces)
     }
 
-    if (keyboard?.map.moveDown.includes(e.key)) {
+    if (keyboard?.map?.moveDown?.includes(e.key)) {
       this.moveY(movingSpaces)
     }
 
-    if (keyboard?.map.deselect.includes(e.key)) {
+    if (keyboard?.map?.deselect?.includes(e.key)) {
       this.deselectAll()
     }
   }
