@@ -7,7 +7,7 @@ import { LabelModel } from '../shape/models/LabelModel'
 import { ShapeModel } from '../shape/ShapeModel'
 import { isBrowser } from '../utils/detect-environment'
 
-import type { Point, Filters, FilterFunctions } from '../types'
+import type { Point, Filters, FilterFunctions, Dimensions } from '../types'
 
 export class Selection {
   /**
@@ -210,7 +210,7 @@ export class Selection {
     )
 
     this.transformer.setAttrs(attrs).nodes(shapes.map(shape => shape.node))
-    this.dimensionsTag?.measure(this.transformer)
+    this.dimensionsTag?.measure(this.transformer, this.getTransformerRect())
 
     this.transformer.show()
     this.transformer.moveToTop()
@@ -433,7 +433,7 @@ export class Selection {
      */
     this.transformer.on('dragend', () => {
       this.transformer.show()
-      this.dimensionsTag?.measure(this.transformer)
+      this.dimensionsTag?.measure(this.transformer, this.getTransformerRect())
 
       this.board.events.emit('selection:dragend', {
         shapes: this.list
@@ -463,7 +463,7 @@ export class Selection {
      * Triggers when the client transforming the transformer
      */
     this.transformer.on('transform', () => {
-      this.dimensionsTag?.measure(this.transformer)
+      this.dimensionsTag?.measure(this.transformer, this.getTransformerRect())
 
       this.board.events.emit('selection:transform', {
         shapes: this.list
@@ -665,5 +665,19 @@ export class Selection {
     return (
       node === this.board.stage || node === this.board.background.overlay.node
     )
+  }
+
+  /**
+   * Returns Position and Dimensions of the transformer
+   *
+   * @returns x, y, width and height of the transformer
+   */
+  private getTransformerRect(): Point & Dimensions {
+    return {
+      x: this.transformer.x(),
+      y: this.transformer.y(),
+      width: this.transformer.width(),
+      height: this.transformer.height()
+    }
   }
 }

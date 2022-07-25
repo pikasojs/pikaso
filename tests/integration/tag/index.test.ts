@@ -46,8 +46,8 @@ describe('Tag Measure', () => {
 
     shape.select()
     expect(label.attrs).toMatchObject({
-      x: 145.5,
-      y: 173
+      x: 146,
+      y: 165
     })
 
     shape.deselect()
