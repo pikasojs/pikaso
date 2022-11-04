@@ -1,11 +1,11 @@
 import { Konva } from './index.all'
 import { isNode } from './utils/detect-environment'
 
-const canvas = require('canvas')
-
-global.DOMMatrix = canvas.DOMMatrix
-
 if (isNode()) {
+  const canvas = require('canvas')
+
+  global.DOMMatrix = canvas.DOMMatrix
+
   Konva.Util.createCanvasElement = () => {
     const node = new canvas.Canvas()
     node.style = {}
