@@ -52,7 +52,7 @@ yarn add pikaso
 Pikaso also supports UMD loading
 
 ```js
-<srcipt src="https://unpkg.com/pikaso@latest/umd/pikaso.min.js" type="text/javascript" />
+<srcipt src="https://cdn.jsdelivr.net/npm/pikaso@latest/umd/pikaso.min.js" type="text/javascript" />
 ```
 
 
