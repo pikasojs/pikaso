@@ -3,7 +3,7 @@ import path from 'path'
 import typescript from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 import ignore from 'rollup-plugin-ignore'
 import inject from '@rollup/plugin-inject'
 
@@ -50,9 +50,6 @@ export default [
         declaration: true,
         outDir: 'lib',
         declarationDir: 'lib'
-      }),
-      inject({
-        global: path.resolve('./build/global')
       }),
       terser()
     ],
