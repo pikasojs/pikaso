@@ -40,11 +40,13 @@ export class Background {
     const overlay = new Konva.Rect()
 
     this.image = new ImageModel(board, image, {
+      internal: true,
       selectable: false,
       history: false
     })
 
     this.overlay = new RectModel(board, overlay, {
+      internal: true,
       selectable: false,
       history: false
     })

@@ -37,6 +37,7 @@ export declare interface ShapeConfig {
   transformer?: Konva.TransformerConfig
   selectable?: boolean
   history?: boolean
+  internal?: boolean
 }
 
 export declare interface LabelConfig extends ShapeConfig {
