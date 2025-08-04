@@ -16,7 +16,7 @@ describe('Events', () => {
     event.on('shape:move', callback)
     event.emit('shape:move', obj)
 
-    expect(callback).toBeCalledTimes(1)
+    expect(callback).toHaveBeenCalledTimes(1)
   })
 
   it('should emit an event two times', () => {
@@ -26,7 +26,7 @@ describe('Events', () => {
     event.emit('shape:create', obj)
     event.emit('shape:create', obj)
 
-    expect(callback).toBeCalledTimes(2)
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 
   it('should work with a multi event callback', () => {
@@ -37,7 +37,7 @@ describe('Events', () => {
     event.emit('shape:create', obj)
     event.emit('shape:move', obj)
 
-    expect(callback).toBeCalledTimes(2)
+    expect(callback).toHaveBeenCalledTimes(2)
   })
 
   it('should unsubscribe from the events', () => {
@@ -46,11 +46,11 @@ describe('Events', () => {
     event.on('shape:create', callback)
 
     event.emit('shape:create', obj)
-    expect(callback).toBeCalledTimes(1)
+    expect(callback).toHaveBeenCalledTimes(1)
 
     event.off('shape:create', callback)
 
     event.emit('shape:create', obj)
-    expect(callback).toBeCalledTimes(1)
+    expect(callback).toHaveBeenCalledTimes(1)
   })
 })

@@ -32,7 +32,6 @@ export default [
       terser()
     ],
     input: 'src/index.all.ts',
-    preserveModules: false,
     output: {
       banner,
       dir: 'esm',
