@@ -145,7 +145,7 @@ export abstract class ShapeModel<
    * Returns group id of the shape
    */
   public get group(): Nullable<string> {
-    return this.node.getAttr(NODE_GROUP_ATTRIBUTE)
+    return (this.node as Konva.Node).getAttr(NODE_GROUP_ATTRIBUTE)
   }
 
   /**

@@ -176,7 +176,7 @@ export class History {
         snapshots[index] = { ...this.getNodeAttributes(node) }
 
         Object.entries(attributes).forEach(([key]) => {
-          node.setAttr(key, snapshot[key])
+          ;(node as Konva.Node).setAttr(key, snapshot[key])
         })
       })
     })
@@ -266,7 +266,7 @@ export class History {
 
     const isSpecialKey = e.metaKey || e.ctrlKey
     const isShiftKey = e.shiftKey === true
-    const key = e.key.toLowerCase()
+    const key = e.key?.toLowerCase()
 
     isSpecialKey && !isShiftKey && key === 'z' && this.undo()
     isSpecialKey && isShiftKey && key === 'z' && this.redo()

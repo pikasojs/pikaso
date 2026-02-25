@@ -1,4 +1,5 @@
 import merge from 'deepmerge'
+import Konva from 'konva'
 
 import { Board } from '../Board'
 
@@ -247,7 +248,7 @@ export class Cropper {
     )
 
     this.board.background.nodes.forEach(node => {
-      node.setAttrs({
+      ;(node as Konva.Node).setAttrs({
         width: snapshot.width(),
         height: snapshot.height(),
         rotation: 0,

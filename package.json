@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "deepmerge": "^4.3.1",
-    "konva": "^9.3.22"
+    "konva": "^10.2.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.29.0",

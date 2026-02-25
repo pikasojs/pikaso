@@ -90,7 +90,7 @@ export class TriangleDrawer extends ShapeDrawer<
 
     const point = this.board.stage.getPointerPosition()!
 
-    this.node.setAttrs({
+    ;(this.node as Konva.Node).setAttrs({
       radius: getPointsDistance(point, this.getShapePosition())
     })
   }

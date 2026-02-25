@@ -76,8 +76,7 @@ describe('Export', () => {
             },
             {
               attrs: {
-                ...labelConfig.text,
-                height: 'auto'
+                ...labelConfig.text
               },
               className: 'Text'
             }

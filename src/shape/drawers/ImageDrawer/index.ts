@@ -49,7 +49,7 @@ export class ImageDrawer {
     const defaultHeight = this.board.stage.height() / 2
     const defaultWidth = defaultHeight * ratio
 
-    imageInstance.setAttrs({
+    ;(imageInstance as Konva.Node).setAttrs({
       width: defaultWidth,
       height: defaultHeight,
       x: (this.board.stage.width() - defaultWidth) / 2,

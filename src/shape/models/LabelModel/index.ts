@@ -127,7 +127,7 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
     this.board.setActiveDrawing(DrawType.Text)
 
     const position = e.target.absolutePosition()
-    const textBeforeEdit = this.textNode.getAttr('text')
+    const textBeforeEdit = this.textNode.getAttr('text') ?? ''
 
     // hide node
     this.node.hide()
@@ -147,7 +147,7 @@ export class LabelModel extends ShapeModel<Konva.Label, Konva.LabelConfig> {
 
     input.setAttribute('contenteditable', '')
     input.setAttribute('role', 'textbox')
-    input.innerText = this.textNode.getAttr('text')
+    input.innerText = this.textNode.getAttr('text') ?? ''
 
     Object.assign(input.style, {
       position: 'absolute',

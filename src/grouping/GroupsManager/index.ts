@@ -270,7 +270,7 @@ export abstract class GroupsManager {
       groupNode.add(shape.node)
 
       shape.node.draggable(false)
-      shape.node.setAttr(NODE_GROUP_ATTRIBUTE, groupName)
+      ;(shape.node as Konva.Node).setAttr(NODE_GROUP_ATTRIBUTE, groupName)
     })
 
     if (history) {
@@ -346,8 +346,7 @@ export abstract class GroupsManager {
       groupNode.children = groupNode.children?.filter(
         node => node !== shape.node
       )
-
-      shape.node.setAttr(NODE_GROUP_ATTRIBUTE, null)
+      ;(shape.node as Konva.Node).setAttr(NODE_GROUP_ATTRIBUTE, null)
     })
 
     if (history) {

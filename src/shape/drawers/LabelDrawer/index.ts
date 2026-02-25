@@ -43,7 +43,6 @@ export class LabelDrawer {
     const textNode = new Konva.Text(text)
     const tagNode = new Konva.Tag(tag)
 
-    textNode.setAttr('height', 'auto')
     label.add(tagNode).add(textNode)
 
     return new LabelModel(this.board, label, {

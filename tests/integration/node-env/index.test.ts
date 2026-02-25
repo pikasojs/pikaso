@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import 'konva/canvas-backend'
 import Pikaso from '../../../src'
 
 describe('NodeJs Environment', () => {
