@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 import typescript from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
@@ -33,8 +35,8 @@ export default [
     }
   },
   {
+    external: ['canvas'],
     plugins: [
-      ignore(['canvas']),
       nodeResolve(),
       commonjs({
         exclude: '/node_modules/'
@@ -70,7 +72,8 @@ export default [
       file: pkg.unpkg,
       format: 'iife',
       freeze: false,
-      sourcemap: true
+      sourcemap: true,
+      intro: fs.readFileSync('./build/global.js', 'utf-8')
     }
   }
 ]
