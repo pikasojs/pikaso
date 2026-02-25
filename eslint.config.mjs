@@ -1,9 +1,8 @@
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 
-import { defineConfig } from 'eslint/config'
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat'
-import importX from 'eslint-plugin-import-x'
+import _import from 'eslint-plugin-import'
 import prettier from 'eslint-plugin-prettier'
 import typescriptEslint from '@typescript-eslint/eslint-plugin'
 import globals from 'globals'
@@ -19,14 +18,19 @@ const compat = new FlatCompat({
   allConfig: js.configs.all
 })
 
-export default defineConfig([
+export default [
+  ...fixupConfigRules(
+    compat.extends(
+      'prettier',
+      'plugin:prettier/recommended',
+      'plugin:import/errors',
+      'plugin:import/warnings',
+      'plugin:import/typescript'
+    )
+  ),
   {
-    extends: fixupConfigRules(
-      compat.extends('prettier', 'plugin:prettier/recommended')
-    ),
-
     plugins: {
-      'import-x': importX,
+      import: fixupPluginRules(_import),
       prettier: fixupPluginRules(prettier),
       '@typescript-eslint': typescriptEslint
     },
@@ -46,9 +50,9 @@ export default defineConfig([
     },
 
     settings: {
-      'import-x/resolver': {
+      'import/resolver': {
         node: {
-          'import-x/extensions': ['.js', '.ts', '.d.ts', '.json']
+          'import/extensions': ['.js', '.ts', '.d.ts', '.json']
         },
 
         typescript: {}
@@ -68,10 +72,10 @@ export default defineConfig([
         }
       ],
 
-      'import-x/prefer-default-export': 'off',
-      'import-x/extensions': 'off',
+      'import/prefer-default-export': 'off',
+      'import/extensions': 'off',
 
-      'import-x/no-unresolved': [
+      'import/no-unresolved': [
         2,
         {
           commonjs: true,
@@ -81,16 +85,16 @@ export default defineConfig([
 
       'no-shadow': 'off',
       'no-underscore-dangle': 'off',
-      'import-x/no-extraneous-dependencies': 'off',
+      'import/no-extraneous-dependencies': 'off',
       'no-console': 'off',
       'func-names': 'off',
-      'import-x/named': 2,
-      'import-x/namespace': 2,
-      'import-x/default': 2,
-      'import-x/export': 2,
+      'import/named': 2,
+      'import/namespace': 2,
+      'import/default': 2,
+      'import/export': 2,
       '@typescript-eslint/member-ordering': [2, {}],
 
-      'import-x/order': [
+      'import/order': [
         'error',
         {
           'newlines-between': 'always-and-inside-groups',
@@ -123,4 +127,4 @@ export default defineConfig([
   {
     files: ['**/*.d.ts']
   }
-])
+]
