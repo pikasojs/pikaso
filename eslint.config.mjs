@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import { defineConfig } from 'eslint/config'
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat'
-import _import from 'eslint-plugin-import'
+import importX from 'eslint-plugin-import-x'
 import prettier from 'eslint-plugin-prettier'
 import typescriptEslint from '@typescript-eslint/eslint-plugin'
 import globals from 'globals'
@@ -22,17 +22,11 @@ const compat = new FlatCompat({
 export default defineConfig([
   {
     extends: fixupConfigRules(
-      compat.extends(
-        'prettier',
-        'plugin:prettier/recommended',
-        'plugin:import/errors',
-        'plugin:import/warnings',
-        'plugin:import/typescript'
-      )
+      compat.extends('prettier', 'plugin:prettier/recommended')
     ),
 
     plugins: {
-      import: fixupPluginRules(_import),
+      'import-x': importX,
       prettier: fixupPluginRules(prettier),
       '@typescript-eslint': typescriptEslint
     },
@@ -52,9 +46,9 @@ export default defineConfig([
     },
 
     settings: {
-      'import/resolver': {
+      'import-x/resolver': {
         node: {
-          'import/extensions': ['.js', '.ts', '.d.ts', '.json']
+          'import-x/extensions': ['.js', '.ts', '.d.ts', '.json']
         },
 
         typescript: {}
@@ -74,10 +68,10 @@ export default defineConfig([
         }
       ],
 
-      'import/prefer-default-export': 'off',
-      'import/extensions': 'off',
+      'import-x/prefer-default-export': 'off',
+      'import-x/extensions': 'off',
 
-      'import/no-unresolved': [
+      'import-x/no-unresolved': [
         2,
         {
           commonjs: true,
@@ -87,16 +81,16 @@ export default defineConfig([
 
       'no-shadow': 'off',
       'no-underscore-dangle': 'off',
-      'import/no-extraneous-dependencies': 'off',
+      'import-x/no-extraneous-dependencies': 'off',
       'no-console': 'off',
       'func-names': 'off',
-      'import/named': 2,
-      'import/namespace': 2,
-      'import/default': 2,
-      'import/export': 2,
+      'import-x/named': 2,
+      'import-x/namespace': 2,
+      'import-x/default': 2,
+      'import-x/export': 2,
       '@typescript-eslint/member-ordering': [2, {}],
 
-      'import/order': [
+      'import-x/order': [
         'error',
         {
           'newlines-between': 'always-and-inside-groups',
