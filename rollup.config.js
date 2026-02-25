@@ -1,11 +1,8 @@
-import path from 'path'
-
 import typescript from '@rollup/plugin-typescript'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 import ignore from 'rollup-plugin-ignore'
-import inject from '@rollup/plugin-inject'
 
 import pkg from './package.json'
 
@@ -25,9 +22,6 @@ export default [
         declaration: true,
         outDir: 'esm',
         declarationDir: 'esm'
-      }),
-      inject({
-        global: path.resolve('./build/global')
       }),
       terser()
     ],
@@ -68,9 +62,6 @@ export default [
         exclude: '/node_modules/'
       }),
       typescript(),
-      inject({
-        global: path.resolve('./build/global')
-      }),
       terser()
     ],
     input: 'src/index.ts',
